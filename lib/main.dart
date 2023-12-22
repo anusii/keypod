@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Friday 2023-12-22 12:05:16 +1100 Graham Williams>
+// Time-stamp: <Friday 2023-12-22 16:30:53 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -27,7 +27,10 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:solid/solid.dart';
+// TODO 20231222 gjw We will want to import 'package:solid/solid.dart';
+// here. For the first milestone I want to see the below SolidLogin widget
+// imported from the solid package. For this first milestone the widget simply
+// returns the widget that is its child.
 
 void main() {
   runApp(const KeyPod());
@@ -60,10 +63,36 @@ class KeyPod extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SolidLogin(MyHomePage(title: 'Flutter Demo Home Page')),
+      home:
+          const SolidLogin(child: MyHomePage(title: 'Flutter Demo Home Page')),
     );
   }
 }
+
+/// A starting point for [SolidLogin].
+///
+/// This should be moved into the solid package and imported into here as the
+/// starting point for getting the framework set up. This widget does no more
+/// than to return the widget that is supplied as its argument but it will be
+/// sueful to get the package infrastructure setup and this main.dart then
+/// importing the SolidLogin from the solid package.
+
+class SolidLogin extends StatelessWidget {
+  final Widget child;
+
+  const SolidLogin({required this.child, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
+  }
+}
+
+/// The default sample [Widget] for flutter.
+///
+/// This is retained for now only as a demonstration. It will be replaced with
+/// the [Widget] to display, and the the add/edit entries within the key value
+/// pair store.
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
