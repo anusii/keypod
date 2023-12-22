@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Friday 2023-12-22 16:30:53 +1100 Graham Williams>
+// Time-stamp: <Friday 2023-12-22 16:50:56 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -71,11 +71,14 @@ class KeyPod extends StatelessWidget {
 
 /// A starting point for [SolidLogin].
 ///
-/// This should be moved into the solid package and imported into here as the
-/// starting point for getting the framework set up. This widget does no more
-/// than to return the widget that is supplied as its argument but it will be
-/// sueful to get the package infrastructure setup and this main.dart then
-/// importing the SolidLogin from the solid package.
+/// This widget does no more than to return the widget that is supplied as its
+/// argument.
+///
+/// TODO 20231222 gjw This should be moved into the solid package and imported
+/// into here as the starting point for getting the framework set up.  It will
+/// be useful to get the package infrastructure setup and this main.dart then
+/// importing the SolidLogin from the solid package
+///
 
 class SolidLogin extends StatelessWidget {
   final Widget child;
