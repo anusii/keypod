@@ -12,7 +12,7 @@ In cases where a pull request is too large, ensure that reviewers are aware of t
 Before creating a pull request, ensure that your branch is up to date with the latest changes from the `main` branch. This can be done by running `git pull origin main` on your branch.
 
 ## 4. Pull request title
-The title of a pull request should be short and descriptive. It should also include the issue number that it is addressing. For example, if the pull request is addressing issue #1, the title should be `#1: Add login page`. This will be helpful if we move to sqaush and merge in the future.
+The title of a pull request should be short and descriptive. .  This will be helpful if we move to sqaush and merge in the future.
 
 ## 5. Pull request description
 The description of a pull request should be short and descriptive. It should include the following:
