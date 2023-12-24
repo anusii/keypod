@@ -22,12 +22,17 @@ Before creating a pull request, ensure that your branch is up to date
 with the latest changes from the `main` branch. This can be done by
 running `git pull origin main` on your branch.
 
-## 4. Pull request title
+## 4. Ensure the code meets style guidelines
+
+This can be done with `make prep` or else run the various commands
+that you can find in `support/flutter.mk` individually.
+
+## 5. Pull request title
 
 The title of a pull request should be short and descriptive. .  This
 will be helpful if we move to sqaush and merge in the future.
 
-## 5. Pull request description
+## 6. Pull request description
 
 The description of a pull request should be short and descriptive. It
 should include the following:
@@ -36,7 +41,7 @@ should include the following:
 - A description of how to test the changes
 - A description of any known issues
 
-## 6. TODO in pull request
+## 7. TODO in pull request
 
 If TODOs are left in the code, they should be included in the pull
 request description and corresponding issue should be created. This
