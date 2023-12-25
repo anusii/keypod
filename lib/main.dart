@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Monday 2023-12-25 13:08:42 +1100 Graham Williams>
+// Time-stamp: <Monday 2023-12-25 16:09:39 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -29,19 +29,7 @@ import 'package:flutter/material.dart';
 
 import 'package:solid/solid.dart';
 
-// TODO 20231222 gjw We will want to import 'package:solid/solid.dart';
-// here. For the first milestone I want to see the below SolidLogin widget
-// imported from the solid package. For this first milestone the widget simply
-// returns the widget that is its child.
-
 void main() {
-  // A simple test for connecting with the new private solid package.
-
-  final calculator = Calculator();
-  debugPrint('${calculator.addOne(2)} == 3');
-  debugPrint('${calculator.addOne(-7)} == -6');
-  debugPrint('${calculator.addOne(0)} == 1');
-
   runApp(const KeyPod());
 }
 
@@ -75,28 +63,6 @@ class KeyPod extends StatelessWidget {
       home:
           const SolidLogin(child: MyHomePage(title: 'Flutter Demo Home Page')),
     );
-  }
-}
-
-/// A starting point for [SolidLogin].
-///
-/// This widget does no more than to return the widget that is supplied as its
-/// argument.
-///
-/// TODO 20231222 gjw This should be moved into the solid package and imported
-/// into here as the starting point for getting the framework set up.  It will
-/// be useful to get the package infrastructure setup and this main.dart then
-/// importing the SolidLogin from the solid package
-///
-
-class SolidLogin extends StatelessWidget {
-  final Widget child;
-
-  const SolidLogin({required this.child, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return child;
   }
 }
 
