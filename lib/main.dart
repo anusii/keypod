@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Wednesday 2023-12-27 08:27:46 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2023-12-27 08:30:13 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -71,6 +71,8 @@ void main() async {
       await windowManager.setAlwaysOnTop(false);
     });
   }
+
+  // Ready to now run the app.
 
   runApp(const KeyPod());
 }
