@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Monday 2023-12-25 20:55:55 +1100 Graham Williams>
+// Time-stamp: <Monday 2023-12-25 13:08:42 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -27,12 +27,21 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'package:solid/solid.dart';
+
 // TODO 20231222 gjw We will want to import 'package:solid/solid.dart';
 // here. For the first milestone I want to see the below SolidLogin widget
 // imported from the solid package. For this first milestone the widget simply
 // returns the widget that is its child.
 
 void main() {
+  // A simple test for connecting with the new private solid package.
+
+  final calculator = Calculator();
+  debugPrint('${calculator.addOne(2)} == 3');
+  debugPrint('${calculator.addOne(-7)} == -6');
+  debugPrint('${calculator.addOne(0)} == 1');
+
   runApp(const KeyPod());
 }
 
