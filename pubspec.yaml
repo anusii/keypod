@@ -38,7 +38,7 @@ dependencies:
   solid: 
     git:
       url: git@github.com:anusii/solid.git
-      ref: gjw/7_add_solid_login
+      ref: main
   
 dev_dependencies:
   flutter_test:
