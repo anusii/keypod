@@ -41,6 +41,11 @@ dependencies:
       ref: main
   
 dev_dependencies:
+  dart_code_metrics:
+    git:
+      url: https://github.com/anusii/dart-code-metrics.git
+      ref: main
+
   flutter_test:
     sdk: flutter
 
