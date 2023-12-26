@@ -49,7 +49,7 @@ will ensure that they are not forgotten.
 
 ## 8. Tests
 Every pull request should include tests. More information on testing
-can be found in `style_guidelines/test_guide.md`.
+can be found in `guidelines/test_guide.md`.
 
 # Reviewing Pull Requests
 
