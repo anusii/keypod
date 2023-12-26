@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Monday 2023-12-25 16:09:39 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2023-12-27 08:27:46 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -36,6 +36,8 @@ void main() async {
   debugPrint = (String? message, {int? wrapWidth}) {
     null;
   };
+
+  // Suport window size and top placement for desktop apps.
 
   if (isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +79,7 @@ class KeyPod extends StatelessWidget {
   const KeyPod({super.key});
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
