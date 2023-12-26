@@ -37,6 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  dart_code_metrics:
+    git:
+      url: https://github.com/anusii/dart-code-metrics.git
+      ref: main
+
   flutter_test:
     sdk: flutter
 
