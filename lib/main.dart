@@ -23,13 +23,53 @@
 ///
 /// Authors: Graham Williams
 
-library;
-
 import 'package:flutter/material.dart';
 
 import 'package:solid/solid.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+import 'utils/is_desktop.dart';
+
+void main() async {
+  // Remove [debugPrint] messages from production code.
+
+  debugPrint = (String? message, {int? wrapWidth}) {
+    null;
+  };
+
+  if (isDesktop) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(
+      // Setting [alwaysOnTop] here will ensure the app starts on top of other
+      // apps on the desktop so that it is visible. We later turn it of as we
+      // don't want to force it always on top.
+
+      alwaysOnTop: true,
+
+      // The size is overridden in the first instance by linux/my_application.cc
+      // but setting it here then does have effect when Restarting the app.
+
+      // Windows has 1280x720 by default in windows/runner/main.cpp line 29 so
+      // best not to override it here since under windows the 950x600 is too
+      // small.
+
+      //size: Size(750, 873),
+
+      // The [title] is used for the window manager's window title.
+
+      title: 'PodNotes - A note taking app with private PODs',
+    );
+
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+      await windowManager.setAlwaysOnTop(false);
+    });
+  }
+
   runApp(const KeyPod());
 }
 
