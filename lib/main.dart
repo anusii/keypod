@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Wednesday 2023-12-27 08:30:13 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2023-12-27 17:01:10 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -51,18 +51,9 @@ void main() async {
 
       alwaysOnTop: true,
 
-      // The size is overridden in the first instance by linux/my_application.cc
-      // but setting it here then does have effect when Restarting the app.
-
-      // Windows has 1280x720 by default in windows/runner/main.cpp line 29 so
-      // best not to override it here since under windows the 950x600 is too
-      // small.
-
-      //size: Size(750, 873),
-
       // The [title] is used for the window manager's window title.
 
-      title: 'PodNotes - A note taking app with private PODs',
+      title: 'KeyPod - A private POD for storing Key Value pairs',
     );
 
     windowManager.waitUntilReadyToShow(windowOptions, () async {
