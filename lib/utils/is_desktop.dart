@@ -1,11 +1,11 @@
 /// Check if we are running a desktop (and not a browser).
 ///
-/// Copyright (C) 2023, Software Innovation Institute
+/// Copyright (C) 2024, Software Innovation Institute
 ///
 /// License: GNU General Public License, Version 3 (the "License")
 /// https://www.gnu.org/licenses/gpl-3.0.en.html
 //
-// Time-stamp: <Wednesday 2023-12-20 08:44:31 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2023-12-27 16:56:13 +1100 Graham Williams>
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -21,8 +21,6 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Graham Williams
-
-library;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 
