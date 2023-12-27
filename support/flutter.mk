@@ -257,12 +257,17 @@ qtest:
 coverage:
 	@echo "COVERAGE"
 	@flutter test --coverage
-	@genhtml coverage/lcov.info -o coverage/html
+	@echo
+	@-/bin/bash support/coverage.sh
 	@echo $(SEPARATOR)
 
 .PHONY: coview
 coview:
-	open coverage/html/index.html
+	@genhtml coverage/lcov.info -o coverage/html
+	@open coverage/html/index.html
+
+realclean::
+	rm -rf coverage
 
 targz: $(APP)-$(VER)-linux-x86_64.tar.gz
 
