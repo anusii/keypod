@@ -1,12 +1,11 @@
-/// DESCRIPTION
-//
-// Time-stamp: <Wednesday 2023-12-27 08:24:03 +1100 Graham Williams>
-//
+/// Check if we are running a desktop (and not a browser).
+///
 /// Copyright (C) 2024, Software Innovation Institute
 ///
-/// Licensed under the GNU General Public License, Version 3 (the "License");
-///
-/// License: https://www.gnu.org/licenses/gpl-3.0.en.html
+/// License: GNU General Public License, Version 3 (the "License")
+/// https://www.gnu.org/licenses/gpl-3.0.en.html
+//
+// Time-stamp: <Wednesday 2023-12-27 16:56:13 +1100 Graham Williams>
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -21,4 +20,16 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: AUTHORS
+/// Authors: Graham Williams
+
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'package:universal_io/io.dart' show Platform;
+
+/// Test if we are running on a desktop platform but not in a browser.
+
+bool get isDesktop {
+  if (kIsWeb) return false;
+
+  return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+}

@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 //
-// Time-stamp: <Monday 2023-12-25 16:09:39 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2023-12-27 17:01:10 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -23,13 +23,48 @@
 ///
 /// Authors: Graham Williams
 
-library;
-
 import 'package:flutter/material.dart';
 
 import 'package:solid/solid.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+import 'utils/is_desktop.dart';
+
+void main() async {
+  // Remove [debugPrint] messages from production code.
+
+  debugPrint = (String? message, {int? wrapWidth}) {
+    null;
+  };
+
+  // Suport window size and top placement for desktop apps.
+
+  if (isDesktop) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(
+      // Setting [alwaysOnTop] here will ensure the app starts on top of other
+      // apps on the desktop so that it is visible. We later turn it of as we
+      // don't want to force it always on top.
+
+      alwaysOnTop: true,
+
+      // The [title] is used for the window manager's window title.
+
+      title: 'KeyPod - A private POD for storing Key Value pairs',
+    );
+
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+      await windowManager.setAlwaysOnTop(false);
+    });
+  }
+
+  // Ready to now run the app.
+
   runApp(const KeyPod());
 }
 
@@ -37,6 +72,7 @@ class KeyPod extends StatelessWidget {
   const KeyPod({super.key});
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
