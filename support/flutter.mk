@@ -44,6 +44,8 @@ flutter:
   test	    Run `flutter test` for testing.
   itest	    Run `flutter test integration_test` for interation testing.
   qtest	    Run above test with PAUSE=0.
+  coverage  Run with `--coverage`.
+    coview  View the generated html coverage in browser.
 
   riverpod  Setup `pubspec.yaml` to support riverpod.
   runner    Build the auto generated code as *.g.dart files.
@@ -101,7 +103,7 @@ macos: $(BUILD_RUNNER)
 
 .PHONY: android
 android: $(BUILD_RUNNER)
-	flutter run --device-id $(shell flutter devices | grep android | cut -d " " -f 5)
+	flutter run --device-id $(shell flutter devices | grep android | tr '•' '|' | tr -s '|' | tr -s ' ' | cut -d'|' -f2 | tr -d ' ')
 
 .PHONY: emu
 emu:
@@ -117,7 +119,7 @@ linux_config:
 	flutter config --enable-linux-desktop
 
 .PHONY: prep
-prep: fix format dcm analyze ignore license
+prep: fix format dcm analyze ignore license coverage
 	@echo "ADVISORY: make tests docs"
 	@echo $(SEPARATOR)
 
@@ -250,6 +252,17 @@ qtest:
 	flutter test --dart-define=PAUSE=0 --device-id \
 	$(shell flutter devices | grep desktop | perl -pe 's|^[^•]*• ([^ ]*) .*|\1|') \
 	integration_test/$*_test.dart
+
+.PHONY: coverage
+coverage:
+	@echo "COVERAGE"
+	@flutter test --coverage
+	@genhtml coverage/lcov.info -o coverage/html
+	@echo $(SEPARATOR)
+
+.PHONY: coview
+coview:
+	open coverage/html/index.html
 
 targz: $(APP)-$(VER)-linux-x86_64.tar.gz
 
