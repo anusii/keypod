@@ -47,6 +47,10 @@ If TODOs are left in the code, they should be included in the pull
 request description and corresponding issue should be created. This
 will ensure that they are not forgotten.
 
+## 8. Tests
+Every pull request should include tests. More information on testing
+can be found in `guidelines/test_guide.md`.
+
 # Reviewing Pull Requests
 
 ## 1. Ensure pull request is up to date
