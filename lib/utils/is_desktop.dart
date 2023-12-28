@@ -22,14 +22,20 @@
 ///
 /// Authors: Graham Williams
 
-import 'package:flutter/foundation.dart' show kIsWeb;
-
+import 'package:flutter/foundation.dart';
 import 'package:universal_io/io.dart' show Platform;
 
-/// Test if we are running on a desktop platform but not in a browser.
+bool isDesktop(PlatformWrapper platformWrapper) {
+  return platformWrapper.isLinux ||
+      platformWrapper.isMacOS ||
+      platformWrapper.isWindows;
+}
 
-bool get isDesktop {
-  if (kIsWeb) return false;
+class PlatformWrapper {
+  /// Wraps the Platform class to allow mocking for testing.
 
-  return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+  bool get isLinux => Platform.isLinux;
+  bool get isMacOS => Platform.isMacOS;
+  bool get isWeb => kIsWeb;
+  bool get isWindows => Platform.isWindows;
 }
