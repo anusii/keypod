@@ -32,10 +32,10 @@ dependencies:
     sdk: flutter
 
   solid:
-#    path: ../solid
-    git:
-      url: https://github.com/anusii/solid
-      ref: main
+    path: solid
+    # git:
+    #   url: https://github.com/anusii/solid
+    #   ref: main
   
   cupertino_icons: ^1.0.2
   universal_io: ^2.2.2
