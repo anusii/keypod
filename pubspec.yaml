@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
 
   solid:
+#    path: ../solid
     git:
       url: https://github.com/anusii/solid
       ref: main
