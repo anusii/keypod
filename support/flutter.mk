@@ -119,7 +119,7 @@ linux_config:
 	flutter config --enable-linux-desktop
 
 .PHONY: prep
-prep: fix format dcm analyze ignore license coverage
+prep: fix format dcm analyze ignore license todo
 	@echo "ADVISORY: make tests docs"
 	@echo $(SEPARATOR)
 
@@ -182,13 +182,19 @@ analyze:
 .PHONY: ignore
 ignore:
 	@echo "Files that override lint checks with IGNORE:\n"
-	@if rgrep ignore: lib; then exit 1; else exit 0; fi
+	@-if rgrep -n ignore: lib; then exit 1; else exit 0; fi
+	@echo $(SEPARATOR)
+
+.PHONY: todo
+todo:
+	@echo "Files that include TODO items to be resolved:\n"
+	@-if rgrep -n ' TODO ' lib; then exit 1; else exit 0; fi
 	@echo $(SEPARATOR)
 
 .PHONY: license
 license:
 	@echo "Files without a LICENSE:\n"
-	@find lib -type f -not -name '*~' ! -exec grep -qE '^(/// .*|/// Copyright|/// Licensed)' {} \; -printf "\t%p\n"
+	@-find lib -type f -not -name '*~' ! -exec grep -qE '^(/// .*|/// Copyright|/// Licensed)' {} \; -printf "\t%p\n"
 	@echo $(SEPARATOR)
 
 .PHONY: riverpod
