@@ -38,6 +38,7 @@ void main() async {
 
   // Suport window size and top placement for desktop apps.
 
+  // PlatformWrapper() is passed in isDesktop() to allow mocking for testing.
   if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -127,7 +128,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
