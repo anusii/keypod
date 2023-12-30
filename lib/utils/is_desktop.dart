@@ -26,6 +26,13 @@ import 'package:flutter/foundation.dart';
 import 'package:universal_io/io.dart' show Platform;
 
 bool isDesktop(PlatformWrapper platformWrapper) {
+  /// platformWrapper: PlatformWrapper class is passed in to allow mocking for testing.
+  /// Returns true if running on Linux, macOS or Windows.
+
+  if (platformWrapper.isWeb) {
+    return false;
+  }
+
   return platformWrapper.isLinux ||
       platformWrapper.isMacOS ||
       platformWrapper.isWindows;
@@ -33,7 +40,6 @@ bool isDesktop(PlatformWrapper platformWrapper) {
 
 class PlatformWrapper {
   /// Wraps the Platform class to allow mocking for testing.
-
   bool get isLinux => Platform.isLinux;
   bool get isMacOS => Platform.isMacOS;
   bool get isWeb => kIsWeb;
