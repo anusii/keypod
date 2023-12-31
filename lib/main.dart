@@ -1,12 +1,12 @@
 /// This is a basic template app to begin a Solid POD project.
-//
-// Time-stamp: <Saturday 2023-12-30 07:45:22 +1100 Graham Williams>
-//
-/// Copyright (C) 2024, Software Innovation Institute
 ///
-/// Licensed under the GNU General Public License, Version 3 (the "License");
+// Time-stamp: <Sunday 2023-12-31 17:32:12 +1100 Graham Williams>
 ///
-/// License: https://www.gnu.org/licenses/gpl-3.0.en.html
+/// Copyright (C) 2024, Software Innovation Institute.
+///
+/// Licensed under the GNU General Public License, Version 3 (the "License").
+///
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html.
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -23,18 +23,18 @@
 ///
 /// Authors: Graham Williams
 
+library;
+
 import 'package:flutter/material.dart';
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'utils/is_desktop.dart';
+import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
   // Remove [debugPrint] messages from production code.
 
-  debugPrint = (String? message, {int? wrapWidth}) {
-    null;
-  };
+  debugPrint = (message, {wrapWidth}) {};
 
   // Suport window size and top placement for desktop apps.
 
@@ -44,7 +44,7 @@ void main() async {
 
     await windowManager.ensureInitialized();
 
-    WindowOptions windowOptions = const WindowOptions(
+    const windowOptions = WindowOptions(
       // Setting [alwaysOnTop] here will ensure the app starts on top of other
       // apps on the desktop so that it is visible. We later turn it of as we
       // don't want to force it always on top.
@@ -56,7 +56,7 @@ void main() async {
       title: 'KeyPod - A private POD for storing Key Value pairs',
     );
 
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
       await windowManager.focus();
       await windowManager.setAlwaysOnTop(false);

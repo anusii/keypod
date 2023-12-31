@@ -11,6 +11,4 @@
 
 //import 'package:keypod/main.dart';
 
-void main() {
-  null;
-}
+void main() { }
