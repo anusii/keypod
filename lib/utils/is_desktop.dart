@@ -1,11 +1,12 @@
 /// Check if we are running a desktop (and not a browser).
 ///
-/// Copyright (C) 2024, Software Innovation Institute
+// Time-stamp: <Sunday 2023-12-31 17:33:12 +1100 Graham Williams>
 ///
-/// License: GNU General Public License, Version 3 (the "License")
-/// https://www.gnu.org/licenses/gpl-3.0.en.html
-//
-// Time-stamp: <Wednesday 2023-12-27 16:56:13 +1100 Graham Williams>
+/// Copyright (C) 2024, Software Innovation Institute.
+///
+/// Licensed under the GNU General Public License, Version 3 (the "License").
+///
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
