@@ -23,19 +23,19 @@
 ///
 /// Authors: Graham Williams
 
+library;
+
 import 'package:flutter/material.dart';
 
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'utils/is_desktop.dart';
+import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
   // Remove [debugPrint] messages from production code.
 
-  debugPrint = (String? message, {int? wrapWidth}) {
-    null;
-  };
+  debugPrint = (message, {wrapWidth}) {};
 
   // Suport window size and top placement for desktop apps.
 
@@ -44,7 +44,7 @@ void main() async {
 
     await windowManager.ensureInitialized();
 
-    WindowOptions windowOptions = const WindowOptions(
+    const windowOptions = WindowOptions(
       // Setting [alwaysOnTop] here will ensure the app starts on top of other
       // apps on the desktop so that it is visible. We later turn it of as we
       // don't want to force it always on top.
@@ -56,7 +56,7 @@ void main() async {
       title: 'KeyPod - A private POD for storing Key Value pairs',
     );
 
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
       await windowManager.focus();
       await windowManager.setAlwaysOnTop(false);

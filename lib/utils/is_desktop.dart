@@ -23,6 +23,8 @@
 ///
 /// Authors: Graham Williams
 
+library;
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:universal_io/io.dart' show Platform;

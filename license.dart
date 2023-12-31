@@ -1,8 +1,8 @@
 /// DESCRIPTION
 ///
-// Time-stamp: <Sunday 2023-12-31 17:31:52 +1100 Graham Williams>
+// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
 ///
-/// Copyright (C) 2024, Software Innovation Institute.
+/// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
 /// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
@@ -22,3 +22,5 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: AUTHORS
+
+library;
