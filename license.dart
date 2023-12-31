@@ -1,6 +1,6 @@
 /// DESCRIPTION
 //
-// Time-stamp: <Wednesday 2023-12-27 08:24:03 +1100 Graham Williams>
+// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute
 ///
@@ -22,3 +22,5 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: AUTHORS
+
+library;
