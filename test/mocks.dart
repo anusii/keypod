@@ -1,12 +1,11 @@
-/// Includes functions to generate mocks for unit tests.
-/// Mocks are auto generated using the Mockito package.
+/// Functions to auto generate mocks for unit tests using Mockito.
 ///
 /// Copyright (C) 2024, Software Innovation Institute
 ///
 /// License: GNU General Public License, Version 3 (the "License")
 /// https://www.gnu.org/licenses/gpl-3.0.en.html
 //
-// Time-stamp: <Wednesday 2023-12-27 16:56:13 +1100 Graham Williams>
+// Time-stamp: <Sunday 2023-12-31 12:24:25 +1100 Graham Williams>
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
