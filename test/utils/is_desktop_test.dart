@@ -21,6 +21,7 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Ninad Bhat
+library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:keypod/utils/is_desktop.dart';

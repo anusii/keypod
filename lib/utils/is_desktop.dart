@@ -21,12 +21,11 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: Graham Williams
+/// Authors: Graham Williams, Ninad Bhat
 
 library;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-
 import 'package:universal_io/io.dart' show Platform;
 
 bool isDesktop(PlatformWrapper platformWrapper) {
@@ -42,6 +41,9 @@ bool isDesktop(PlatformWrapper platformWrapper) {
       platformWrapper.isWindows;
 }
 
+// PlatformWrapper coverage is ignored as it is created to test isDesktop() and
+// Platform and kIsWeb are not mockable.
+// coverage:ignore-start
 class PlatformWrapper {
   /// Wraps the Platform class to allow mocking for testing.
   bool get isLinux => Platform.isLinux;
@@ -49,3 +51,4 @@ class PlatformWrapper {
   bool get isWeb => kIsWeb;
   bool get isWindows => Platform.isWindows;
 }
+// coverage:ignore-end
