@@ -1,8 +1,8 @@
 /// Check if we are running a desktop (and not a browser).
 ///
-// Time-stamp: <Sunday 2023-12-31 17:33:12 +1100 Graham Williams>
+// Time-stamp: <Tuesday 2024-01-02 10:03:46 +1100 Graham Williams>
 ///
-/// Copyright (C) 2024, Software Innovation Institute.
+/// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
 /// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
