@@ -26,7 +26,6 @@
 library;
 
 import 'package:flutter/material.dart';
-
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -39,7 +38,8 @@ void main() async {
 
   // Suport window size and top placement for desktop apps.
 
-  if (isDesktop) {
+  // PlatformWrapper() is passed in isDesktop() to allow mocking for testing.
+  if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
 
     await windowManager.ensureInitialized();
