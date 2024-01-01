@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Sunday 2023-12-31 17:32:12 +1100 Graham Williams>
+// Time-stamp: <Monday 2024-01-01 16:03:56 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute.
 ///
@@ -79,25 +79,28 @@ class KeyPod extends StatelessWidget {
       title: 'Key POD',
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
+
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:
-          const SolidLogin(child: Scaffold(body: Text('Key Pod Placeholder'))),
+
+      // Build the actual home widget. Because our app requires access to the
+      // data stored within the user's POD for any of its functionality, we wrap
+      // the app's main page within the [SolidLogin] widget to initiate the
+      // user's authentication with the Solid server. The SolidLogin widget can
+      // be tued to suit the look and feel of the app with appropraite login
+      // images and logo.
+
+      home: const SolidLogin(
+        // Images generated using Bing Image Creator from Designer, powered by
+        // DALL-E3.
+
+        image: AssetImage('assets/images/keypod_image.jpg'),
+        logo: AssetImage('assets/images/keypod_logo.png'),
+        title: 'MANAGE YOUR SOLID KEY POD',
+        link: 'https://github.com/anusii/keypod',
+        child: Scaffold(body: Text('Key Pod Placeholder')),
+      ),
     );
   }
 }
