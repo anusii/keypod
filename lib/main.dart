@@ -1,6 +1,6 @@
 /// This is a basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Monday 2024-01-01 14:25:46 +1100 Graham Williams>
+// Time-stamp: <Monday 2024-01-01 16:03:56 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute.
 ///
@@ -97,10 +97,8 @@ class KeyPod extends StatelessWidget {
 
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
-        title: 'LOGIN TO ACCESS YOUR KEY POD',
+        title: 'MANAGE YOUR SOLID KEY POD',
         link: 'https://github.com/anusii/keypod',
-        getpodBG: Colors.orange,
-        loginBG: Colors.teal,
         child: Scaffold(body: Text('Key Pod Placeholder')),
       ),
     );
