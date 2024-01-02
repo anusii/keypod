@@ -23,9 +23,9 @@ dependencies:
 
   solid:
     path: solid
-    # git:
-    #   url: https://github.com/anusii/solid
-    #   ref: main
+    ## git:
+    ##   url: https://github.com/anusii/solid
+    ##   ref: main
 
   universal_io: ^2.2.2
   window_manager: ^0.3.7
