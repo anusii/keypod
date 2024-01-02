@@ -1,12 +1,11 @@
-/// DESCRIPTION
+/// Functions to auto generate mocks for unit tests using Mockito.
 ///
-// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+/// Copyright (C) 2024, Software Innovation Institute
 ///
-/// Copyright (C) 2024, Software Innovation Institute, ANU.
-///
-/// Licensed under the GNU General Public License, Version 3 (the "License").
-///
-/// License: https://www.gnu.org/licenses/gpl-3.0.en.html.
+/// License: GNU General Public License, Version 3 (the "License")
+/// https://www.gnu.org/licenses/gpl-3.0.en.html
+//
+// Time-stamp: <Sunday 2023-12-31 12:24:25 +1100 Graham Williams>
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -21,6 +20,14 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: AUTHORS
-
+/// Authors: Ninad Bhat
 library;
+
+import 'package:keypod/utils/is_desktop.dart';
+import 'package:mockito/annotations.dart';
+
+/// This file is used to generate mocks for unit tests.
+/// See https://docs.flutter.dev/cookbook/testing/unit/mocking
+/// for more information.
+@GenerateMocks([PlatformWrapper])
+void main() {}

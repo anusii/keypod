@@ -1,11 +1,12 @@
 /// Check if we are running a desktop (and not a browser).
 ///
-/// Copyright (C) 2024, Software Innovation Institute
+// Time-stamp: <Tuesday 2024-01-02 10:03:46 +1100 Graham Williams>
 ///
-/// License: GNU General Public License, Version 3 (the "License")
-/// https://www.gnu.org/licenses/gpl-3.0.en.html
-//
-// Time-stamp: <Wednesday 2023-12-27 16:56:13 +1100 Graham Williams>
+/// Copyright (C) 2024, Software Innovation Institute, ANU.
+///
+/// Licensed under the GNU General Public License, Version 3 (the "License").
+///
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -20,16 +21,34 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: Graham Williams
+/// Authors: Graham Williams, Ninad Bhat
+
+library;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-
 import 'package:universal_io/io.dart' show Platform;
 
-/// Test if we are running on a desktop platform but not in a browser.
+bool isDesktop(PlatformWrapper platformWrapper) {
+  /// platformWrapper: PlatformWrapper class is passed in to allow mocking for testing.
+  /// Returns true if running on Linux, macOS or Windows.
 
-bool get isDesktop {
-  if (kIsWeb) return false;
+  if (platformWrapper.isWeb) {
+    return false;
+  }
 
-  return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+  return platformWrapper.isLinux ||
+      platformWrapper.isMacOS ||
+      platformWrapper.isWindows;
 }
+
+// PlatformWrapper coverage is ignored as it is created to test isDesktop() and
+// Platform and kIsWeb are not mockable.
+// coverage:ignore-start
+class PlatformWrapper {
+  /// Wraps the Platform class to allow mocking for testing.
+  bool get isLinux => Platform.isLinux;
+  bool get isMacOS => Platform.isMacOS;
+  bool get isWeb => kIsWeb;
+  bool get isWindows => Platform.isWindows;
+}
+// coverage:ignore-end
