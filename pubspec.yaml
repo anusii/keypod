@@ -1,10 +1,10 @@
 name: keypod
 description: "Secure POD storage of key-value-note triplets."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.1
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: ">=3.2.3 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -20,13 +20,24 @@ dependencies:
 
   # During development of the solid package temporarily access the
   # solid package from a local solid folder (the solid repo).
-  
+
+  rdflib: ^0.2.8
+
   solid:
-    path: solid
     # git:
     #   url: https://github.com/anusii/solid
     #   ref: main
-  
+    path: solid
+
+  fast_rsa: ^3.6.1
+  flutter_form_builder: ^9.1.0
+  form_builder_validators: ^9.0.0
+  http: ^1.1.2
+  jwt_decoder: ^2.0.1
+  loading_indicator: ^3.1.1
+  markdown_editor_plus: ^0.2.13
+  openid_client: ^0.4.8
+  solid_auth: ^0.1.13
   universal_io: ^2.2.2
   window_manager: ^0.3.7
 
@@ -53,7 +64,6 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
