@@ -4,6 +4,7 @@
 *~
 solid
 backup
+generated*
 
 ########################################################################
 # This is the default github gitignore
