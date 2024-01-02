@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
   code-coverage:
@@ -21,6 +23,11 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+
+      - name: Modify pubspec.yaml
+        run: |
+          sed -i '/^    path: solid/d' pubspec.yaml
+          sed -i 's/^    ## /    /' pubspec.yaml
 
       - name: Install Dependencies
         run: flutter pub get
