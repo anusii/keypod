@@ -85,3 +85,14 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# ignore automatic changes in macos folder
+/macos/Flutter/*
+/macos/Podfile
+/macos/Podfile.lock
+/macos/Runner.xcodeproj/project.pbxproj
+/macos/Runner.xcworkspace/contents.xcworkspacedata
+
+# ignore automatic changes in ios folder
+/ios/Flutter/*
+/ios/Podfile
