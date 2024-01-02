@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
   code-coverage:
@@ -22,6 +24,11 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Modify pubspec.yaml
+        run: |
+          sed -i '/^    path: solid/d' pubspec.yaml
+          sed -i 's/^    ## /    /' pubspec.yaml
+
       - name: Install Dependencies
         run: flutter pub get
 
@@ -35,6 +42,6 @@ jobs:
         uses: zgosalvez/github-actions-report-lcov@v3
         with:
           coverage-files: coverage/lcov.info
-          minimum-coverage: 60
+          minimum-coverage: 90
           artifact-name: code-coverage-report
           github-token: ${{ secrets.GITHUB_TOKEN }}

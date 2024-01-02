@@ -1,8 +1,8 @@
 /// This is a basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Monday 2024-01-01 16:03:56 +1100 Graham Williams>
+// Time-stamp: <Tuesday 2024-01-02 10:02:56 +1100 Graham Williams>
 ///
-/// Copyright (C) 2024, Software Innovation Institute.
+/// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
 /// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
@@ -26,7 +26,6 @@
 library;
 
 import 'package:flutter/material.dart';
-
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -39,7 +38,8 @@ void main() async {
 
   // Suport window size and top placement for desktop apps.
 
-  if (isDesktop) {
+  // PlatformWrapper() is passed in isDesktop() to allow mocking for testing.
+  if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
 
     await windowManager.ensureInitialized();

@@ -1,8 +1,8 @@
 /// Check if we are running a desktop (and not a browser).
 ///
-// Time-stamp: <Sunday 2023-12-31 17:33:12 +1100 Graham Williams>
+// Time-stamp: <Tuesday 2024-01-02 10:03:46 +1100 Graham Williams>
 ///
-/// Copyright (C) 2024, Software Innovation Institute.
+/// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
 /// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
@@ -21,18 +21,34 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: Graham Williams
+/// Authors: Graham Williams, Ninad Bhat
 
 library;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-
 import 'package:universal_io/io.dart' show Platform;
 
-/// Test if we are running on a desktop platform but not in a browser.
+bool isDesktop(PlatformWrapper platformWrapper) {
+  /// platformWrapper: PlatformWrapper class is passed in to allow mocking for testing.
+  /// Returns true if running on Linux, macOS or Windows.
 
-bool get isDesktop {
-  if (kIsWeb) return false;
+  if (platformWrapper.isWeb) {
+    return false;
+  }
 
-  return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+  return platformWrapper.isLinux ||
+      platformWrapper.isMacOS ||
+      platformWrapper.isWindows;
 }
+
+// PlatformWrapper coverage is ignored as it is created to test isDesktop() and
+// Platform and kIsWeb are not mockable.
+// coverage:ignore-start
+class PlatformWrapper {
+  /// Wraps the Platform class to allow mocking for testing.
+  bool get isLinux => Platform.isLinux;
+  bool get isMacOS => Platform.isMacOS;
+  bool get isWeb => kIsWeb;
+  bool get isWindows => Platform.isWindows;
+}
+// coverage:ignore-end
