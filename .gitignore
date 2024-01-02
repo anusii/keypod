@@ -85,8 +85,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# To handle with mklink in mac
-solid
-
-.vscode
