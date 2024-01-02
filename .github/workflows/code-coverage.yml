@@ -26,8 +26,8 @@ jobs:
 
       - name: Modify pubspec.yaml
         run: |
-          sed -i '' '/^    path: solid/d' pubspec.yaml
-          sed -i '' 's/^    ## /    /' pubspec.yaml
+          sed -i '/^    path: solid/d' pubspec.yaml
+          sed -i 's/^    ## /    /' pubspec.yaml
 
       - name: Install Dependencies
         run: flutter pub get
