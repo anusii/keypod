@@ -1,9 +1,13 @@
 ########################################################################
-# Additional ignores
+# Additional ignores for anusii
 
 *~
 solid
 backup
+generated*
+Generated*
+.vscode
+support/git.mk
 
 ########################################################################
 # This is the default github gitignore
