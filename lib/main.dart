@@ -1,6 +1,6 @@
-/// This is a basic template app to begin a Solid POD project.
+/// A basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Tuesday 2024-01-02 10:02:56 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2024-01-03 19:24:44 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -26,19 +26,25 @@
 library;
 
 import 'package:flutter/material.dart';
+
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
-  // Remove [debugPrint] messages from production code.
+  // Remove [debugPrint] messages from production code. Comment this out to have
+  // [debugPrint] messages displayed to the console.
 
   debugPrint = (message, {wrapWidth}) {};
 
-  // Suport window size and top placement for desktop apps.
+  // For desktop versions of the app we may want to change the default window
+  // size and whether the app starts on top of other windows on the desktop
+  // rather than burried as seems the default.
+  //
+  // We use PlatformWrapper(), passed into isDesktop(), to allow mocking for
+  // testing.
 
-  // PlatformWrapper() is passed in isDesktop() to allow mocking for testing.
   if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -63,7 +69,7 @@ void main() async {
     });
   }
 
-  // Ready to now run the app.
+  // Ready to run the app.
 
   runApp(const KeyPod());
 }
@@ -71,30 +77,28 @@ void main() async {
 class KeyPod extends StatelessWidget {
   const KeyPod({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of our application.
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Key POD',
       theme: ThemeData(
-        // This is the theme of your application.
+        // This is the theme of our application.
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
 
-      // Build the actual home widget. Because our app requires access to the
-      // data stored within the user's POD for any of its functionality, we wrap
-      // the app's main page within the [SolidLogin] widget to initiate the
-      // user's authentication with the Solid server. The SolidLogin widget can
-      // be tued to suit the look and feel of the app with appropraite login
-      // images and logo.
+      // Build the app's home widget.
+      //
+      // Because our app requires access to the data stored within the user's
+      // POD for any of its functionality, we wrap the app's home within the
+      // [SolidLogin] widget to initiate the user's authentication with the
+      // Solid server. The SolidLogin widget can be tuned to suit the look and
+      // feel of the app with appropraite login images and logo.
 
       home: const SolidLogin(
-        // Images generated using Bing Image Creator from Designer, powered by
-        // DALL-E3.
-
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
         title: 'MANAGE YOUR SOLID KEY POD',
