@@ -1,6 +1,6 @@
 /// Check if we are running a desktop (and not a browser).
 ///
-// Time-stamp: <Tuesday 2024-01-02 10:03:46 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2024-01-03 16:13:27 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
