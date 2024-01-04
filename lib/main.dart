@@ -1,6 +1,6 @@
-/// Get the app version variable from pubspec.yaml file.
+/// A basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Tuesday 2024-01-02 10:02:56 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2024-01-03 19:24:44 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -32,7 +32,8 @@ import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
-  // Remove [debugPrint] messages from production code.
+  // Remove [debugPrint] messages from production code. Comment this out to have
+  // [debugPrint] messages displayed to the console.
 
   debugPrint = (message, {wrapWidth}) {};
 
@@ -48,7 +49,6 @@ void main() async {
 
   // Suport window size and top placement for desktop apps.
 
-  // PlatformWrapper() is passed in isDesktop() to allow mocking for testing.
   if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -73,7 +73,7 @@ void main() async {
     });
   }
 
-  // Ready to now run the app.
+  // Ready to run the app.
 
   runApp(KeyPod(appVersion: appVersion));
 }
@@ -83,25 +83,26 @@ class KeyPod extends StatelessWidget {
   const KeyPod({required this.appVersion, super.key});
   final String appVersion;
 
-  // This widget is the root of your application.
+  // This widget is the root of our application.
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Key POD',
       theme: ThemeData(
-        // This is the theme of your application.
+        // This is the theme of our application.
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
 
-      // Build the actual home widget. Because our app requires access to the
-      // data stored within the user's POD for any of its functionality, we wrap
-      // the app's main page within the [SolidLogin] widget to initiate the
-      // user's authentication with the Solid server. The SolidLogin widget can
-      // be tued to suit the look and feel of the app with appropraite login
-      // images and logo.
+      // Build the app's home widget.
+      //
+      // Because our app requires access to the data stored within the user's
+      // POD for any of its functionality, we wrap the app's home within the
+      // [SolidLogin] widget to initiate the user's authentication with the
+      // Solid server. The SolidLogin widget can be tuned to suit the look and
+      // feel of the app with appropraite login images and logo.
 
       home: SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by

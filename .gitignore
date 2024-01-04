@@ -5,6 +5,7 @@
 solid
 backup
 generated*
+Generated*
 .vscode
 support/git.mk
 
