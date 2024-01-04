@@ -1,4 +1,4 @@
-/// This is a basic template app to begin a Solid POD project.
+/// Get the app version variable from pubspec.yaml file.
 ///
 // Time-stamp: <Tuesday 2024-01-02 10:02:56 +1100 Graham Williams>
 ///
@@ -26,15 +26,25 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:keypod/utils/is_desktop.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
   // Remove [debugPrint] messages from production code.
 
   debugPrint = (message, {wrapWidth}) {};
+
+  // Get app version from pubspec.yaml.
+
+  // Be sure to add this line if `PackageInfo.fromPlatform()` is called before runApp().
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  String appVersion = packageInfo.version;
 
   // Suport window size and top placement for desktop apps.
 
@@ -65,11 +75,13 @@ void main() async {
 
   // Ready to now run the app.
 
-  runApp(const KeyPod());
+  runApp(KeyPod(appVersion: appVersion));
 }
 
 class KeyPod extends StatelessWidget {
-  const KeyPod({super.key});
+
+  const KeyPod({required this.appVersion, super.key});
+  final String appVersion;
 
   // This widget is the root of your application.
 
@@ -91,15 +103,16 @@ class KeyPod extends StatelessWidget {
       // be tued to suit the look and feel of the app with appropraite login
       // images and logo.
 
-      home: const SolidLogin(
+      home: SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
         // DALL-E3.
 
-        image: AssetImage('assets/images/keypod_image.jpg'),
-        logo: AssetImage('assets/images/keypod_logo.png'),
+        image: const AssetImage('assets/images/keypod_image.jpg'),
+        logo: const AssetImage('assets/images/keypod_logo.png'),
         title: 'MANAGE YOUR SOLID KEY POD',
         link: 'https://github.com/anusii/keypod',
-        child: Scaffold(body: Text('Key Pod Placeholder')),
+        version: appVersion,
+        child: const Scaffold(body: Text('Key Pod Placeholder')),
       ),
     );
   }

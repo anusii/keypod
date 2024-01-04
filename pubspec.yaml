@@ -18,6 +18,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  package_info_plus: ^5.0.1
+
   # During development of the solid package temporarily access the
   # solid package from a local solid folder (the solid repo).
 
@@ -54,7 +56,6 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
