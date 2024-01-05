@@ -26,11 +26,9 @@
 library;
 
 import 'package:flutter/material.dart';
-
+import 'package:keypod/utils/is_desktop.dart';
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
   // Remove [debugPrint] messages from production code. Comment this out to have
@@ -38,12 +36,7 @@ void main() async {
 
   debugPrint = (message, {wrapWidth}) {};
 
-  // For desktop versions of the app we may want to change the default window
-  // size and whether the app starts on top of other windows on the desktop
-  // rather than burried as seems the default.
-  //
-  // We use PlatformWrapper(), passed into isDesktop(), to allow mocking for
-  // testing.
+  // Suport window size and top placement for desktop apps.
 
   if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
@@ -113,6 +106,9 @@ class KeyPod extends StatelessWidget {
       // feel of the app with appropraite login images and logo.
 
       home: const SolidLogin(
+        // Images generated using Bing Image Creator from Designer, powered by
+        // DALL-E3.
+
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
         title: 'MANAGE YOUR SOLID KEY POD',
