@@ -27,7 +27,6 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:keypod/utils/is_desktop.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -36,16 +35,6 @@ void main() async {
   // [debugPrint] messages displayed to the console.
 
   debugPrint = (message, {wrapWidth}) {};
-
-  // Get app version from pubspec.yaml.
-
-  // Be sure to add this line if `PackageInfo.fromPlatform()` is called before runApp().
-
-  WidgetsFlutterBinding.ensureInitialized();
-
-  PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-  String appVersion = packageInfo.version;
 
   // Suport window size and top placement for desktop apps.
 
@@ -75,13 +64,11 @@ void main() async {
 
   // Ready to run the app.
 
-  runApp(KeyPod(appVersion: appVersion));
+  runApp(const KeyPod());
 }
 
 class KeyPod extends StatelessWidget {
-
-  const KeyPod({required this.appVersion, super.key});
-  final String appVersion;
+  const KeyPod({super.key});
 
   // This widget is the root of our application.
 
@@ -104,16 +91,15 @@ class KeyPod extends StatelessWidget {
       // Solid server. The SolidLogin widget can be tuned to suit the look and
       // feel of the app with appropraite login images and logo.
 
-      home: SolidLogin(
+      home: const SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
         // DALL-E3.
 
-        image: const AssetImage('assets/images/keypod_image.jpg'),
-        logo: const AssetImage('assets/images/keypod_logo.png'),
+        image: AssetImage('assets/images/keypod_image.jpg'),
+        logo: AssetImage('assets/images/keypod_logo.png'),
         title: 'MANAGE YOUR SOLID KEY POD',
         link: 'https://github.com/anusii/keypod',
-        version: appVersion,
-        child: const Scaffold(body: Text('Key Pod Placeholder')),
+        child: Scaffold(body: Text('Key Pod Placeholder')),
       ),
     );
   }
