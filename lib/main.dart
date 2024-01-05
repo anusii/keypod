@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Friday 2024-01-05 13:21:26 +1100 Graham Williams>
+// Time-stamp: <Friday 2024-01-05 16:20:03 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -86,18 +86,19 @@ class KeyPod extends StatelessWidget {
       theme: ThemeData(
         // Change the theme for the app here.
 
+        cardTheme: CardTheme(
+          color: Color(0XFFECEBD9),
+        ),
+
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: TextButton.styleFrom(
             padding: const EdgeInsets.all(20),
-            backgroundColor: Colors.lightGreen,
+            backgroundColor: Color(0XFFCDB392),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
             textStyle: const TextStyle(
               color: Colors.white, // TODO 20240105 gjw NOT WORKING.
-              fontSize: 15.0,
-              letterSpacing: 2.0,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ),
