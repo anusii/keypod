@@ -17,16 +17,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-
-  # During development of the solid package temporarily access the
-  # solid package from a local solid folder (the solid repo).
-
   solid:
-    path: solid
+    path: solid # Use a local path whilst solid is under development.
     ## git:
     ##   url: https://github.com/anusii/solid
     ##   ref: main
-
   universal_io: ^2.2.2
   window_manager: ^0.3.7
 
@@ -36,15 +31,14 @@ dev_dependencies:
     git:
       url: https://github.com/anusii/dart-code-metrics.git
       ref: main
-  flutter_lints: ^3.0.1
-  flutter_test:
-    sdk: flutter
   # The 'flutter_lints' package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-
+  flutter_lints: ^3.0.1
+  flutter_test:
+    sdk: flutter
   mockito: ^5.4.4
   ubuntu_lints: ^0.3.0
 
@@ -57,10 +51,9 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-
   uses-material-design: true
 
-  # Adding assets to the app.
+  # Add assets to the app.
 
   assets:
     - assets/images/keypod_image.jpg
