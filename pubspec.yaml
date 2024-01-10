@@ -58,6 +58,8 @@ flutter:
   assets:
     - assets/images/keypod_image.jpg
     - assets/images/keypod_logo.png
+    - assets/types/
+
 
   # An image asset can refer to one or more resolution-specific 'variants', see
   # https://flutter.dev/assets-and-images/#resolution-aware
