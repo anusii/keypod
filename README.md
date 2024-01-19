@@ -5,10 +5,10 @@ A template flutter app using Solid pods.
 ## Getting Started
 
 This project is a starting point for a Flutter application utilising
-Solid PODs.
+Solid Pods.
 
 A few resources to get you started if this is your first Flutter
-project using Solid PODs:
+project using Solid Pods:
 
 - [Lab: Write your first Flutter
   app](https://docs.flutter.dev/get-started/codelab)
