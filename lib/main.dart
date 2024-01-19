@@ -1,6 +1,6 @@
-/// A basic template app to begin a Solid POD project.
+/// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Friday 2024-01-05 16:20:03 +1100 Graham Williams>
+// Time-stamp: <Friday 2024-01-19 11:51:56 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -52,7 +52,7 @@ void main() async {
 
       // The [title] is used for the window manager's window title.
 
-      title: 'KeyPod - A private POD for storing Key Value pairs',
+      title: 'KeyPod - A private Pod for storing Key Value pairs',
     );
 
     await windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -75,7 +75,7 @@ class KeyPod extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Key POD',
+      title: 'Key Pod',
       theme: ThemeData(
         // Change the theme for the app here.
 
@@ -100,7 +100,7 @@ class KeyPod extends StatelessWidget {
       // Build the app's home widget.
       //
       // Because our app requires access to the data stored within the user's
-      // POD for any of its functionality, we wrap the app's home within the
+      // Pod for any of its functionality, we wrap the app's home within the
       // [SolidLogin] widget to initiate the user's authentication with the
       // Solid server. The SolidLogin widget can be tuned to suit the look and
       // feel of the app with appropraite login images and logo.
