@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Friday 2024-01-05 16:20:03 +1100 Graham Williams>
+// Time-stamp: <Tuesday 2024-01-23 12:42:58 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -26,9 +26,11 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:keypod/utils/is_desktop.dart';
+
 import 'package:solid/solid.dart';
 import 'package:window_manager/window_manager.dart';
+
+import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
   // Remove [debugPrint] messages from production code. Comment this out to have
