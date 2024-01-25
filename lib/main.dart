@@ -100,6 +100,7 @@ class KeyPod extends StatelessWidget {
         logo: AssetImage('assets/images/keypod_logo.png'),
         title: 'MANAGE YOUR SOLID KEY POD',
         link: 'https://github.com/anusii/keypod',
+        requireLogin: false,
         child: Scaffold(body: Text('Key Pod Placeholder')),
       ),
     );
