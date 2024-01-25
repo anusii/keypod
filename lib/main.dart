@@ -81,14 +81,14 @@ class KeyPod extends StatelessWidget {
       theme: ThemeData(
         // Change the theme for the app here.
 
-        cardTheme: CardTheme(
+        cardTheme: const CardTheme(
           color: Color(0XFFECEBD9),
         ),
 
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: TextButton.styleFrom(
             padding: const EdgeInsets.all(20),
-            backgroundColor: Color(0XFFCDB392),
+            backgroundColor: const Color(0XFFCDB392),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
