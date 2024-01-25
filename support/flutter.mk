@@ -133,7 +133,7 @@ SEPARATOR="\n-------------------------------------------------------------------
 .PHONY: fix
 fix:
 	@echo "Dart: FIX"
-	dart fix --apply
+	dart fix --apply lib
 	@echo $(SEPARATOR)
 
 .PHONY: format
@@ -175,7 +175,7 @@ metrics:
 .PHONY: analyze 
 analyze:
 	@echo "Futter ANALYZE"
-	-flutter analyze
+	-flutter analyze lib
 #	dart run custom_lint
 	@echo $(SEPARATOR)
 

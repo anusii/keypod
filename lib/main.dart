@@ -1,6 +1,6 @@
-/// This is a basic template app to begin a Solid POD project.
+/// A basic template app to begin a Solid POD project.
 ///
-// Time-stamp: <Monday 2024-01-22 16:03:41 +1100 Graham Williams>
+// Time-stamp: <Tuesday 2024-01-23 12:42:58 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -33,13 +33,13 @@ import 'package:window_manager/window_manager.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
-  // Remove [debugPrint] messages from production code.
+  // Remove [debugPrint] messages from production code. Comment this out to have
+  // [debugPrint] messages displayed to the console.
 
   debugPrint = (message, {wrapWidth}) {};
 
   // Suport window size and top placement for desktop apps.
 
-  // PlatformWrapper() is passed in isDesktop() to allow mocking for testing.
   if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -64,7 +64,7 @@ void main() async {
     });
   }
 
-  // Ready to now run the app.
+  // Ready to run the app.
 
   runApp(const KeyPod());
 }
@@ -72,25 +72,40 @@ void main() async {
 class KeyPod extends StatelessWidget {
   const KeyPod({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of our application.
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Key POD',
       theme: ThemeData(
-        // This is the theme of your application.
+        // Change the theme for the app here.
 
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        cardTheme: const CardTheme(
+          color: Color(0XFFECEBD9),
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.all(20),
+            backgroundColor: const Color(0XFFCDB392),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            textStyle: const TextStyle(
+              color: Colors.white, // TODO 20240105 gjw NOT WORKING.
+            ),
+          ),
+        ),
       ),
 
-      // Build the actual home widget. Because our app requires access to the
-      // data stored within the user's POD for any of its functionality, we wrap
-      // the app's main page within the [SolidLogin] widget to initiate the
-      // user's authentication with the Solid server. The SolidLogin widget can
-      // be tued to suit the look and feel of the app with appropraite login
-      // images and logo.
+      // Build the app's home widget.
+      //
+      // Because our app requires access to the data stored within the user's
+      // POD for any of its functionality, we wrap the app's home within the
+      // [SolidLogin] widget to initiate the user's authentication with the
+      // Solid server. The SolidLogin widget can be tuned to suit the look and
+      // feel of the app with appropraite login images and logo.
 
       home: const SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by

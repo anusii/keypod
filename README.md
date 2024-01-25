@@ -19,3 +19,8 @@ project using Solid Pods:
 For help getting started with Flutter development, view the [online
 documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Images
+
+Images were generated using Bing Image Creator from Designer, powered
+by DALL-E3.

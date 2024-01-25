@@ -1,5 +1,5 @@
 name: keypod
-description: "Secure POD storage of key-value-note triplets."
+description: 'Secure POD storage of key-value-note triplets.'
 publish_to: 'none'
 version: 0.1.1
 
@@ -17,16 +17,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-
-  # During development of the solid package temporarily access the
-  # solid package from a local solid folder (the solid repo).
-
   solid:
-    path: solid
+    path: solid # Use a local path whilst solid is under development.
     ## git:
     ##   url: https://github.com/anusii/solid
     ##   ref: main
-
   universal_io: ^2.2.2
   window_manager: ^0.3.7
 
@@ -48,28 +43,26 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-
   uses-material-design: true
 
-  # Adding assets to the app.
+  # Add assets to the app.
 
   assets:
     - assets/images/keypod_image.jpg
     - assets/images/keypod_logo.png
 
-  # An image asset can refer to one or more resolution-specific "variants", see
+  # An image asset can refer to one or more resolution-specific 'variants', see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
   # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
+  # in this 'flutter' section. Each entry in this list should have a
+  # 'family' key with the font family name, and a 'fonts' key with a
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
