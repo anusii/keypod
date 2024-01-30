@@ -78,6 +78,7 @@ class KeyPod extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Solid Key Pod',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Change the theme for the app here.
 
