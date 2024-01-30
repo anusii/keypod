@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Thursday 2024-01-25 19:49:47 +1100 Graham Williams>
+// Time-stamp: <Tuesday 2024-01-30 09:06:02 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -87,7 +87,7 @@ class KeyPod extends StatelessWidget {
 
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: TextButton.styleFrom(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
             backgroundColor: const Color(0XFFCDB392),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -111,11 +111,13 @@ class KeyPod extends StatelessWidget {
       home: const SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
         // DALL-E3.
-
+        
         title: 'MANAGE YOUR SOLID KEY POD',
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
+        requireLogin: false,
         link: 'https://github.com/anusii/keypod',
+
         child: Scaffold(body: Text('Key Pod Placeholder')),
       ),
     );
