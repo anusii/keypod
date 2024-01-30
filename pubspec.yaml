@@ -27,7 +27,8 @@ dependencies:
   window_manager: ^0.3.7
   
 
-# Define laucher icons for all platforms
+# Define launcher icons for all platforms
+
 flutter_launcher_icons:
   image_path: "assets/images/keypod_logo.png"
   android: true # can specify file name here e.g. "ic_launcher"
