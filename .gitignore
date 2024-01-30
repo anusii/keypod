@@ -7,7 +7,6 @@ backup
 generated*
 Generated*
 .vscode
-support/git.mk
 
 ########################################################################
 # This is the default github gitignore
