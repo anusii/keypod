@@ -1,7 +1,7 @@
 name: keypod
 description: 'Secure POD storage of key-value-note triplets.'
 publish_to: 'none'
-version: 0.3.2+2
+version: 0.3.3+2
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -18,10 +18,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
-  solid:
-    path: solid # Use a local path whilst solid is under development.
+  solidpod:
+    path: solidpod # Use a local path whilst solidpod is under development.
     ## git:
-    ##   url: https://github.com/anusii/solid
+    ##   url: https://github.com/anusii/solidpod
     ##   ref: main
   universal_io: ^2.2.2
   window_manager: ^0.3.7
