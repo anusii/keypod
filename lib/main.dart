@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Tuesday 2024-01-30 14:08:36 +1100 Graham Williams>
+// Time-stamp: <Saturday 2024-02-03 19:28:24 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -78,6 +78,7 @@ class KeyPod extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Solid Key Pod',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Change the theme for the app here.
 
