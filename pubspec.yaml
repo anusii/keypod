@@ -17,8 +17,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  solid:
-    path: solid # Use a local path whilst solid is under development.
+  solidpod:
+    path: solidpod # Use a local path whilst solid is under development.
     ## git:
     ##   url: https://github.com/anusii/solid
     ##   ref: main
