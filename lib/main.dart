@@ -29,6 +29,7 @@ import 'package:flutter/material.dart';
 
 import 'package:solidpod/solid.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:solidpod/src/widgets/popup_login.dart';
 
 import 'package:keypod/utils/is_desktop.dart';
 
@@ -117,7 +118,19 @@ class KeyPod extends StatelessWidget {
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
-        child: Scaffold(body: Text('Key Pod Placeholder')),
+        child: Scaffold(
+            body: Column(
+          children: [
+            Text('Key Pod Placeholder'),
+            PopupLoginButton(
+              buttonTextStyle: TextStyle(
+                fontSize: 12.0,
+                letterSpacing: 2.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }
