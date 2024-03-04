@@ -118,6 +118,7 @@ class KeyPod extends StatelessWidget {
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
+        requireLogin: false,
         child: Scaffold(
             body: Column(
           children: [
