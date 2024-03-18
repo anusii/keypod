@@ -26,6 +26,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:keypod/screens/home.dart';
 
 import 'package:solidpod/solid.dart';
 import 'package:window_manager/window_manager.dart';
@@ -118,7 +119,11 @@ class KeyPod extends StatelessWidget {
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
         required: false,
-        child: Scaffold(body: Text('Key Pod Placeholder')),
+        child: Home(
+          // webId: '',
+          // authData: {},
+          appName: 'KeyPod',
+        ),
       ),
     );
   }
