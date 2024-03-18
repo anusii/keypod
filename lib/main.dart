@@ -29,7 +29,7 @@ import 'package:flutter/material.dart';
 
 import 'package:solidpod/solid.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:solidpod/src/widgets/popup_login.dart';
+import 'package:solidpod/src/solid/popup_login.dart';
 
 import 'package:keypod/utils/is_desktop.dart';
 
