@@ -38,21 +38,14 @@ import 'package:solidpod/solid.dart';
 
 /// Widget represents the home screen of the application.
 ///
-/// It requires [webId] and [authData] to be passed to it during initialization.
-/// These parameters are used for authentication and data retrieval.
+/// It only requires [appName] to be passed to it during initialization.
+/// This is because this page is designed to be work in offline as well.
 
 class Home extends StatefulWidget {
   /// Initialise widget variables
 
-  const Home(
-      {
-      //required this.webId,
-      //required this.authData,
-      required this.appName,
-      super.key});
-  //final String webId;
+  const Home({required this.appName, super.key});
   final String appName;
-  //final Map<dynamic, dynamic> authData;
 
   @override
   HomeState createState() => HomeState();
@@ -120,12 +113,30 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     ElevatedButton(
                       child: const Text('Show private data'),
                       onPressed: () async {
-                        await Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ShowKeys()),
-                        );
+                        final loggedIn = await checkLoggedIn();
+
+                        if (loggedIn) {
+                          await Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShowKeys(
+                                      appName: widget.appName,
+                                      child: Home(appName: widget.appName),
+                                    )),
+                          );
+                        } else {
+                          await Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PopupLogin(
+                                    appName: widget.appName,
+                                    child: Home(appName: widget.appName))),
+                          );
+                        }
                       },
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),

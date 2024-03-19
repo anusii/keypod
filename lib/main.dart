@@ -120,8 +120,6 @@ class KeyPod extends StatelessWidget {
         link: 'https://github.com/anusii/keypod',
         required: false,
         child: Home(
-          // webId: '',
-          // authData: {},
           appName: 'KeyPod',
         ),
       ),
