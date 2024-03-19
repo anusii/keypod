@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Monday 2024-03-04 15:47:17 +1100 Graham Williams>
+// Time-stamp: <Monday 2024-03-04 15:54:35 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -118,7 +118,19 @@ class KeyPod extends StatelessWidget {
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
         required: false,
-        child: Scaffold(body: Text('Key Pod Placeholder')),
+        child: Scaffold(
+            body: Column(
+          children: [
+            Text('Key Pod Placeholder'),
+            PopupLoginButton(
+              buttonTextStyle: TextStyle(
+                fontSize: 12.0,
+                letterSpacing: 2.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }

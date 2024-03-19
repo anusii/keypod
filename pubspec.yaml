@@ -1,10 +1,10 @@
 name: keypod
-description: 'Secure POD storage of key-value-note triplets.'
-publish_to: 'none'
+description: "Secure POD storage of key-value-note triplets."
+publish_to: "none"
 version: 0.3.3+4
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: ">=3.2.3 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -22,10 +22,10 @@ dependencies:
     path: solidpod # Use a local path whilst solidpod is under development.
     ## git:
     ##   url: https://github.com/anusii/solidpod
-    ##   ref: main
+    ##   ref: dev
   universal_io: ^2.2.2
   window_manager: ^0.3.7
-  
+  # dart_code_metrics: ^4.0.0
 
 # Define launcher icons for all platforms
 
@@ -60,6 +60,9 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.4.4
   ubuntu_lints: ^0.3.0
+
+dependency_overrides:
+  file: ^7.0.0 # Only if necessary
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
