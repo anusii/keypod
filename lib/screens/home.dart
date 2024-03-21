@@ -33,7 +33,7 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:solidpod/solid.dart';
+import 'package:solidpod/solidpod.dart';
 
 import 'package:keypod/screens/view_keys.dart';
 

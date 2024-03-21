@@ -28,7 +28,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:keypod/screens/home.dart';
 
-import 'package:solidpod/solid.dart';
+import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:keypod/utils/is_desktop.dart';

@@ -31,7 +31,7 @@
 import 'package:flutter/material.dart';
 import 'package:keypod/screens/home.dart';
 
-import 'package:solidpod/solid.dart';
+import 'package:solidpod/solidpod.dart';
 
 /// A widget to show the user all the encryption keys stored in their POD.
 
