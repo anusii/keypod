@@ -18,14 +18,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  intl: ^0.18.0
   solidpod:
-    path: solidpod # Use a local path whilst solidpod is under development.
+    path: .solidpod # Use a local path whilst solidpod is under development.
     ## git:
     ##   url: https://github.com/anusii/solidpod
     ##   ref: dev
   universal_io: ^2.2.2
   window_manager: ^0.3.7
-  intl: ^0.18.0
   # dart_code_metrics: ^4.0.0
 
 # Define launcher icons for all platforms

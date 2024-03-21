@@ -33,8 +33,9 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-
 import 'package:solidpod/solid.dart';
+
+import 'package:keypod/screens/view_keys.dart';
 
 /// Widget represents the home screen of the application.
 ///
@@ -113,26 +114,55 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     ElevatedButton(
                       child: const Text('Show private data'),
                       onPressed: () async {
-                        final loggedIn = await checkLoggedIn();
+                        const filePath = 'encryption/enc-keys.ttl';
+                        final fileContent = await readPod(
+                            filePath,
+                            context,
+                            const Home(
+                              appName: 'KeyPod',
+                            ));
 
-                        if (loggedIn) {
-                          await Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShowKeys(
-                                      appName: widget.appName,
-                                      child: Home(appName: widget.appName),
-                                    )),
-                          );
-                        } else {
-                          await Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PopupLogin(
+                        await Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewKeys(
                                     appName: widget.appName,
-                                    child: Home(appName: widget.appName))),
-                          );
+                                    keyInfo: fileContent,
+                                  )),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      child: const Text('delete login data'),
+                      onPressed: () async {
+                        final deleteRes = await deleteLogIn();
+
+                        var deleteMsg = '';
+
+                        if (deleteRes) {
+                          deleteMsg = 'Successfully deleted login info';
+                        } else {
+                          deleteMsg =
+                              'Failed to delete login info. Try again in a while';
                         }
+
+                        await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Notice'),
+                            content: Text(deleteMsg),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('OK'))
+                            ],
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(
