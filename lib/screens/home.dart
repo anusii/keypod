@@ -136,7 +136,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       height: 10,
                     ),
                     ElevatedButton(
-                      child: const Text('delete login data'),
+                      child: const Text('Delete login data'),
                       onPressed: () async {
                         final deleteRes = await deleteLogIn();
 

@@ -20,7 +20,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   intl: ^0.18.0
   solidpod:
-    path: solidpod # Use a local path whilst solidpod is under development.
+    path: ../solidpod # Use a local path whilst solidpod is under development.
     ## git:
     ##   url: https://github.com/anusii/solidpod
     ##   ref: dev
@@ -61,9 +61,6 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.4.4
   ubuntu_lints: ^0.3.0
-
-dependency_overrides:
-  file: ^7.0.0 # Only if necessary
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
