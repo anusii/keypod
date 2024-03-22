@@ -18,6 +18,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  intl: ^0.18.0
   solidpod:
     path: solidpod # Use a local path whilst solidpod is under development.
     ## git:
@@ -62,7 +63,7 @@ dev_dependencies:
   ubuntu_lints: ^0.3.0
 
 dependency_overrides:
-  file: ^7.0.0 # Only if necessary
+  file: ^7.0.0 # Use only if necessary
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
