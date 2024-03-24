@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Friday 2024-02-23 08:23:59 +1100 Graham Williams>
+// Time-stamp: <Sunday 2024-03-24 20:59:21 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -65,114 +65,117 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     final dateStr = DateFormat('dd MMMM yyyy').format(DateTime.now());
 
     return Scaffold(
-        appBar: AppBar(
-          // backgroundColor: lightGreen,
-          centerTitle: true,
-          title: Text(widget.appName),
+      appBar: AppBar(
+        // backgroundColor: lightGreen,
+        centerTitle: true,
+        title: Text(widget.appName),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            //const ShowKeys(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Date: $dateStr',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome to your new app!',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    child: const Text('Show private data'),
+                    onPressed: () async {
+                      const filePath = 'encryption/enc-keys.ttl';
+                      final fileContent = await readPod(
+                        filePath,
+                        context,
+                        const Home(
+                          appName: 'KeyPod',
+                        ),
+                      );
+
+                      await Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewKeys(
+                            appName: widget.appName,
+                            keyInfo: fileContent,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    child: const Text('Delete login data'),
+                    onPressed: () async {
+                      final deleteRes = await deleteLogIn();
+
+                      var deleteMsg = '';
+
+                      if (deleteRes) {
+                        deleteMsg = 'Successfully deleted login info';
+                      } else {
+                        deleteMsg =
+                            'Failed to delete login info. Try again in a while';
+                      }
+
+                      await showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Notice'),
+                          content: Text(deleteMsg),
+                          actions: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'))
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              //const ShowKeys(),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Date: $dateStr',
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome to your new app!',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                      child: const Text('Show private data'),
-                      onPressed: () async {
-                        const filePath = 'encryption/enc-keys.ttl';
-                        final fileContent = await readPod(
-                            filePath,
-                            context,
-                            const Home(
-                              appName: 'KeyPod',
-                            ));
-
-                        await Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewKeys(
-                                    appName: widget.appName,
-                                    keyInfo: fileContent,
-                                  )),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                      child: const Text('Delete login data'),
-                      onPressed: () async {
-                        final deleteRes = await deleteLogIn();
-
-                        var deleteMsg = '';
-
-                        if (deleteRes) {
-                          deleteMsg = 'Successfully deleted login info';
-                        } else {
-                          deleteMsg =
-                              'Failed to delete login info. Try again in a while';
-                        }
-
-                        await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Notice'),
-                            content: Text(deleteMsg),
-                            actions: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('OK'))
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
