@@ -33,10 +33,10 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:keypod/main.dart';
 import 'package:solidpod/solidpod.dart';
 
 import 'package:keypod/screens/view_keys.dart';
+import 'package:keypod/main.dart';
 
 /// Widget represents the home screen of the application.
 ///
