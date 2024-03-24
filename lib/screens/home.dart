@@ -33,6 +33,7 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
+import 'package:keypod/main.dart';
 import 'package:solidpod/solidpod.dart';
 
 import 'package:keypod/screens/view_keys.dart';
@@ -69,6 +70,15 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         // backgroundColor: lightGreen,
         centerTitle: true,
         title: Text(widget.appName),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const KeyPod()),
+            );
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
