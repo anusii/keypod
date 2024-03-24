@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Sunday 2024-03-24 20:35:02 +1100 Graham Williams>
+// Time-stamp: <Sunday 2024-03-24 20:53:17 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -118,6 +118,11 @@ class KeyPod extends StatelessWidget {
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
+        // TODO 20240324 gjw I did not really want to do the following for each
+        // button when I change the theme as above. How to fix solidpod to
+        // support this properly.
+        //
+        // continueBG: Color(0XFFCDB392),
         required: false,
         child: Home(
           appName: 'KeyPod',
