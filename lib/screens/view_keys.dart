@@ -27,6 +27,7 @@
 // SOFTWARE.
 ///
 /// Authors: Anushka Vidanage
+library;
 
 import 'package:flutter/material.dart';
 import 'package:keypod/screens/home.dart';
