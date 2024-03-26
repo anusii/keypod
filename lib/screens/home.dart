@@ -72,11 +72,12 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         actions: [
           IconButton(
             icon: const Icon(Icons.info),
-            onPressed: () {
+            onPressed: () async {
+              final appNameVersion = await getAppNameVersion();
               showAboutDialog(
                 context: context,
-                applicationName: 'Key Pod',
-                applicationVersion: '1.2.3',
+                applicationName: appNameVersion[0],
+                applicationVersion: appNameVersion[1],
                 applicationIcon: const ImageIcon(
                     AssetImage('assets/images/keypod_logo.png')),
                 children: [
