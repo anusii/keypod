@@ -28,6 +28,8 @@
 ///
 /// Authors: Zheyuan Xu, Anushka Vidanage
 
+// ignore_for_file: use_build_context_synchronously
+
 library;
 
 import 'package:flutter/material.dart';
@@ -36,6 +38,7 @@ import 'package:intl/intl.dart';
 import 'package:solidpod/solidpod.dart';
 
 import 'package:keypod/screens/view_keys.dart';
+import 'package:keypod/main.dart';
 
 /// Widget represents the home screen of the application.
 ///
@@ -76,8 +79,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               final appNameVersion = await getAppNameVersion();
               showAboutDialog(
                 context: context,
-                applicationName: appNameVersion[0],
-                applicationVersion: appNameVersion[1],
+                // applicationName: appNameVersion[0],
+                // applicationVersion: appNameVersion[1],
                 applicationIcon: const ImageIcon(
                     AssetImage('assets/images/keypod_logo.png')),
                 children: [
@@ -100,6 +103,15 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             tooltip: 'Popup a window about the app.',
           ),
         ],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const KeyPod()),
+            );
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
