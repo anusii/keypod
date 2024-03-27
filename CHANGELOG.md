@@ -1,13 +1,15 @@
-# 0.3.4 2024-03-20 10:00
+# Changelog
 
+Here we note high level changes for the Key Pod app.
+
+Please add the updates beyond 0.3.0 under the 0.4 heading, adding to
+the top rather than the bottom.
+
+# 0.4
+
++ Add an About dialog [0.3.4]
 + Added popupLogin into the continue placeholder page. 
-
-# 0.3.3 2024-02-03 19:30
-
 + Package solid renamed to solidpod.
-
-# 0.3.2 2024-01-30 14:02
-
 + Begin managing versions and releases.
 + Basic functionality of solid login.
 + Fine tuning of GUI.
