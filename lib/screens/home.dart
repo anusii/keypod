@@ -79,8 +79,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               final appNameVersion = await getAppNameVersion();
               showAboutDialog(
                 context: context,
-                applicationName: appNameVersion[0],
-                applicationVersion: appNameVersion[1],
+                // applicationName: appNameVersion[0],
+                // applicationVersion: appNameVersion[1],
                 applicationIcon: const ImageIcon(
                     AssetImage('assets/images/keypod_logo.png')),
                 children: [
