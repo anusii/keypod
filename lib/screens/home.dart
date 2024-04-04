@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Tuesday 2024-03-26 06:56:45 +1100 Graham Williams>
+// Time-stamp: <Friday 2024-04-05 09:42:08 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -45,6 +45,8 @@ import 'package:keypod/main.dart';
 /// It only requires [appName] to be passed to it during initialization.
 /// This is because this page is designed to be work in offline as well.
 
+// TODO 20240405 gjw Explain why this is a stateful class.
+
 class Home extends StatefulWidget {
   /// Initialise widget variables
 
@@ -54,6 +56,8 @@ class Home extends StatefulWidget {
   @override
   HomeState createState() => HomeState();
 }
+
+// TODO 20240405 gjw Explain the purpose of this State.
 
 class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   String sampleText = '';
@@ -79,8 +83,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               final appNameVersion = await getAppNameVersion();
               showAboutDialog(
                 context: context,
-                // applicationName: appNameVersion[0],
-                // applicationVersion: appNameVersion[1],
+                applicationName: appNameVersion[0].toString(),
+                applicationVersion: appNameVersion[1].toString(),
                 applicationIcon: const ImageIcon(
                     AssetImage('assets/images/keypod_logo.png')),
                 children: [
@@ -103,6 +107,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             tooltip: 'Popup a window about the app.',
           ),
         ],
+
+        // TODO 20240405 gjw What is the purpose of the back button? Why do we
+        // need to go back from the main Home page.
+
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -161,6 +169,9 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       final fileContent = await readPod(
                         filePath,
                         context,
+                        // TODO 20240405 gjw This appName should not be a
+                        // literal embedded somehwere in the code but determined
+                        // from the app name in pubspec.yaml.
                         const Home(
                           appName: 'KeyPod',
                         ),
@@ -180,6 +191,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   const SizedBox(
                     height: 10,
                   ),
+
+                  // TODO 20240405 gjw What is the purpose of the Delete Login
+                  // button?
+
                   ElevatedButton(
                     child: const Text('Delete login data'),
                     onPressed: () async {
