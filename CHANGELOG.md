@@ -7,6 +7,7 @@ the top rather than the bottom.
 
 # 0.4
 
++ Override the version of intl for solid-auth.
 + Add an About dialog [0.3.4]
 + Added popupLogin into the continue placeholder page. 
 + Package solid renamed to solidpod.

@@ -1,7 +1,7 @@
 name: keypod
 description: "Secure POD storage of key-value-note triplets."
 publish_to: "none"
-version: 0.3.4+7
+version: 0.3.4+8
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -64,6 +64,7 @@ dev_dependencies:
 
 dependency_overrides:
   file: ^7.0.0 # Use only if necessary
+  intl: ^0.19.0  # solid-auth depends on intl-0.19.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
