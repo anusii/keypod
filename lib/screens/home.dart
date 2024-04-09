@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Friday 2024-04-05 09:42:08 +1100 Graham Williams>
+// Time-stamp: <Tuesday 2024-03-26 06:56:45 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -45,8 +45,6 @@ import 'package:keypod/main.dart';
 /// It only requires [appName] to be passed to it during initialization.
 /// This is because this page is designed to be work in offline as well.
 
-// TODO 20240405 gjw Explain why this is a stateful class.
-
 class Home extends StatefulWidget {
   /// Initialise widget variables
 
@@ -57,14 +55,50 @@ class Home extends StatefulWidget {
   HomeState createState() => HomeState();
 }
 
-// TODO 20240405 gjw Explain the purpose of this State.
-
 class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   String sampleText = '';
+  // Step 1: Loading state variable.
+
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _showPrivateData() async {
+    setState(() {
+      // Begin loading.
+
+      _isLoading = true;
+    });
+
+    try {
+      const filePath = 'encryption/enc-keys.ttl';
+      final fileContent = await readPod(
+        filePath,
+        context,
+        const Home(appName: 'KeyPod'),
+      );
+
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ViewKeys(
+            appName: widget.appName,
+            keyInfo: fileContent,
+          ),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          // End loading.
+
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -83,8 +117,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               final appNameVersion = await getAppNameVersion();
               showAboutDialog(
                 context: context,
-                applicationName: appNameVersion[0].toString(),
-                applicationVersion: appNameVersion[1].toString(),
+                // applicationName: appNameVersion[0],
+                // applicationVersion: appNameVersion[1],
                 applicationIcon: const ImageIcon(
                     AssetImage('assets/images/keypod_logo.png')),
                 children: [
@@ -107,10 +141,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             tooltip: 'Popup a window about the app.',
           ),
         ],
-
-        // TODO 20240405 gjw What is the purpose of the back button? Why do we
-        // need to go back from the main Home page.
-
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -121,119 +151,101 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            //const ShowKeys(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+      body: _isLoading
+          ? const Center(
+              child:
+                  // Step 2: Show loading indicator.
+
+                  CircularProgressIndicator())
+          : SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Date: $dateStr',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Welcome to your new app!',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    child: const Text('Show private data'),
-                    onPressed: () async {
-                      const filePath = 'encryption/enc-keys.ttl';
-                      final fileContent = await readPod(
-                        filePath,
-                        context,
-                        // TODO 20240405 gjw This appName should not be a
-                        // literal embedded somehwere in the code but determined
-                        // from the app name in pubspec.yaml.
-                        const Home(
-                          appName: 'KeyPod',
-                        ),
-                      );
-
-                      await Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ViewKeys(
-                            appName: widget.appName,
-                            keyInfo: fileContent,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  // TODO 20240405 gjw What is the purpose of the Delete Login
-                  // button?
-
-                  ElevatedButton(
-                    child: const Text('Delete login data'),
-                    onPressed: () async {
-                      final deleteRes = await deleteLogIn();
-
-                      var deleteMsg = '';
-
-                      if (deleteRes) {
-                        deleteMsg = 'Successfully deleted login info';
-                      } else {
-                        deleteMsg =
-                            'Failed to delete login info. Try again in a while';
-                      }
-
-                      await showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Notice'),
-                          content: Text(deleteMsg),
-                          actions: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('OK'))
+                  //const ShowKeys(),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date: $dateStr',
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Welcome to your new app!',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(
+                          child: const Text('Show private data'),
+                          onPressed: () async {
+                            await _showPrivateData();
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(
+                          child: const Text('Delete login data'),
+                          onPressed: () async {
+                            final deleteRes = await deleteLogIn();
+
+                            var deleteMsg = '';
+
+                            if (deleteRes) {
+                              deleteMsg = 'Successfully deleted login info';
+                            } else {
+                              deleteMsg =
+                                  'Failed to delete login info. Try again in a while';
+                            }
+
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Notice'),
+                                content: Text(deleteMsg),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('OK'))
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
