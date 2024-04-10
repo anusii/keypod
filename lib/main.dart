@@ -28,6 +28,8 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:solidpod/solidpod.dart';
+import 'package:solidpod/src/solid/login.dart';
+
 import 'package:window_manager/window_manager.dart';
 
 import 'package:keypod/screens/home.dart';
@@ -124,6 +126,11 @@ class KeyPod extends StatelessWidget {
         //
         // continueBG: Color(0XFFCDB392),
         required: false,
+        continueButtonStyle: PodButtonStyle(
+          text: 'CONTINUE',
+          background: Colors.blue,
+          tooltip: 'Test',
+        ),
         child: Home(
           appName: 'KeyPod',
         ),
