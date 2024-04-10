@@ -27,7 +27,6 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:solidpod/solidpod.dart';
 import 'package:solidpod/src/solid/login.dart';
 
 import 'package:window_manager/window_manager.dart';
@@ -120,11 +119,6 @@ class KeyPod extends StatelessWidget {
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
-        // TODO 20240324 gjw I did not really want to do the following for each
-        // button when I change the theme as above. How to fix solidpod to
-        // support this properly.
-        //
-        // continueBG: Color(0XFFCDB392),
         required: false,
         continueButtonStyle: PodButtonStyle(
           text: 'CONTINUE',
