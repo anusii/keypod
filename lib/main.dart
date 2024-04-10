@@ -129,6 +129,7 @@ class KeyPod extends StatelessWidget {
         continueButtonStyle: PodButtonStyle(
           text: 'CONTINUE',
           background: Colors.lightBlue,
+          foreground: Colors.black,
           tooltip: 'Test the app without logging in.',
         ),
         child: Home(
