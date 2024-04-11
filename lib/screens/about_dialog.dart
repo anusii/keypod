@@ -1,6 +1,6 @@
 /// about dialog for the app
 ///
-// Time-stamp: <Tuesday 2024-03-26 06:56:45 +1100 Graham Williams>
+// Time-stamp: <Thursday 2024-04-11 21:56:00 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -31,7 +31,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-void showAppAboutDialog(BuildContext context) {
+void aboutDialog(BuildContext context) {
   showAboutDialog(
     context: context,
     applicationIcon:

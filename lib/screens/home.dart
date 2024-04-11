@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Tuesday 2024-03-26 06:56:45 +1100 Graham Williams>
+// Time-stamp: <Thursday 2024-04-11 21:58:54 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -28,6 +28,8 @@
 ///
 /// Authors: Zheyuan Xu, Anushka Vidanage
 
+// TODO 20240411 gjw WHY THE IGNORE? EXPLAIN HERE
+
 // ignore_for_file: use_build_context_synchronously
 
 library;
@@ -35,11 +37,11 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:keypod/screens/about.dart';
 import 'package:solidpod/solidpod.dart';
 
-import 'package:keypod/screens/view_keys.dart';
 import 'package:keypod/main.dart';
+import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/screens/view_keys.dart';
 
 /// Widget represents the home screen of the application.
 ///
@@ -116,7 +118,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             icon: const Icon(Icons.info),
             onPressed: () async {
               final appNameVersion = await getAppNameVersion();
-              showAppAboutDialog(context);
+              aboutDialog(context);
             },
             tooltip: 'Popup a window about the app.',
           ),
