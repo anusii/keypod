@@ -1,6 +1,6 @@
 /// about dialog for the app
 ///
-// Time-stamp: <Thursday 2024-04-11 21:56:00 +1000 Graham Williams>
+// Time-stamp: <Friday 2024-04-12 13:03:48 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -27,6 +27,7 @@
 // SOFTWARE.
 ///
 /// Authors: Kevin Wang
+
 library;
 
 import 'package:flutter/material.dart';
