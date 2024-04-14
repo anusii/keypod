@@ -120,11 +120,11 @@ class KeyPod extends StatelessWidget {
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
         required: false,
-        continueButtonStyle: PodButtonStyle(
-          text: 'CONTINUE',
-          background: Colors.lightBlue,
-          foreground: Colors.black,
-          tooltip: 'Test the app without logging in.',
+        continueButtonStyle: ContinueButtonStyle(
+          tooltip: 'Test changing the tooltip.',
+        ),
+        loginButtonStyle: LoginButtonStyle(
+          background: Colors.green,
         ),
         child: Home(
           appName: 'KeyPod',
