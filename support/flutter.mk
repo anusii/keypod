@@ -290,7 +290,7 @@ $(APP)-$(VER)-linux-x86_64.tar.gz:
 
 apk:
 	flutter build apk
-	cp build/app/outputs/flutter-apk/app-release.apk installers/innerpod.apk
+	cp build/app/outputs/flutter-apk/app-release.apk installers/$(APP).apk
 
 
 realclean::
