@@ -64,7 +64,7 @@ dev_dependencies:
 
 dependency_overrides:
   file: ^7.0.0 # Use only if necessary
-  intl: ^0.19.0  # solid-auth depends on intl-0.19.0
+  intl: ^0.19.0 # Eventually remove. Through solidpod, solid-auth depends on intl-0.19.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
