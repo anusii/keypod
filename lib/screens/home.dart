@@ -45,14 +45,12 @@ import 'package:keypod/screens/view_keys.dart';
 
 /// Widget represents the home screen of the application.
 ///
-/// It only requires [appName] to be passed to it during initialization.
 /// This is because this page is designed to be work in offline as well.
 
 class Home extends StatefulWidget {
   /// Initialise widget variables
 
-  const Home({required this.appName, super.key});
-  final String appName;
+  const Home({super.key});
 
   @override
   HomeState createState() => HomeState();
@@ -76,19 +74,19 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       _isLoading = true;
     });
 
+    final appName = await getAppName();
     try {
-      const filePath = 'encryption/enc-keys.ttl';
+      final filePath = '$appName/encryption/enc-keys.ttl';
       final fileContent = await readPod(
         filePath,
         context,
-        const Home(appName: 'KeyPod'),
+        const Home(),
       );
 
       await Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ViewKeys(
-            appName: widget.appName,
             keyInfo: fileContent,
           ),
         ),
@@ -112,12 +110,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       appBar: AppBar(
         // backgroundColor: lightGreen,
         centerTitle: true,
-        title: Text(widget.appName),
+        title: const Text('KeyPod'),
         actions: [
           IconButton(
             icon: const Icon(Icons.info),
             onPressed: () async {
-              final appNameVersion = await getAppNameVersion();
               aboutDialog(context);
             },
             tooltip: 'Popup a window about the app.',

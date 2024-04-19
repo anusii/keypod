@@ -42,13 +42,12 @@ class ViewKeys extends StatefulWidget {
   /// Constructor for ShowKeys widget
 
   const ViewKeys({
-    required this.appName,
     required this.keyInfo,
     super.key,
   });
 
-  /// Name of the app
-  final String appName;
+  // Name of the app
+  // final String appName;
 
   /// Data of the key file
   final String keyInfo;
@@ -66,7 +65,7 @@ class _ViewKeysState extends State<ViewKeys> {
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
-          title: Text(widget.appName),
+          title: const Text('KeyPod'),
         ),
         body: loadedScreen(widget.keyInfo));
   }
@@ -159,8 +158,7 @@ class _ViewKeysState extends State<ViewKeys> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => Home(appName: widget.appName)),
+                  MaterialPageRoute(builder: (context) => Home()),
                 );
               },
             ),
