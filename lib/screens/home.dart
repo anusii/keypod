@@ -37,11 +37,12 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:solidpod/solidpod.dart';
-
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/view_keys.dart';
+import 'package:path/path.dart' as path;
+
+import 'package:solidpod/solidpod.dart';
 
 /// Widget represents the home screen of the application.
 ///
@@ -99,6 +100,28 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
           _isLoading = false;
         });
       }
+    }
+  }
+
+  Future<void> _writePrivateData() async {
+    setState(() {
+      // Begin loading.
+
+      _isLoading = true;
+    });
+
+    final appName = await getAppName();
+    try {
+      final filePath = '$appName/data/test-101.ttl';
+      final fileContent = 'This is for testing writePod.';
+      await writePod(
+        filePath,
+        fileContent,
+        context,
+        const Home(),
+      );
+    } on Exception catch (e) {
+      print('Exception: $e');
     }
   }
 
@@ -181,6 +204,15 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           child: const Text('Show private data'),
                           onPressed: () async {
                             await _showPrivateData();
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(
+                          child: const Text('Write private data'),
+                          onPressed: () async {
+                            await _writePrivateData();
                           },
                         ),
                         const SizedBox(
