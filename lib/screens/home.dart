@@ -117,7 +117,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
           IconButton(
             icon: const Icon(Icons.info),
             onPressed: () async {
-              final appNameVersion = await getAppNameVersion();
+              // final appNameVersion = await getAppNameVersion();
               aboutDialog(context);
             },
             tooltip: 'Popup a window about the app.',
