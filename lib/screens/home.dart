@@ -77,7 +77,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     final appName = await getAppName();
     try {
-      final filePath = '$appName/encryption/enc-keys.ttl';
+      //final filePath = '$appName/encryption/enc-keys.ttl';
+      final filePath = '$appName/data/test-101.ttl';
       final fileContent = await readPod(
         filePath,
         context,
