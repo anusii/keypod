@@ -222,6 +222,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         const SizedBox(
                           height: 10,
                         ),
+                        ElevatedButton(
+                          child: const Text('Change Encryption Key'),
+                          onPressed: () {},
+                        ),
                       ],
                     ),
                   ),
