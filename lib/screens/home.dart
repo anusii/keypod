@@ -35,10 +35,12 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:intl/intl.dart';
 import 'package:solidpod/solidpod.dart';
-
+import 'package:solidpod/src/widgets/setting.dart';
+import 'package:solidpod/src/solid/secure_key.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/view_keys.dart';
@@ -224,7 +226,35 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         ElevatedButton(
                           child: const Text('Change Encryption Key'),
-                          onPressed: () {},
+                          onPressed: () {
+                            //TODO kevin add the change key backend function here
+                            final authData = <dynamic, dynamic>{};
+
+                            String webId = "";
+
+                            /// Setup SecureKey object
+                            final secureKeyObject = SecureKey('', webId);
+
+                            final _storage = const FlutterSecureStorage();
+
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Settings(
+                                          storage: _storage,
+                                          authData: authData,
+                                          webId: webId,
+                                          secureKeyObject: secureKeyObject,
+                                          onBackButtonPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const KeyPod()),
+                                            );
+                                          },
+                                        )));
+                          },
                         ),
                       ],
                     ),
