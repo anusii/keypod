@@ -112,17 +112,45 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     });
 
     final appName = await getAppName();
+
+    final filePath = '$appName/data/test-101.ttl';
+    final fileContent = 'This is for testing writePod.';
     try {
-      final filePath = '$appName/data/test-101.ttl';
-      final fileContent = 'This is for testing writePod.';
       await writePod(
         filePath,
         fileContent,
         context,
         const Home(),
       );
+      await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AlertDialog(
+                      title: const Text('Success!'),
+                      content:
+                          const Text('Data is successfully stored in PODs'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            // Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Home()),
+                            );
+                          },
+                        ),
+                      ])));
     } on Exception catch (e) {
       print('Exception: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          // End loading.
+          _isLoading = false;
+        });
+      }
     }
   }
 
