@@ -79,7 +79,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     final appName = await getAppName();
     try {
       final filePath = '$appName/encryption/enc-keys.ttl';
-      //final filePath = '$appName/data/test-101.ttl';
       final fileContent = await readPod(
         filePath,
         context,
@@ -90,7 +89,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         context,
         MaterialPageRoute(
           builder: (context) => ViewKeys(
-            keyInfo: fileContent,
+            keyInfo: fileContent!,
           ),
         ),
       );
@@ -145,13 +144,23 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       //                     },
       //                   ),
       //                 ])));
+      final fileContent = await readPod(filePath, context, const Home());
+      print(fileContent);
+      final dataMap = fileContent == null ? null : parseTTL(fileContent);
+      if (dataMap != null) {
+        assert(dataMap.length == 1);
+      }
+
       await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => KeyValueEdit(
                   title: 'Key Value Pair Editor',
                   filePath: filePath,
-                  keyValuePairs: {'key1': 'value1', 'key2': 'value2'},
+                  keyValuePairs: dataMap == null
+                      ? null
+                      : dataMap[dataMap.keys.first] as Map<String,
+                          String>, //{'key1': 'value1', 'key2': 'value2'},
                   child: const Home())));
     } on Exception catch (e) {
       print('Exception: $e');
