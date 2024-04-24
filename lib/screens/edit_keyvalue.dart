@@ -26,8 +26,6 @@
 ///
 /// Authors: Dawei Chen
 
-import 'dart:ffi';
-
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
@@ -53,34 +51,51 @@ class KeyValueEdit extends StatefulWidget {
 class _KeyValueEditState extends State<KeyValueEdit> {
   /// Create a Key for EditableState
   final _editableKey = GlobalKey<EditableState>();
-  final keyStr = 'key';
-  final valStr = 'value';
   final regExp = RegExp(r'\s+');
+  static const keyStr = 'key';
+  static const valStr = 'value';
+  final List rows = [];
+  final List cols = [
+    {'title': 'Key', 'key': keyStr},
+    {'title': 'Value', 'key': valStr},
+  ];
 
-  /// Function to add a new row
-  /// Using the global key assigined to Editable widget
-  /// Access the current state of Editable
+  @override
+  void initState() {
+    super.initState();
+
+    // A column is a {'title': TITLE, 'key': KEY}
+    // A row is a {KEY: VALUE}
+
+    if (widget.keyValuePairs != null) {
+      for (final key in (widget.keyValuePairs?.keys.toList() as List)..sort()) {
+        rows.add({keyStr: key, valStr: widget.keyValuePairs![key]});
+      }
+    }
+  }
+
+  // Add a new row using the global key assigined to the Editable widget
+  // to access its current state
   void _addNewRow() {
     setState(() {
-      try {
-        _editableKey.currentState?.createRow();
-      } on Exception catch (e) {
-        print(e);
-      }
+      _editableKey.currentState?.createRow();
     });
   }
 
-  // ///Print only edited rows.
-  // void _printEditedRows() {
-  //   List editedRows = _editableKey.currentState?.editedRows as List;
-  //   print(editedRows);
-  //   print('Columns: ${_editableKey.currentState?.columns}');
-  //   print('Rows:');
-  //   for (final r in _editableKey.currentState?.rows as List) {
-  //     print(r);
-  //   }
-  // }
+  void _saveEditedRows() {
+    List editedRows = _editableKey.currentState?.editedRows as List;
+    print(editedRows);
 
+    // int rowIndex = editedRows.indexWhere(
+    //               (element) => element['row'] == index ? true : false);
+    //           if (rowIndex != -1) {
+    //             widget.onRowSaved!(editedRows[rowIndex]);
+    //           } else {
+    //             widget.onRowSaved!('no edit');
+    //           }
+  }
+
+  // Show an alert message
   Future<void> _alert(String msg) async {
     await showDialog(
         context: context,
@@ -101,10 +116,14 @@ class _KeyValueEditState extends State<KeyValueEdit> {
   Future<Map<String, String>?> _dataToMap() async {
     final dataMap = <String, String>{};
     for (final row in _editableKey.currentState?.rows as List) {
-      final k = row[keyStr] as String;
-      final v = row[valStr] as String;
+      final k = row['key'] as String;
+      final v = row['value'] as String;
       if (dataMap.containsKey(k)) {
         await _alert('Invalide key: Duplicate key "$k"');
+        return null;
+      }
+      if (k.trim().isEmpty) {
+        await _alert('Invalide key: "$k"');
         return null;
       }
       if (regExp.hasMatch(k)) {
@@ -117,10 +136,13 @@ class _KeyValueEditState extends State<KeyValueEdit> {
   }
 
   Future<void> _saveToPod(BuildContext context) async {
+    _saveEditedRows();
     final dataMap = await _dataToMap();
+    print(dataMap);
     if (dataMap != null && dataMap.isNotEmpty) {
       // generate TTL str with dataMap
       final ttlStr = await getTTLStr(dataMap);
+      print(ttlStr);
       await writePod(widget.filePath, ttlStr, context, widget.child);
     } else {
       await _alert('No data to submit');
@@ -129,26 +151,13 @@ class _KeyValueEditState extends State<KeyValueEdit> {
 
   @override
   Widget build(BuildContext context) {
-    // A column is a {'title': TITLE, 'key': KEY}
-    // A row is a {KEY: VALUE}
-
-    final initRows = widget.keyValuePairs == null
-        ? []
-        : [
-            for (final key
-                in (widget.keyValuePairs?.keys.toList() as List)..sort())
-              {keyStr: key, valStr: widget.keyValuePairs![key]}
-          ];
-
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text(widget.title),
           leadingWidth: 100,
           leading: TextButton.icon(
-            onPressed: () {
-              _addNewRow();
-            },
+            onPressed: _addNewRow,
             icon: const Icon(Icons.add),
             label: const Text('Add',
                 style: TextStyle(fontWeight: FontWeight.bold)),
@@ -168,18 +177,13 @@ class _KeyValueEditState extends State<KeyValueEdit> {
         body: Center(
           child: Editable(
             key: _editableKey,
-            columns: [
-              {'title': 'Key', 'key': keyStr},
-              {'title': 'Value', 'key': valStr},
-            ],
-            rows: initRows,
+            columns: cols,
+            rows: rows,
             zebraStripe: true,
             stripeColor1: Colors.blue[50]!,
             stripeColor2: Colors.grey[200]!,
             onRowSaved: print,
-            onSubmitted: (value) {
-              print(value);
-            },
+            onSubmitted: print,
             borderColor: Colors.blueGrey,
             tdStyle: const TextStyle(fontWeight: FontWeight.bold),
             trHeight: 20,
@@ -187,9 +191,10 @@ class _KeyValueEditState extends State<KeyValueEdit> {
             thAlignment: TextAlign.center,
             thVertAlignment: CrossAxisAlignment.end,
             thPaddingBottom: 3,
-            showSaveIcon: false, // show the save icon at the right of a row
+            showSaveIcon:
+                false, // do not show the save icon at the right of a row
             saveIconColor: Colors.black,
-            showCreateButton: false, // show the + button at top-left
+            showCreateButton: false, // do not show the + button at top-left
             tdAlignment: TextAlign.left,
             tdEditableMaxLines: 100, // don't limit and allow data to wrap
             tdPaddingTop: 5,
