@@ -41,6 +41,7 @@ import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/view_keys.dart';
 import 'package:path/path.dart' as path;
+import 'package:keypod/screens/edit_keyvalue.dart';
 
 import 'package:solidpod/solidpod.dart';
 
@@ -107,41 +108,51 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Future<void> _writePrivateData() async {
     setState(() {
       // Begin loading.
-
       _isLoading = true;
     });
 
     final appName = await getAppName();
 
-    final filePath = '$appName/data/test-101.ttl';
-    final fileContent = 'This is for testing writePod.';
+    // final filePath = '$appName/data/test-101.ttl';
+    // final fileContent = 'This is for testing writePod.';
+
+    final filePath = '$appName/data/test-102.ttl';
+
     try {
-      await writePod(
-        filePath,
-        fileContent,
-        context,
-        const Home(),
-      );
+      // await writePod(
+      //   filePath,
+      //   fileContent,
+      //   context,
+      //   const Home(),
+      // );
+      // await Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => AlertDialog(
+      //                 title: const Text('Success!'),
+      //                 content:
+      //                     const Text('Data is successfully stored in PODs'),
+      //                 actions: <Widget>[
+      //                   ElevatedButton(
+      //                     child: const Text('OK'),
+      //                     onPressed: () {
+      //                       // Navigator.pop(context);
+      //                       Navigator.push(
+      //                         context,
+      //                         MaterialPageRoute(
+      //                             builder: (context) => const Home()),
+      //                       );
+      //                     },
+      //                   ),
+      //                 ])));
       await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => AlertDialog(
-                      title: const Text('Success!'),
-                      content:
-                          const Text('Data is successfully stored in PODs'),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          child: const Text('OK'),
-                          onPressed: () {
-                            // Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Home()),
-                            );
-                          },
-                        ),
-                      ])));
+              builder: (context) => KeyValueEdit(
+                  title: 'Key Value Pair Editor',
+                  filePath: filePath,
+                  keyValuePairs: {'key1': 'value1', 'key2': 'value2'},
+                  child: const Home())));
     } on Exception catch (e) {
       print('Exception: $e');
     } finally {
@@ -266,6 +277,33 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               builder: (context) => AlertDialog(
                                 title: const Text('Notice'),
                                 content: Text(deleteMsg),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('OK'))
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          child: const Text('Delete master password'),
+                          onPressed: () async {
+                            late String msg;
+                            try {
+                              await removeMasterPassword();
+                              msg = 'Successfully deleted master password.';
+                            } on Exception catch (e) {
+                              msg = 'Failed to delete master password: $e';
+                            }
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Notice'),
+                                content: Text(msg),
                                 actions: [
                                   ElevatedButton(
                                       onPressed: () {
