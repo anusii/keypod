@@ -29,6 +29,7 @@
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
+import 'package:rdflib/rdflib.dart';
 
 class KeyValueEdit extends StatefulWidget {
   /// Constructor
@@ -52,6 +53,7 @@ class _KeyValueEditState extends State<KeyValueEdit> {
   /// Create a Key for EditableState
   final _editableKey = GlobalKey<EditableState>();
   final regExp = RegExp(r'\s+');
+  static const rowKey = 'row'; // key of row index in editedRows
   static const keyStr = 'key';
   static const valStr = 'value';
   final List rows = [];
@@ -59,6 +61,7 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     {'title': 'Key', 'key': keyStr},
     {'title': 'Value', 'key': valStr},
   ];
+  final dataMap = <int, ({String key, dynamic value})>{};
 
   @override
   void initState() {
@@ -67,10 +70,16 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     // A column is a {'title': TITLE, 'key': KEY}
     // A row is a {KEY: VALUE}
 
+    // Initialise the rows
     if (widget.keyValuePairs != null) {
       for (final key in (widget.keyValuePairs?.keys.toList() as List)..sort()) {
         rows.add({keyStr: key, valStr: widget.keyValuePairs![key]});
       }
+    }
+
+    // Save initial data
+    for (var i = 0; i < rows.length; i++) {
+      dataMap[i] = (key: rows[i][keyStr], value: rows[i][valStr]);
     }
   }
 
@@ -83,8 +92,17 @@ class _KeyValueEditState extends State<KeyValueEdit> {
   }
 
   void _saveEditedRows() {
-    List editedRows = _editableKey.currentState?.editedRows as List;
-    print(editedRows);
+    final editedRows = _editableKey.currentState?.editedRows as List;
+    // print('edited_rows: ${editedRows}');
+    // print('#rows: ${_editableKey.currentState?.rowCount}');
+    // print('#cols: ${_editableKey.currentState?.columnCount}');
+    // print('rows:');
+    // print(rows); // edits are not saved in `rows'
+    for (final r in editedRows) {
+      dataMap[r[rowKey] as int] = (key: r[keyStr] as String, value: r[valStr]);
+    }
+
+    print(dataMap);
 
     // int rowIndex = editedRows.indexWhere(
     //               (element) => element['row'] == index ? true : false);
@@ -112,36 +130,64 @@ class _KeyValueEditState extends State<KeyValueEdit> {
             ));
   }
 
-  // Convert data in the table to a map
-  Future<Map<String, String>?> _dataToMap() async {
-    final dataMap = <String, String>{};
-    for (final row in _editableKey.currentState?.rows as List) {
-      final k = row['key'] as String;
-      final v = row['value'] as String;
-      if (dataMap.containsKey(k)) {
-        await _alert('Invalide key: Duplicate key "$k"');
+  // Get key value pairs
+  Future<List<({String key, dynamic value})>?> _getKeyValuePairs() async {
+    final rowInd = dataMap.keys.toList()..sort();
+    final keys = <String>{};
+    final pairs = <({String key, dynamic value})>[];
+    for (final i in rowInd) {
+      final k = dataMap[i]!.key.trim();
+      if (k.isEmpty) {
+        await _alert('Invalide key: "$k"');
         return null;
       }
-      if (k.trim().isEmpty) {
-        await _alert('Invalide key: "$k"');
+      if (keys.contains(k)) {
+        await _alert('Invalide key: Duplicate key "$k"');
         return null;
       }
       if (regExp.hasMatch(k)) {
         await _alert('Invalided key: Whitespace found in key "$k"');
         return null;
       }
-      dataMap[k] = v;
+      keys.add(k);
+      final v = dataMap[i]!.value;
+      pairs.add((key: k, value: v));
     }
-    return dataMap;
+    return pairs;
   }
+
+  // Convert data in the table to a map
+  // Future<Map<String, String>?> _dataToMap() async {
+  //   final dataMap = <String, String>{};
+  //   for (final row in _editableKey.currentState?.rows as List) {
+  //     final k = row['key'] as String;
+  //     final v = row['value'] as String;
+  //     if (dataMap.containsKey(k)) {
+  //       await _alert('Invalide key: Duplicate key "$k"');
+  //       return null;
+  //     }
+  //     if (k.trim().isEmpty) {
+  //       await _alert('Invalide key: "$k"');
+  //       return null;
+  //     }
+  //     if (regExp.hasMatch(k)) {
+  //       await _alert('Invalided key: Whitespace found in key "$k"');
+  //       return null;
+  //     }
+  //     dataMap[k] = v;
+  //   }
+  //   return dataMap;
+  // }
 
   Future<void> _saveToPod(BuildContext context) async {
     _saveEditedRows();
-    final dataMap = await _dataToMap();
-    print(dataMap);
-    if (dataMap != null && dataMap.isNotEmpty) {
+    final pairs = await _getKeyValuePairs();
+    // final dataMap = await _dataToMap();
+    // print(dataMap);
+    // if (dataMap != null && dataMap.isNotEmpty) {
+    if (dataMap.isNotEmpty) {
       // generate TTL str with dataMap
-      final ttlStr = await getTTLStr(dataMap);
+      final ttlStr = await getTTLStr(pairs!);
       print(ttlStr);
       await writePod(widget.filePath, ttlStr, context, widget.child);
     } else {
@@ -179,9 +225,9 @@ class _KeyValueEditState extends State<KeyValueEdit> {
             key: _editableKey,
             columns: cols,
             rows: rows,
-            zebraStripe: true,
-            stripeColor1: Colors.blue[50]!,
-            stripeColor2: Colors.grey[200]!,
+            // zebraStripe: false,
+            // stripeColor1: Colors.blue[50]!,
+            // stripeColor2: Colors.grey[200]!,
             onRowSaved: print,
             onSubmitted: print,
             borderColor: Colors.blueGrey,
@@ -191,10 +237,10 @@ class _KeyValueEditState extends State<KeyValueEdit> {
             thAlignment: TextAlign.center,
             thVertAlignment: CrossAxisAlignment.end,
             thPaddingBottom: 3,
-            showSaveIcon:
-                false, // do not show the save icon at the right of a row
-            saveIconColor: Colors.black,
-            showCreateButton: false, // do not show the + button at top-left
+            // showSaveIcon:
+            //     false, // do not show the save icon at the right of a row
+            // saveIconColor: Colors.black,
+            // showCreateButton: false, // do not show the + button at top-left
             tdAlignment: TextAlign.left,
             tdEditableMaxLines: 100, // don't limit and allow data to wrap
             tdPaddingTop: 5,
