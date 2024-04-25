@@ -29,7 +29,6 @@
 import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
-import 'package:rdflib/rdflib.dart';
 
 class KeyValueEdit extends StatefulWidget {
   /// Constructor
@@ -91,34 +90,29 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     });
   }
 
-  void _saveEditedRows() {
+  bool _saveEditedRows() {
     final editedRows = _editableKey.currentState?.editedRows as List;
     // print('edited_rows: ${editedRows}');
     // print('#rows: ${_editableKey.currentState?.rowCount}');
     // print('#cols: ${_editableKey.currentState?.columnCount}');
     // print('rows:');
     // print(rows); // edits are not saved in `rows'
+    if (editedRows.isEmpty) {
+      _alert('Data not changed!');
+      return false;
+    }
     for (final r in editedRows) {
       dataMap[r[rowKey] as int] = (key: r[keyStr] as String, value: r[valStr]);
     }
-
-    print(dataMap);
-
-    // int rowIndex = editedRows.indexWhere(
-    //               (element) => element['row'] == index ? true : false);
-    //           if (rowIndex != -1) {
-    //             widget.onRowSaved!(editedRows[rowIndex]);
-    //           } else {
-    //             widget.onRowSaved!('no edit');
-    //           }
+    return true;
   }
 
   // Show an alert message
-  Future<void> _alert(String msg) async {
+  Future<void> _alert(String msg, [String title = 'Notice']) async {
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: const Text('Notice'),
+              title: Text(title),
               content: Text(msg),
               actions: [
                 ElevatedButton(
@@ -156,40 +150,19 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     return pairs;
   }
 
-  // Convert data in the table to a map
-  // Future<Map<String, String>?> _dataToMap() async {
-  //   final dataMap = <String, String>{};
-  //   for (final row in _editableKey.currentState?.rows as List) {
-  //     final k = row['key'] as String;
-  //     final v = row['value'] as String;
-  //     if (dataMap.containsKey(k)) {
-  //       await _alert('Invalide key: Duplicate key "$k"');
-  //       return null;
-  //     }
-  //     if (k.trim().isEmpty) {
-  //       await _alert('Invalide key: "$k"');
-  //       return null;
-  //     }
-  //     if (regExp.hasMatch(k)) {
-  //       await _alert('Invalided key: Whitespace found in key "$k"');
-  //       return null;
-  //     }
-  //     dataMap[k] = v;
-  //   }
-  //   return dataMap;
-  // }
-
+  // Save data to PODs
   Future<void> _saveToPod(BuildContext context) async {
-    _saveEditedRows();
+    final saved = _saveEditedRows();
+    if (!saved) {
+      return;
+    }
     final pairs = await _getKeyValuePairs();
-    // final dataMap = await _dataToMap();
-    // print(dataMap);
-    // if (dataMap != null && dataMap.isNotEmpty) {
     if (dataMap.isNotEmpty) {
       // generate TTL str with dataMap
       final ttlStr = await getTTLStr(pairs!);
-      print(ttlStr);
       await writePod(widget.filePath, ttlStr, context, widget.child);
+      await _alert('Successfully saved ${dataMap.length} key-value pairs'
+          ' to "${widget.filePath}" in PODs');
     } else {
       await _alert('No data to submit');
     }
@@ -211,16 +184,30 @@ class _KeyValueEditState extends State<KeyValueEdit> {
           actions: [
             Padding(
                 padding: const EdgeInsets.all(8),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await _saveToPod(context);
-                  },
-                  child: const Text('Submit',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                )),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => widget.child));
+                      },
+                      child: const Text('Go back',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                      onPressed: () async {
+                        await _saveToPod(context);
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => widget.child));
+                      },
+                      child: const Text('Submit',
+                          style: TextStyle(fontWeight: FontWeight.bold))),
+                ])),
           ],
         ),
-        //TODO: add a back button
         body: Center(
           child: Editable(
             key: _editableKey,
