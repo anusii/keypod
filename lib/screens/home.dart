@@ -145,7 +145,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       //                   ),
       //                 ])));
       final fileContent = await readPod(filePath, context, const Home());
-      print(fileContent);
       final dataMap = fileContent == null ? null : parseTTL(fileContent);
       if (dataMap != null) {
         assert(dataMap.length == 1);
@@ -159,8 +158,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   filePath: filePath,
                   keyValuePairs: dataMap == null
                       ? null
-                      : dataMap[dataMap.keys.first] as Map<String,
-                          String>, //{'key1': 'value1', 'key2': 'value2'},
+                      : dataMap[dataMap.keys.first] as Map<String, String>,
                   child: const Home())));
     } on Exception catch (e) {
       print('Exception: $e');
