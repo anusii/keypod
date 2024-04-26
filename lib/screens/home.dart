@@ -39,11 +39,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
 import 'package:path/path.dart' as path;
-import 'package:keypod/screens/edit_keyvalue.dart';
 
-import 'package:solidpod/solidpod.dart';
+import 'package:solidpod/solidpod.dart'
+    show
+        readPod,
+        getEncKeyPath,
+        getDataDirPath,
+        parseTTL,
+        deleteLogIn,
+        removeMasterPassword;
 
 /// Widget represents the home screen of the application.
 ///
@@ -76,9 +83,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       _isLoading = true;
     });
 
-    final appName = await getAppName();
+    // final appName = await getAppName();
     try {
-      final filePath = '$appName/encryption/enc-keys.ttl';
+      // final filePath = '$appName/encryption/enc-keys.ttl';
+      final filePath = await getEncKeyPath();
       final fileContent = await readPod(
         filePath,
         context,
@@ -110,12 +118,13 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       _isLoading = true;
     });
 
-    final appName = await getAppName();
+    // final appName = await getAppName();
 
     // final filePath = '$appName/data/test-101.ttl';
     // final fileContent = 'This is for testing writePod.';
 
-    final filePath = '$appName/data/test-102.ttl';
+    // final filePath = '$appName/data/test-102.ttl';
+    final fileName = 'test-102.ttl';
 
     try {
       // await writePod(
@@ -144,6 +153,9 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       //                     },
       //                   ),
       //                 ])));
+      final dataDirPath = await getDataDirPath();
+      final filePath = path.join(dataDirPath, fileName);
+
       final fileContent = await readPod(filePath, context, const Home());
       final dataMap = fileContent == null ? null : parseTTL(fileContent);
       if (dataMap != null) {
@@ -155,7 +167,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
           MaterialPageRoute(
               builder: (context) => KeyValueEdit(
                   title: 'Key Value Pair Editor',
-                  filePath: filePath,
+                  fileName: fileName,
                   keyValuePairs: dataMap == null
                       ? null
                       : dataMap[dataMap.keys.first] as Map<String, String>,

@@ -26,21 +26,23 @@
 ///
 /// Authors: Dawei Chen
 
-import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
-import 'package:solidpod/solidpod.dart';
+
+import 'package:editable/editable.dart';
+
+import 'package:solidpod/solidpod.dart' show writePod, getTTLStr;
 
 class KeyValueEdit extends StatefulWidget {
   /// Constructor
   const KeyValueEdit(
       {required this.title,
-      required this.filePath,
+      required this.fileName,
       required this.child,
       this.keyValuePairs,
       super.key});
 
   final String title;
-  final String filePath; // path of file to be saved in PODs
+  final String fileName; // file to be saved in PODs
   final Widget child;
   final Map<String, String>? keyValuePairs; // initial key value pairs
 
@@ -160,9 +162,9 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     if (dataMap.isNotEmpty) {
       // generate TTL str with dataMap
       final ttlStr = await getTTLStr(pairs!);
-      await writePod(widget.filePath, ttlStr, context, widget.child);
+      await writePod(widget.fileName, ttlStr, context, widget.child);
       await _alert('Successfully saved ${dataMap.length} key-value pairs'
-          ' to "${widget.filePath}" in PODs');
+          ' to "${widget.fileName}" in PODs');
     } else {
       await _alert('No data to submit');
     }
