@@ -32,7 +32,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:solidpod/solidpod.dart';
+import 'package:solidpod/solidpod.dart' show getFileContent;
 
 import 'package:keypod/screens/home.dart';
 
