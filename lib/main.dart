@@ -126,6 +126,9 @@ class KeyPod extends StatelessWidget {
         loginButtonStyle: LoginButtonStyle(
           background: Colors.green,
         ),
+        changeKeyButtonStyle: ChangeKeyButtonStyle(
+          tooltip: 'Test changing the tooltip.',
+        ),
         child: Home(
           appName: 'KeyPod',
         ),
