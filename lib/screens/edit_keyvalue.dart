@@ -100,7 +100,6 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     // print('rows:');
     // print(rows); // edits are not saved in `rows'
     if (editedRows.isEmpty) {
-      _alert('Data not changed!');
       return false;
     }
     for (final r in editedRows) {
@@ -153,21 +152,23 @@ class _KeyValueEditState extends State<KeyValueEdit> {
   }
 
   // Save data to PODs
-  Future<void> _saveToPod(BuildContext context) async {
+  Future<bool> _saveToPod(BuildContext context) async {
     final saved = _saveEditedRows();
     if (!saved) {
-      return;
+      await _alert('Data not changed!');
+      return false;
     }
     final pairs = await _getKeyValuePairs();
-    if (dataMap.isNotEmpty) {
-      // generate TTL str with dataMap
-      final ttlStr = await getTTLStr(pairs!);
-      await writePod(widget.fileName, ttlStr, context, widget.child);
-      await _alert('Successfully saved ${dataMap.length} key-value pairs'
-          ' to "${widget.fileName}" in PODs');
-    } else {
+    if (dataMap.isEmpty) {
       await _alert('No data to submit');
+      return false;
     }
+    // generate TTL str with dataMap
+    final ttlStr = await getTTLStr(pairs!);
+    await writePod(widget.fileName, ttlStr, context, widget.child);
+    await _alert('Successfully saved ${dataMap.length} key-value pairs'
+        ' to "${widget.fileName}" in PODs');
+    return true;
   }
 
   @override
@@ -199,11 +200,13 @@ class _KeyValueEditState extends State<KeyValueEdit> {
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () async {
-                        await _saveToPod(context);
-                        await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => widget.child));
+                        final saved = await _saveToPod(context);
+                        if (saved) {
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => widget.child));
+                        }
                       },
                       child: const Text('Submit',
                           style: TextStyle(fontWeight: FontWeight.bold))),
