@@ -22,10 +22,10 @@ dependencies:
   intl: ^0.18.0
   path: ^1.9.0
   solidpod:
-    path: solidpod # Use a local path whilst solidpod is under development.
-    ## git:
-    ##   url: https://github.com/anusii/solidpod
-    ##   ref: dev
+    ## path: solidpod # Use a local path whilst solidpod is under development.
+    git:
+      url: https://github.com/anusii/solidpod
+      ref: dc/78_write_pod
   universal_io: ^2.2.2
   window_manager: ^0.3.7
   # dart_code_metrics: ^4.0.0
