@@ -45,11 +45,12 @@ import 'package:path/path.dart' as path;
 
 import 'package:solidpod/solidpod.dart'
     show
-        readPod,
+        deleteLogIn,
+        getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
         parseTTL,
-        deleteLogIn,
+        readPod,
         removeMasterPassword;
 
 /// Widget represents the home screen of the application.
@@ -120,11 +121,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     // final appName = await getAppName();
 
-    // final filePath = '$appName/data/test-101.ttl';
+    // final fileName = 'test-101.ttl';
     // final fileContent = 'This is for testing writePod.';
 
-    // final filePath = '$appName/data/test-102.ttl';
-    final fileName = 'test-102.ttl';
+    const fileName = 'test-102.ttl';
 
     try {
       // await writePod(
@@ -184,15 +184,14 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _build(BuildContext context, String title) {
     final dateStr = DateFormat('dd MMMM yyyy').format(DateTime.now());
 
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: lightGreen,
         centerTitle: true,
-        title: const Text('KeyPod'),
+        title: Text(title),
         actions: [
           IconButton(
             icon: const Icon(Icons.info),
@@ -344,5 +343,22 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<({String name, String version})>(
+        future: getAppNameVersion(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final appName = snapshot.data?.name;
+            final title = appName!.isNotEmpty
+                ? appName[0].toUpperCase() + appName.substring(1)
+                : '';
+            return _build(context, title);
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
   }
 }
