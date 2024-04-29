@@ -63,6 +63,7 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     {'title': 'Value', 'key': valStr},
   ];
   final dataMap = <int, ({String key, dynamic value})>{};
+  bool _isLoading = false; // Loading indicator for data submission
 
   @override
   void initState() {
@@ -163,12 +164,35 @@ class _KeyValueEditState extends State<KeyValueEdit> {
       await _alert('No data to submit');
       return false;
     }
-    // generate TTL str with dataMap
-    final ttlStr = await getTTLStr(pairs!);
-    await writePod(widget.fileName, ttlStr, context, widget.child);
-    await _alert('Successfully saved ${dataMap.length} key-value pairs'
-        ' to "${widget.fileName}" in PODs');
-    return true;
+
+    setState(() {
+      // Begin loading.
+
+      _isLoading = true;
+    });
+
+    try {
+      // Generate TTL str with dataMap
+      final ttlStr = await getTTLStr(pairs!);
+
+      // Write to POD
+      await writePod(widget.fileName, ttlStr, context, widget.child);
+
+      await _alert('Successfully saved ${dataMap.length} key-value pairs'
+          ' to "${widget.fileName}" in PODs');
+      return true;
+    } on Exception catch (e) {
+      print('Exception: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          // End loading.
+
+          _isLoading = false;
+        });
+      }
+    }
+    return false;
   }
 
   @override
@@ -214,36 +238,39 @@ class _KeyValueEditState extends State<KeyValueEdit> {
           ],
         ),
         body: Center(
-          child: Editable(
-            key: _editableKey,
-            columns: cols,
-            rows: rows,
-            // zebraStripe: false,
-            // stripeColor1: Colors.blue[50]!,
-            // stripeColor2: Colors.grey[200]!,
-            onRowSaved: print,
-            onSubmitted: print,
-            borderColor: Colors.blueGrey,
-            tdStyle: const TextStyle(fontWeight: FontWeight.bold),
-            trHeight: 20,
-            thStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            thAlignment: TextAlign.center,
-            thVertAlignment: CrossAxisAlignment.end,
-            thPaddingBottom: 3,
-            // showSaveIcon:
-            //     false, // do not show the save icon at the right of a row
-            // saveIconColor: Colors.black,
-            // showCreateButton: false, // do not show the + button at top-left
-            tdAlignment: TextAlign.left,
-            tdEditableMaxLines: 100, // don't limit and allow data to wrap
-            tdPaddingTop: 5,
-            tdPaddingBottom: 5,
-            tdPaddingLeft: 8,
-            tdPaddingRight: 8,
-            focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
-                borderRadius: BorderRadius.zero),
-          ),
+          child: _isLoading
+              ? const CircularProgressIndicator() // Show loading indicator
+              : Editable(
+                  key: _editableKey,
+                  columns: cols,
+                  rows: rows,
+                  // zebraStripe: false,
+                  // stripeColor1: Colors.blue[50]!,
+                  // stripeColor2: Colors.grey[200]!,
+                  onRowSaved: print,
+                  onSubmitted: print,
+                  borderColor: Colors.blueGrey,
+                  tdStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  trHeight: 20,
+                  thStyle: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                  thAlignment: TextAlign.center,
+                  thVertAlignment: CrossAxisAlignment.end,
+                  thPaddingBottom: 3,
+                  // showSaveIcon:
+                  //     false, // do not show the save icon at the right of a row
+                  // saveIconColor: Colors.black,
+                  // showCreateButton: false, // do not show the + button at top-left
+                  tdAlignment: TextAlign.left,
+                  tdEditableMaxLines: 100, // don't limit and allow data to wrap
+                  tdPaddingTop: 5,
+                  tdPaddingBottom: 5,
+                  tdPaddingLeft: 8,
+                  tdPaddingRight: 8,
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                      borderRadius: BorderRadius.zero),
+                ),
         ));
   }
 }
