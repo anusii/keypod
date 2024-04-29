@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Sunday 2024-03-24 20:53:17 +1100 Graham Williams>
+// Time-stamp: <Monday 2024-04-22 14:41:43 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -27,8 +27,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:solidpod/src/solid/login.dart';
-
+import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:keypod/screens/home.dart';
