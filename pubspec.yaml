@@ -21,6 +21,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   intl: ^0.18.0
   path: ^1.9.0
+  rdflib: ^0.2.8
   solidpod:
     path: solidpod # Use a local path whilst solidpod is under development.
     ## git:
