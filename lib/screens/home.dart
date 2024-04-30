@@ -26,7 +26,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 ///
-/// Authors: Zheyuan Xu, Anushka Vidanage
+/// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen
 
 // TODO 20240411 gjw WHY THE IGNORE? EXPLAIN HERE
 
@@ -41,6 +41,7 @@ import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
+import 'package:keypod/utils/rdf.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:solidpod/solidpod.dart'
@@ -49,7 +50,6 @@ import 'package:solidpod/solidpod.dart'
         getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
-        parseTTL,
         readPod,
         removeMasterPassword;
 
@@ -157,10 +157,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       final filePath = path.join(dataDirPath, fileName);
 
       final fileContent = await readPod(filePath, context, const Home());
-      final dataMap = fileContent == null ? null : parseTTL(fileContent);
-      if (dataMap != null) {
-        assert(dataMap.length == 1);
-      }
+      final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
 
       await Navigator.pushReplacement(
           context,
@@ -168,9 +165,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               builder: (context) => KeyValueEdit(
                   title: 'Key Value Pair Editor',
                   fileName: fileName,
-                  keyValuePairs: dataMap == null
-                      ? null
-                      : dataMap[dataMap.keys.first] as Map<String, String>,
+                  keyValuePairs: pairs,
                   child: const Home())));
     } on Exception catch (e) {
       print('Exception: $e');
