@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Thursday 2024-04-11 21:58:54 +1000 Graham Williams>
+// Time-stamp: <Tuesday 2024-04-30 14:39:36 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -268,7 +268,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           height: 10,
                         ),
                         ElevatedButton(
-                          child: const Text('Write private data'),
+                          child: const Text('Key value demo'),
                           onPressed: () async {
                             await _writePrivateData();
                           },
