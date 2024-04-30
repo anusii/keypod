@@ -29,8 +29,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:editable/editable.dart';
+import 'package:keypod/utils/rdf.dart';
 
-import 'package:solidpod/solidpod.dart' show writePod, getTTLStr;
+import 'package:solidpod/solidpod.dart' show writePod;
 
 class KeyValueEdit extends StatefulWidget {
   /// Constructor
