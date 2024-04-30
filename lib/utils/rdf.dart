@@ -33,9 +33,12 @@ import 'package:solidpod/solidpod.dart' show getWebId;
 // Namespace for keys
 const String appTerms = 'https://solidcommunity.au/predicates/terms#';
 
-/// Save key/value pairs in TTL format
+/// Serialise key/value pairs [keyValuePairs] in TTL format where
+/// Subject: Web ID
+/// Predicate: Key
+/// Object: Value
 
-Future<String> getTTLStr(
+Future<String> genTTLStr(
     List<({String key, dynamic value})> keyValuePairs) async {
   assert(keyValuePairs.isNotEmpty);
   assert({for (var p in keyValuePairs) p.key}.length ==
@@ -53,4 +56,31 @@ Future<String> getTTLStr(
   g.serialize(format: 'ttl', abbr: 'short');
 
   return g.serializedString;
+}
+
+/// Parse TTL string [ttlStr] and returns the key-value pairs from triples where
+/// Subject: Web ID
+/// Predicate: Key
+/// Object: Value
+
+Future<List<({String key, dynamic value})>> parseTTLStr(String ttlStr) async {
+  assert(ttlStr.isNotEmpty);
+  final g = Graph();
+  g.parseTurtle(ttlStr);
+  final keys = <String>{};
+  final pairs = <({String key, dynamic value})>[];
+  final webId = await getWebId();
+  assert(webId != null);
+  String extract(String str) => str.contains('#') ? str.split('#')[1] : str;
+  for (final t in g.triples) {
+    final sub = t.sub.value as String;
+    if (sub == webId) {
+      final pre = extract(t.pre.value as String);
+      final obj = extract(t.obj.value as String);
+      assert(!keys.contains(pre));
+      keys.add(pre);
+      pairs.add((key: pre, value: obj));
+    }
+  }
+  return pairs;
 }
