@@ -32,7 +32,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:solidpod/solidpod.dart';
+import 'package:solidpod/solidpod.dart' show getFileContent;
 
 import 'package:keypod/screens/home.dart';
 
@@ -42,13 +42,12 @@ class ViewKeys extends StatefulWidget {
   /// Constructor for ShowKeys widget
 
   const ViewKeys({
-    required this.appName,
     required this.keyInfo,
     super.key,
   });
 
-  /// Name of the app
-  final String appName;
+  // Name of the app
+  // final String appName;
 
   /// Data of the key file
   final String keyInfo;
@@ -66,7 +65,7 @@ class _ViewKeysState extends State<ViewKeys> {
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
-          title: Text(widget.appName),
+          title: const Text('KeyPod'),
         ),
         body: loadedScreen(widget.keyInfo));
   }
@@ -92,65 +91,89 @@ class _ViewKeysState extends State<ViewKeys> {
     // final eccKey = Encrypted.from64(medFileKey);
     // final keyIndPlain = encrypterKey.decrypt(eccKey, iv: ivInd);
 
+    final dataRows = encFileData.entries.map((entry) {
+      return DataRow(cells: [
+        DataCell(Text(
+          entry.key as String,
+          style: const TextStyle(
+            fontSize: 12,
+          ),
+        )),
+        DataCell(SizedBox(
+            width: 600,
+            child: Text(
+              entry.value[1] as String,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 12,
+              ),
+            ))),
+      ]);
+    }).toList();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            DataTable(columnSpacing: 30.0, columns: const [
-              DataColumn(
-                label: Text(
-                  'Parameter',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  'Value',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ], rows: [
-              DataRow(cells: [
-                const DataCell(Text(
-                  'Encryption key verification',
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                )),
-                DataCell(Text(
-                  encFileData['encKey'][1] as String,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
-                )),
-              ]),
-              DataRow(cells: [
-                const DataCell(Text(
-                  'Private key',
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                )),
-                DataCell(SizedBox(
-                  width: 600,
-                  child: Text(
-                    encFileData['prvKey'][1] as String,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 12,
+            DataTable(
+                columnSpacing: 30.0,
+                columns: const [
+                  DataColumn(
+                    label: Text(
+                      'Parameter',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                )),
-              ])
-            ]),
+                  DataColumn(
+                    label: Text(
+                      'Value',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+                rows: dataRows),
+            // [
+            //   DataRow(cells: [
+            //     const DataCell(Text(
+            //       'Encryption key verification',
+            //       style: TextStyle(
+            //         fontSize: 12,
+            //       ),
+            //     )),
+            //     DataCell(Text(
+            //       encFileData['encKey'][1] as String,
+            //       style: const TextStyle(
+            //         fontSize: 12,
+            //       ),
+            //     )),
+            //   ]),
+            //   DataRow(cells: [
+            //     const DataCell(Text(
+            //       'Private key',
+            //       style: TextStyle(
+            //         fontSize: 12,
+            //       ),
+            //     )),
+            //     DataCell(SizedBox(
+            //       width: 600,
+            //       child: Text(
+            //         encFileData['prvKey'][1] as String,
+            //         overflow: TextOverflow.ellipsis,
+            //         style: const TextStyle(
+            //           fontSize: 12,
+            //         ),
+            //       ),
+            //     )),
+            //   ])
+            // ]),
             const SizedBox(
               height: 50,
             ),
@@ -159,8 +182,7 @@ class _ViewKeysState extends State<ViewKeys> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => Home(appName: widget.appName)),
+                  MaterialPageRoute(builder: (context) => Home()),
                 );
               },
             ),
