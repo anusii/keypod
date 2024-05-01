@@ -5,6 +5,10 @@ Here we note high level changes for the Key Pod app.
 Please add the updates beyond 0.3.0 under the 0.4 heading, adding to
 the top rather than the bottom.
 
+# 0.4.4
+
+Add a basic key-value editor to demonstrate the writePod function
+
 # 0.4.3
 
 Split About Dialog into own file about.dart
