@@ -1,7 +1,7 @@
 name: keypod
 description: "Secure POD storage of key-value-note triplets."
 publish_to: "none"
-version: 0.3.4+10
+version: 0.4.5
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -15,11 +15,14 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+  editable: ^2.0.0
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
   flutter_secure_storage: ^9.0.0
   intl: ^0.18.0
+  path: ^1.9.0
+  rdflib: ^0.2.8
   solidpod:
     path: solidpod # Use a local path whilst solidpod is under development.
     ## git:

@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Thursday 2024-04-11 21:58:54 +1000 Graham Williams>
+// Time-stamp: <Tuesday 2024-04-30 14:39:36 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -26,7 +26,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 ///
-/// Authors: Zheyuan Xu, Anushka Vidanage
+/// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen
 
 // TODO 20240411 gjw WHY THE IGNORE? EXPLAIN HERE
 
@@ -43,18 +43,28 @@ import 'package:solidpod/src/widgets/setting.dart';
 import 'package:solidpod/src/solid/secure_key.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
+import 'package:keypod/utils/rdf.dart';
+import 'package:path/path.dart' as path;
+
+import 'package:solidpod/solidpod.dart'
+    show
+        deleteLogIn,
+        getAppNameVersion,
+        getEncKeyPath,
+        getDataDirPath,
+        readPod,
+        removeMasterPassword;
 
 /// Widget represents the home screen of the application.
 ///
-/// It only requires [appName] to be passed to it during initialization.
 /// This is because this page is designed to be work in offline as well.
 
 class Home extends StatefulWidget {
   /// Initialise widget variables
 
-  const Home({required this.appName, super.key});
-  final String appName;
+  const Home({super.key});
 
   @override
   HomeState createState() => HomeState();
@@ -78,20 +88,21 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       _isLoading = true;
     });
 
+    // final appName = await getAppName();
     try {
-      const filePath = 'encryption/enc-keys.ttl';
+      // final filePath = '$appName/encryption/enc-keys.ttl';
+      final filePath = await getEncKeyPath();
       final fileContent = await readPod(
         filePath,
         context,
-        const Home(appName: 'KeyPod'),
+        const Home(),
       );
 
       await Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ViewKeys(
-            appName: widget.appName,
-            keyInfo: fileContent,
+            keyInfo: fileContent!,
           ),
         ),
       );
@@ -106,20 +117,84 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Future<void> _writePrivateData() async {
+    setState(() {
+      // Begin loading.
+      _isLoading = true;
+    });
+
+    // final appName = await getAppName();
+
+    // final fileName = 'test-101.ttl';
+    // final fileContent = 'This is for testing writePod.';
+
+    const fileName = 'test-102.ttl';
+
+    try {
+      // await writePod(
+      //   filePath,
+      //   fileContent,
+      //   context,
+      //   const Home(),
+      // );
+      // await Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => AlertDialog(
+      //                 title: const Text('Success!'),
+      //                 content:
+      //                     const Text('Data is successfully stored in PODs'),
+      //                 actions: <Widget>[
+      //                   ElevatedButton(
+      //                     child: const Text('OK'),
+      //                     onPressed: () {
+      //                       // Navigator.pop(context);
+      //                       Navigator.push(
+      //                         context,
+      //                         MaterialPageRoute(
+      //                             builder: (context) => const Home()),
+      //                       );
+      //                     },
+      //                   ),
+      //                 ])));
+      final dataDirPath = await getDataDirPath();
+      final filePath = path.join(dataDirPath, fileName);
+
+      final fileContent = await readPod(filePath, context, const Home());
+      final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
+
+      await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => KeyValueEdit(
+                  title: 'Key Value Pair Editor',
+                  fileName: fileName,
+                  keyValuePairs: pairs,
+                  child: const Home())));
+    } on Exception catch (e) {
+      print('Exception: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          // End loading.
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Widget _build(BuildContext context, String title) {
     final dateStr = DateFormat('dd MMMM yyyy').format(DateTime.now());
 
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: lightGreen,
         centerTitle: true,
-        title: Text(widget.appName),
+        title: Text(title),
         actions: [
           IconButton(
             icon: const Icon(Icons.info),
             onPressed: () async {
-              // final appNameVersion = await getAppNameVersion();
               aboutDialog(context);
             },
             tooltip: 'Popup a window about the app.',
@@ -192,6 +267,15 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           height: 10,
                         ),
                         ElevatedButton(
+                          child: const Text('Key value demo'),
+                          onPressed: () async {
+                            await _writePrivateData();
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(
                           child: const Text('Delete login data'),
                           onPressed: () async {
                             final deleteRes = await deleteLogIn();
@@ -210,6 +294,33 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               builder: (context) => AlertDialog(
                                 title: const Text('Notice'),
                                 content: Text(deleteMsg),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('OK'))
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          child: const Text('Delete master password'),
+                          onPressed: () async {
+                            late String msg;
+                            try {
+                              await removeMasterPassword();
+                              msg = 'Successfully deleted master password.';
+                            } on Exception catch (e) {
+                              msg = 'Failed to delete master password: $e';
+                            }
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Notice'),
+                                content: Text(msg),
                                 actions: [
                                   ElevatedButton(
                                       onPressed: () {
@@ -263,5 +374,22 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<({String name, String version})>(
+        future: getAppNameVersion(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final appName = snapshot.data?.name;
+            final title = appName!.isNotEmpty
+                ? appName[0].toUpperCase() + appName.substring(1)
+                : '';
+            return _build(context, title);
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
   }
 }
