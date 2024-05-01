@@ -29,8 +29,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:editable/editable.dart';
+import 'package:keypod/utils/rdf.dart';
 
-import 'package:solidpod/solidpod.dart' show writePod, getTTLStr;
+import 'package:solidpod/solidpod.dart' show writePod;
 
 class KeyValueEdit extends StatefulWidget {
   /// Constructor
@@ -44,7 +45,8 @@ class KeyValueEdit extends StatefulWidget {
   final String title;
   final String fileName; // file to be saved in PODs
   final Widget child;
-  final Map<String, String>? keyValuePairs; // initial key value pairs
+  final List<({String key, dynamic value})>?
+      keyValuePairs; // initial key value pairs
 
   @override
   State<KeyValueEdit> createState() => _KeyValueEditState();
@@ -74,8 +76,8 @@ class _KeyValueEditState extends State<KeyValueEdit> {
 
     // Initialise the rows
     if (widget.keyValuePairs != null) {
-      for (final key in (widget.keyValuePairs?.keys.toList() as List)..sort()) {
-        rows.add({keyStr: key, valStr: widget.keyValuePairs![key]});
+      for (final (:key, :value) in widget.keyValuePairs!) {
+        rows.add({keyStr: key, valStr: value});
       }
     }
 
@@ -173,7 +175,7 @@ class _KeyValueEditState extends State<KeyValueEdit> {
 
     try {
       // Generate TTL str with dataMap
-      final ttlStr = await getTTLStr(pairs!);
+      final ttlStr = await genTTLStr(pairs!);
 
       // Write to POD
       await writePod(widget.fileName, ttlStr, context, widget.child);
