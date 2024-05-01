@@ -1,7 +1,7 @@
 name: keypod
 description: "Secure POD storage of key-value-note triplets."
 publish_to: "none"
-version: 0.3.4+11
+version: 0.4.4
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -25,7 +25,7 @@ dependencies:
     path: solidpod # Use a local path whilst solidpod is under development.
     ## git:
     ##   url: https://github.com/anusii/solidpod
-    ##   ref: dc/78_write_pod
+    ##   ref: dev
   universal_io: ^2.2.2
   window_manager: ^0.3.7
   # dart_code_metrics: ^4.0.0
