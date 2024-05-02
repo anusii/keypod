@@ -25,6 +25,7 @@
 // SOFTWARE.
 ///
 /// Authors: Dawei Chen
+library;
 
 import 'package:flutter/material.dart';
 
@@ -267,8 +268,6 @@ class _KeyValueEditState extends State<KeyValueEdit> {
                   tdEditableMaxLines: 100, // don't limit and allow data to wrap
                   tdPaddingTop: 5,
                   tdPaddingBottom: 5,
-                  tdPaddingLeft: 8,
-                  tdPaddingRight: 8,
                   focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.zero),

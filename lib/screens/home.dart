@@ -341,18 +341,18 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             //TODO kevin add the change key backend function here
                             final authData = <dynamic, dynamic>{};
 
-                            String webId = "";
+                            const webId = '';
 
                             /// Setup SecureKey object
                             final secureKeyObject = SecureKey('', webId);
 
-                            final _storage = const FlutterSecureStorage();
+                            const storage = FlutterSecureStorage();
 
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Settings(
-                                          storage: _storage,
+                                          storage: storage,
                                           authData: authData,
                                           webId: webId,
                                           secureKeyObject: secureKeyObject,
