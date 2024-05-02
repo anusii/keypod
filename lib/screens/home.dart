@@ -50,6 +50,7 @@ import 'package:solidpod/solidpod.dart'
         getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
+        logoutPod,
         readPod,
         removeMasterPassword;
 
@@ -196,15 +197,32 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             tooltip: 'Popup a window about the app.',
           ),
         ],
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const KeyPod()),
-            );
-          },
-        ),
+        leading: RotatedBox(
+            quarterTurns: 2,
+            child: IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Logout $title',
+              onPressed: () async {
+                if (await logoutPod()) {
+                  await Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => const KeyPod()));
+                } else {
+                  await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text('Logging out failed'),
+                            content: Text('Unable to logging out the $title'),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Dismiss'))
+                            ],
+                          ));
+                }
+              },
+            )),
       ),
       body: _isLoading
           ? const Center(
