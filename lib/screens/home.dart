@@ -35,12 +35,9 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:intl/intl.dart';
 import 'package:solidpod/solidpod.dart';
-import 'package:solidpod/src/widgets/setting.dart';
-import 'package:solidpod/src/solid/secure_key.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
@@ -334,38 +331,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         const SizedBox(
                           height: 10,
-                        ),
-                        ElevatedButton(
-                          child: const Text('Change Encryption Key'),
-                          onPressed: () {
-                            //TODO kevin add the change key backend function here
-                            final authData = <dynamic, dynamic>{};
-
-                            const webId = '';
-
-                            /// Setup SecureKey object
-                            final secureKeyObject = SecureKey('', webId);
-
-                            const storage = FlutterSecureStorage();
-
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Settings(
-                                          storage: storage,
-                                          authData: authData,
-                                          webId: webId,
-                                          secureKeyObject: secureKeyObject,
-                                          onBackButtonPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const KeyPod()),
-                                            );
-                                          },
-                                        )));
-                          },
                         ),
                       ],
                     ),
