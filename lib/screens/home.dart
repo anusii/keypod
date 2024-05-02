@@ -52,7 +52,8 @@ import 'package:solidpod/solidpod.dart'
         getEncKeyPath,
         getDataDirPath,
         readPod,
-        removeMasterPassword;
+        removeMasterPassword,
+        ChangeKeyButton;
 
 /// Widget represents the home screen of the application.
 ///
@@ -332,6 +333,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         const SizedBox(
                           height: 10,
                         ),
+                        const ChangeKeyButton(),
                       ],
                     ),
                   ),
