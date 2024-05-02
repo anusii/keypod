@@ -35,9 +35,7 @@
 library;
 
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
-import 'package:solidpod/solidpod.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';

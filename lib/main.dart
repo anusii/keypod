@@ -26,8 +26,8 @@
 library;
 
 import 'package:flutter/material.dart';
-
 import 'package:solidpod/solidpod.dart';
+
 import 'package:window_manager/window_manager.dart';
 
 import 'package:keypod/screens/home.dart';
@@ -126,9 +126,7 @@ class KeyPod extends StatelessWidget {
           background: Colors.green,
         ),
 
-        child: Home(
-            // appName: 'KeyPod',
-            ),
+        child: Home(),
       ),
     );
   }
