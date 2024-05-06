@@ -180,6 +180,47 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
+  Future<void> _logout(String appTitle) async {
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('Notice'),
+              content: Text('Logging out $appTitle?'),
+              actions: [
+                ElevatedButton(
+                    child: const Text('OK'),
+                    onPressed: () async {
+                      if (await logoutPod()) {
+                        await Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const KeyPod()));
+                      } else {
+                        Navigator.pop(context);
+                        await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                    title: const Text('Logging out failed'),
+                                    content: Text(
+                                        'Unable to logging out the $appTitle, please try again later'),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Dismiss'))
+                                    ]));
+                      }
+                    }),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancel')),
+              ],
+            ));
+  }
+
   Widget _build(BuildContext context, String title) {
     final dateStr = DateFormat('dd MMMM yyyy').format(DateTime.now());
 
@@ -197,32 +238,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             tooltip: 'Popup a window about the app.',
           ),
         ],
-        leading: RotatedBox(
-            quarterTurns: 2,
-            child: IconButton(
-              icon: const Icon(Icons.logout),
-              tooltip: 'Logout $title',
-              onPressed: () async {
-                if (await logoutPod()) {
-                  await Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => const KeyPod()));
-                } else {
-                  await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: const Text('Logging out failed'),
-                            content: Text('Unable to logging out the $title'),
-                            actions: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('Dismiss'))
-                            ],
-                          ));
-                }
-              },
-            )),
+        // Instruct flutter to not put a leading widget automatically
+        // see https://api.flutter.dev/flutter/material/AppBar/leading.html
+        leading: null,
+        automaticallyImplyLeading: false,
       ),
       body: _isLoading
           ? const Center(
@@ -349,6 +368,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         const SizedBox(
                           height: 10,
                         ),
+                        ElevatedButton(
+                            onPressed: () async {
+                              await _logout(title);
+                            },
+                            child: const Text('Logout')),
                       ],
                     ),
                   ),
