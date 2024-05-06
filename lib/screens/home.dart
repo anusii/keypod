@@ -94,7 +94,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         const Home(),
       );
 
-      await Navigator.pushReplacement(
+      //await Navigator.pushReplacement( // this won't show the file content if POD initialisation has just been performed
+      await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ViewKeys(
@@ -102,6 +103,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
         ),
       );
+    } on Exception catch (e) {
+      print('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
