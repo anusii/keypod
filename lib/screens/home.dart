@@ -77,7 +77,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
-  Future<void> _showPrivateData() async {
+  Future<void> _showPrivateData(String title) async {
     setState(() {
       // Begin loading.
 
@@ -99,6 +99,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         MaterialPageRoute(
           builder: (context) => ViewKeys(
             keyInfo: fileContent!,
+            title: title,
           ),
         ),
       );
@@ -256,7 +257,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ElevatedButton(
                           child: const Text('Show private data'),
                           onPressed: () async {
-                            await _showPrivateData();
+                            await _showPrivateData(title);
                           },
                         ),
                         const SizedBox(
