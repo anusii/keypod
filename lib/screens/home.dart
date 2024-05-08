@@ -50,7 +50,7 @@ import 'package:solidpod/solidpod.dart'
         getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
-        logoutPod,
+        logoutPopup,
         readPod,
         removeMasterPassword,
         changeKeyPopup;
@@ -153,47 +153,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         });
       }
     }
-  }
-
-  Future<void> _logout(String appTitle) async {
-    await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: const Text('Notice'),
-              content: Text('Logging out $appTitle?'),
-              actions: [
-                ElevatedButton(
-                    child: const Text('OK'),
-                    onPressed: () async {
-                      if (await logoutPod()) {
-                        await Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const KeyPod()));
-                      } else {
-                        Navigator.pop(context);
-                        await showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                    title: const Text('Logging out failed'),
-                                    content: Text(
-                                        'Unable to logging out the $appTitle, please try again later'),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Dismiss'))
-                                    ]));
-                      }
-                    }),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Cancel')),
-              ],
-            ));
   }
 
   Widget _build(BuildContext context, String title) {
@@ -345,7 +304,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         ElevatedButton(
                             onPressed: () async {
-                              await _logout(title);
+                              await logoutPopup(context, const KeyPod());
                             },
                             child: const Text('Logout')),
                         ElevatedButton(
