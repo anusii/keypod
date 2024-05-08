@@ -127,32 +127,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     const fileName = 'test-102.ttl';
 
     try {
-      // await writePod(
-      //   filePath,
-      //   fileContent,
-      //   context,
-      //   const Home(),
-      // );
-      // await Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => AlertDialog(
-      //                 title: const Text('Success!'),
-      //                 content:
-      //                     const Text('Data is successfully stored in PODs'),
-      //                 actions: <Widget>[
-      //                   ElevatedButton(
-      //                     child: const Text('OK'),
-      //                     onPressed: () {
-      //                       // Navigator.pop(context);
-      //                       Navigator.push(
-      //                         context,
-      //                         MaterialPageRoute(
-      //                             builder: (context) => const Home()),
-      //                       );
-      //                     },
-      //                   ),
-      //                 ])));
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
