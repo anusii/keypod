@@ -35,7 +35,6 @@
 library;
 
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
@@ -51,7 +50,8 @@ import 'package:solidpod/solidpod.dart'
         getEncKeyPath,
         getDataDirPath,
         readPod,
-        removeMasterPassword;
+        removeMasterPassword,
+        changeKeyPopup;
 
 /// Widget represents the home screen of the application.
 ///
@@ -331,6 +331,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         const SizedBox(
                           height: 10,
                         ),
+                        ElevatedButton(
+                            onPressed: () {
+                              changeKeyPopup(context);
+                            },
+                            child: const Text('Change Key')),
                       ],
                     ),
                   ),
