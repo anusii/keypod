@@ -26,6 +26,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:keypod/screens/home_page.dart';
 
 import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
@@ -110,7 +111,7 @@ class KeyPod extends StatelessWidget {
       // SolidLogin widget can be tuned to suit the look and feel of the app
       // with appropraite login images and logo.
 
-      home: const SolidLogin(
+      home: SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
         // DALL-E3.
 
@@ -125,7 +126,7 @@ class KeyPod extends StatelessWidget {
         loginButtonStyle: LoginButtonStyle(
           background: Colors.green,
         ),
-        child: Home(),
+        child: HomeScreen(),
       ),
     );
   }
