@@ -25,6 +25,7 @@
 // SOFTWARE.
 ///
 /// Authors: Dawei Chen
+library;
 
 import 'package:rdflib/rdflib.dart';
 
@@ -41,7 +42,7 @@ const String appTerms = 'https://solidcommunity.au/predicates/terms#';
 Future<String> genTTLStr(
     List<({String key, dynamic value})> keyValuePairs) async {
   assert(keyValuePairs.isNotEmpty);
-  assert({for (var p in keyValuePairs) p.key}.length ==
+  assert({for (final p in keyValuePairs) p.key}.length ==
       keyValuePairs.length); // No duplicate keys
   final webId = await getWebId();
   assert(webId != null);
@@ -53,7 +54,7 @@ Future<String> genTTLStr(
     g.addTripleToGroups(f, ns.withAttr(p.key), p.value);
   }
 
-  g.serialize(format: 'ttl', abbr: 'short');
+  g.serialize(abbr: 'short');
 
   return g.serializedString;
 }

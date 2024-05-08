@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Tuesday 2024-04-30 14:39:36 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-08 10:28:54 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -35,7 +35,6 @@
 library;
 
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
@@ -51,7 +50,8 @@ import 'package:solidpod/solidpod.dart'
         getEncKeyPath,
         getDataDirPath,
         readPod,
-        removeMasterPassword;
+        removeMasterPassword,
+        changeKeyPopup;
 
 /// Widget represents the home screen of the application.
 ///
@@ -228,7 +228,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           height: 10,
                         ),
                         ElevatedButton(
-                          child: const Text('Show private data'),
+                          child: const Text('Show Private Data'),
                           onPressed: () async {
                             await _showPrivateData();
                           },
@@ -237,7 +237,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           height: 10,
                         ),
                         ElevatedButton(
-                          child: const Text('Key value demo'),
+                          child: const Text('Key Value Table Demo'),
                           onPressed: () async {
                             await _writePrivateData();
                           },
@@ -246,17 +246,17 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           height: 10,
                         ),
                         ElevatedButton(
-                          child: const Text('Delete login data'),
+                          child: const Text('Forget Solid Pod Login'),
                           onPressed: () async {
                             final deleteRes = await deleteLogIn();
 
                             var deleteMsg = '';
 
                             if (deleteRes) {
-                              deleteMsg = 'Successfully deleted login info';
+                              deleteMsg = 'Successfully forgot login info';
                             } else {
                               deleteMsg =
-                                  'Failed to delete login info. Try again in a while';
+                                  'Failed to forget login info. Try again in a while';
                             }
 
                             await showDialog(
@@ -277,14 +277,14 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
-                          child: const Text('Delete master password'),
+                          child: const Text('Forget Security Key'),
                           onPressed: () async {
                             late String msg;
                             try {
                               await removeMasterPassword();
-                              msg = 'Successfully deleted master password.';
+                              msg = 'Successfully un-remembered security key.';
                             } on Exception catch (e) {
-                              msg = 'Failed to delete master password: $e';
+                              msg = 'Failed to forget security key: $e';
                             }
                             await showDialog(
                               context: context,
@@ -305,6 +305,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         const SizedBox(
                           height: 10,
                         ),
+                        ElevatedButton(
+                            onPressed: () {
+                              changeKeyPopup(context);
+                            },
+                            child: const Text('Change Key')),
                       ],
                     ),
                   ),
