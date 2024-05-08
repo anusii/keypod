@@ -43,6 +43,7 @@ class ViewKeys extends StatefulWidget {
 
   const ViewKeys({
     required this.keyInfo,
+    required this.title,
     super.key,
   });
 
@@ -51,6 +52,9 @@ class ViewKeys extends StatefulWidget {
 
   /// Data of the key file
   final String keyInfo;
+
+  // Title of the page
+  final String title;
 
   @override
   State<ViewKeys> createState() => _ViewKeysState();
@@ -65,7 +69,7 @@ class _ViewKeysState extends State<ViewKeys> {
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('KeyPod'),
+          title: Text(widget.title),
         ),
         body: loadedScreen(widget.keyInfo));
   }
@@ -182,7 +186,7 @@ class _ViewKeysState extends State<ViewKeys> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Home()),
+                  MaterialPageRoute(builder: (context) => const Home()),
                 );
               },
             ),
