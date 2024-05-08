@@ -5,10 +5,13 @@ Here we note high level changes for the Key Pod app.
 Please add the updates beyond 0.3.0 under the 0.4 heading, adding to
 the top rather than the bottom.
 
+# 0.4.7
+
+Add a logout button for users to logout.
+
 # 0.4.6
 
 Add a changekeyPopup widget to open a popup window for changing the security key.
-
 
 # 0.4.5
 
