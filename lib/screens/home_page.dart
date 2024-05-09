@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: 'Key Value Pair Editor',
                   fileName: fileName,
                   keyValuePairs: keyValuePairs,
-                  child: const Home())));
+                  child: HomeScreen())));
     } catch (e) {
       print('Error: $e');
     } finally {

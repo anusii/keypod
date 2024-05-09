@@ -24,10 +24,8 @@ class _KeyValueTableState extends State<KeyValueTable> {
   // List<Map<String, dynamic>> rows = [];
   bool _isLoading = false; // Loading indicator for data submission
   Map<int, Map<String, dynamic>> dataMap = {};
-  static const rowKey = 'row'; // key of row index in editedRows
-  static const keyStr = 'key';
-  static const valStr = 'value';
-  final regExp = RegExp(r'\s+');
+
+  bool _isDataModified = false; // Track if data has been modified
 
   @override
   void initState() {
@@ -69,6 +67,10 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ),
         );
       } else {
+        if (dataMap[index]!['key'] != newKey) {
+          dataMap[index]!['key'] = newKey;
+          _isDataModified = true; // Mark data as modified
+        }
         dataMap[index]!['key'] = newKey;
         print("dataMap: $dataMap");
       }
@@ -77,15 +79,17 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   void _updateRowValue(int index, String newValue) {
     setState(() {
-      dataMap[index]!['value'] = newValue;
-      print("dataMap: $dataMap");
+      if (dataMap[index]!['value'] != newValue) {
+        dataMap[index]!['value'] = newValue;
+        _isDataModified = true; // Mark data as modified
+      }
     });
   }
 
   void _deleteRow(int index) {
     setState(() {
       dataMap.remove(index);
-      print("dataMap: $dataMap");
+      _isDataModified = true; // Mark data as modified
     });
   }
 
@@ -106,60 +110,15 @@ class _KeyValueTableState extends State<KeyValueTable> {
             ));
   }
 
-// Get key value pairs
-  Future<List<Map<String, dynamic>>?> _getKeyValuePairs() async {
-    final rowInd = dataMap.keys.toList()..sort();
-    final keys = <String>{};
-    final pairs = <Map<String, dynamic>>[];
-    for (final i in rowInd) {
-      // Ensure 'k' is treated as a String explicitly
-      final String k = dataMap[i]!['key'].trim() as String;
-
-      if (k.isEmpty) {
-        await _alert('Invalid key: "$k"');
-        return null;
-      }
-      if (keys.contains(k)) {
-        await _alert('Invalid key: Duplicate key "$k"');
-        return null;
-      }
-      // As 'k' is explicitly declared as String, no need for additional casting here
-      if (regExp.hasMatch(k)) {
-        await _alert('Invalid key: Whitespace found in key "$k"');
-        return null;
-      }
-
-      keys.add(k);
-      final v = dataMap[i]!['value']; // Assume this is correctly a dynamic type
-      pairs.add({'key': k, 'value': v});
-    }
-
-    return pairs;
-  }
-
   // Save data to PODs
   Future<bool> _saveToPod(BuildContext context) async {
-    // final saved = _saveEditedRows();
-    // if (!saved) {
-    //   await _alert('Data not changed!');
-    //   return false;
-    // }
-    // final pairs = await _getKeyValuePairs();
-    // List<MapEntry<String, dynamic>> tupleList =
-    //     pairs.map((map) => MapEntry(map['key'], map['value'])).toList();
-
-    // if (dataMap.isEmpty) {
-    //   await _alert('No data to submit');
-    //   return false;
-    // }
-
     setState(() {
       // Begin loading.
 
       _isLoading = true;
     });
 
-    List<KeyValuePair> pairs = convertDataMapToListOfPairs(dataMap);
+    final pairs = convertDataMapToListOfPairs(dataMap);
 
     try {
       // Generate TTL str with dataMap
@@ -190,27 +149,54 @@ class _KeyValueTableState extends State<KeyValueTable> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.add),
             onPressed: _addNewRow,
           ),
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () async {
-              setState(() {
-                _isLoading = true; // Start loading
-              });
-              final saved = await _saveToPod(context);
-              if (saved) {
-                await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => widget.child));
-              }
-              setState(() {
-                _isLoading = false; // Stop loading
-              });
-            },
+          ElevatedButton(
+            onPressed: _isDataModified
+                ? () async {
+                    setState(() {
+                      _isLoading = true; // Start loading
+                    });
+                    final saved = await _saveToPod(context);
+                    if (saved) {
+                      setState(() {
+                        _isDataModified = false; // Reset modification flag
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => widget.child));
+                    }
+                    setState(() {
+                      _isLoading = false; // Stop loading
+                    });
+                  }
+                : null, // Disable button if data is not modified
+            child: const Text('Save',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled))
+                    return Colors
+                        .grey.shade300; // Light grey color when disabled
+                  return Theme.of(context).colorScheme.primary; // Regular color
+                },
+              ),
+              foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled))
+                    return Colors.black; // Text color when disabled
+                  return Colors.white; // Text color when enabled
+                },
+              ),
+            ),
           ),
+          SizedBox(width: 10),
           ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
@@ -221,46 +207,89 @@ class _KeyValueTableState extends State<KeyValueTable> {
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator()) // Show loading indicator
-          : SingleChildScrollView(
-              // Show data table if not loading
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('Key')),
-                  DataColumn(label: Text('Value')),
-                  DataColumn(label: Text('Actions')),
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Align children to the center
+                children: <Widget>[
+                  CircularProgressIndicator(), // Loading spinner
+                  SizedBox(height: 20), // Space between spinner and text
+                  Text("Saving in Progress",
+                      style: TextStyle(fontSize: 16)), // Text message
                 ],
-                rows: dataMap.keys.map((index) {
-                  return DataRow(
-                    cells: [
-                      DataCell(TextField(
-                        controller: TextEditingController(
-                            text: dataMap[index]!['key'] as String?),
-                        onChanged: (newKey) => _updateRowKey(index, newKey),
-                        decoration:
-                            const InputDecoration(border: InputBorder.none),
-                      )),
-                      DataCell(TextField(
-                        controller: TextEditingController(
-                            text: dataMap[index]!['value'] as String?),
-                        onChanged: (newValue) =>
-                            _updateRowValue(index, newValue),
-                        decoration:
-                            const InputDecoration(border: InputBorder.none),
-                      )),
-                      DataCell(Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () => _deleteRow(index),
-                          ),
-                        ],
-                      )),
-                    ],
-                  );
-                }).toList(),
+              ),
+            )
+          : Center(
+              child: SingleChildScrollView(
+                child: DataTable(
+                  columnSpacing: 12.0,
+                  horizontalMargin: 10.0,
+                  headingRowColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                    return Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withOpacity(0.8); // Header background color
+                  }),
+                  columns: const [
+                    DataColumn(label: Text('Key')),
+                    DataColumn(label: Text('Value')),
+                    DataColumn(label: Text('Actions')),
+                  ],
+                  rows: dataMap.keys.map((index) {
+                    return DataRow(
+                      cells: [
+                        DataCell(TextField(
+                          controller: TextEditingController(
+                              text: dataMap[index]!['key'] as String),
+                          onChanged: (newKey) => _updateRowKey(index, newKey),
+                          decoration:
+                              const InputDecoration(border: InputBorder.none),
+                        )),
+                        DataCell(TextField(
+                          controller: TextEditingController(
+                              text: dataMap[index]!['value'] as String),
+                          onChanged: (newValue) =>
+                              _updateRowValue(index, newValue),
+                          decoration:
+                              const InputDecoration(border: InputBorder.none),
+                        )),
+                        DataCell(_actionCell(index)),
+                      ],
+                    );
+                  }).toList(),
+                ),
               ),
             ),
+    );
+  }
+
+  Widget _customCell(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5.0),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Text(text, style: TextStyle(fontSize: 14)),
+    );
+  }
+
+  Widget _actionCell(int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // IconButton(
+        //   icon: Icon(Icons.edit, color: Colors.blue),
+        //   onPressed: () {
+        //     // Add your edit action
+        //   },
+        // ),
+        IconButton(
+          icon: Icon(Icons.delete, color: Colors.red),
+          onPressed: () => _deleteRow(index),
+        ),
+      ],
     );
   }
 }
