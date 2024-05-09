@@ -41,7 +41,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   void _addNewRow() {
     setState(() {
-      int newIndex = dataMap.length;
+      int newIndex = dataMap.length + 1;
       dataMap[newIndex] = {'key': '', 'value': ''};
     });
   }
