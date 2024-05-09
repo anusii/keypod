@@ -5,9 +5,17 @@ Here we note high level changes for the Key Pod app.
 Please add the updates beyond 0.3.0 under the 0.4 heading, adding to
 the top rather than the bottom.
 
-# 0.4.7
+# 0.4.9
 
 Add a logout button for users to logout.
+
+# 0.4.8
+
+Fix bug that prevents one from showing data right after initialising POD.
+
+# 0.4.7
+
+Remove hard-coded app name by getting the name from solidpod.
 
 # 0.4.6
 
