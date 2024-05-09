@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/screens/data_table.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/home.dart';
 import 'package:keypod/utils/rdf.dart';
@@ -99,14 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final fileContent = await readPod(filePath, context, const Home());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
+      // Convert each tuple to a Map
+      List<Map<String, dynamic>>? keyValuePairs = pairs?.map((pair) {
+        return {'key': pair.key, 'value': pair.value};
+      }).toList();
 
       await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => KeyValueEdit(
+              builder: (context) => KeyValueTable(
                   title: 'Key Value Pair Editor',
                   fileName: fileName,
-                  keyValuePairs: pairs,
+                  keyValuePairs: keyValuePairs,
                   child: const Home())));
     } catch (e) {
       print('Error: $e');
