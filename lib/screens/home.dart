@@ -49,6 +49,7 @@ import 'package:solidpod/solidpod.dart'
         getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
+        logoutPopup,
         readPod,
         removeMasterPassword,
         changeKeyPopup;
@@ -200,15 +201,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
             tooltip: 'Popup a window about the app.',
           ),
         ],
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const KeyPod()),
-            );
-          },
-        ),
+        // Instruct flutter to not put a leading widget automatically
+        // see https://api.flutter.dev/flutter/material/AppBar/leading.html
+        leading: null,
+        automaticallyImplyLeading: false,
       ),
       body: _isLoading
           ? const Center(
@@ -340,6 +336,14 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               changeKeyPopup(context);
                             },
                             child: const Text('Change Key')),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(
+                            onPressed: () async {
+                              await logoutPopup(context, const KeyPod());
+                            },
+                            child: const Text('Logout')),
                       ],
                     ),
                   ),
