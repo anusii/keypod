@@ -78,7 +78,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
-  Future<void> _showPrivateData() async {
+  Future<void> _showPrivateData(String title) async {
     setState(() {
       // Begin loading.
 
@@ -95,14 +95,18 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         const Home(),
       );
 
-      await Navigator.pushReplacement(
+      //await Navigator.pushReplacement( // this won't show the file content if POD initialisation has just been performed
+      await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ViewKeys(
             keyInfo: fileContent!,
+            title: title,
           ),
         ),
       );
+    } on Exception catch (e) {
+      print('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -252,7 +256,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ElevatedButton(
                           child: const Text('Show Private Data'),
                           onPressed: () async {
-                            await _showPrivateData();
+                            await _showPrivateData(title);
                           },
                         ),
                         const SizedBox(
