@@ -155,6 +155,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
             icon: Icon(Icons.add),
             onPressed: _addNewRow,
           ),
+          SizedBox(width: 10),
           ElevatedButton(
             onPressed: _isDataModified
                 ? () async {
@@ -166,10 +167,6 @@ class _KeyValueTableState extends State<KeyValueTable> {
                       setState(() {
                         _isDataModified = false; // Reset modification flag
                       });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => widget.child));
                     }
                     setState(() {
                       _isLoading = false; // Stop loading
@@ -178,88 +175,105 @@ class _KeyValueTableState extends State<KeyValueTable> {
                 : null, // Disable button if data is not modified
             child: const Text('Save',
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.disabled))
-                    return Colors
-                        .grey.shade300; // Light grey color when disabled
-                  return Theme.of(context).colorScheme.primary; // Regular color
-                },
-              ),
-              foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.disabled))
-                    return Colors.black; // Text color when disabled
-                  return Colors.white; // Text color when enabled
-                },
-              ),
-            ),
+            style: activeButtonStyle(context),
           ),
           SizedBox(width: 10),
           ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => widget.child));
-              },
-              child: const Text('Go back',
-                  style: TextStyle(fontWeight: FontWeight.bold))),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => widget.child));
+            },
+            child: const Text('Go back',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            style: activeButtonStyle(context),
+          ),
         ],
       ),
       body: _isLoading
           ? Center(
               child: Column(
-                mainAxisSize: MainAxisSize.min, // Align children to the center
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  CircularProgressIndicator(), // Loading spinner
-                  SizedBox(height: 20), // Space between spinner and text
-                  Text("Saving in Progress",
-                      style: TextStyle(fontSize: 16)), // Text message
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                  Text("Saving in Progress", style: TextStyle(fontSize: 16)),
                 ],
               ),
             )
           : Center(
-              child: SingleChildScrollView(
-                child: DataTable(
-                  columnSpacing: 12.0,
-                  horizontalMargin: 10.0,
-                  headingRowColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    return Theme.of(context)
-                        .colorScheme
-                        .primary
-                        .withOpacity(0.8); // Header background color
-                  }),
-                  columns: const [
-                    DataColumn(label: Text('Key')),
-                    DataColumn(label: Text('Value')),
-                    DataColumn(label: Text('Actions')),
-                  ],
-                  rows: dataMap.keys.map((index) {
-                    return DataRow(
-                      cells: [
-                        DataCell(TextField(
-                          controller: TextEditingController(
-                              text: dataMap[index]!['key'] as String),
-                          onChanged: (newKey) => _updateRowKey(index, newKey),
-                          decoration:
-                              const InputDecoration(border: InputBorder.none),
-                        )),
-                        DataCell(TextField(
-                          controller: TextEditingController(
-                              text: dataMap[index]!['value'] as String),
-                          onChanged: (newValue) =>
-                              _updateRowValue(index, newValue),
-                          decoration:
-                              const InputDecoration(border: InputBorder.none),
-                        )),
-                        DataCell(_actionCell(index)),
+              child: Container(
+                width: MediaQuery.of(context).size.width *
+                    0.75, // 3/4 of screen width
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Colors.grey.shade400,
+                      width: 2.0), // Light grey thicker border
+                  borderRadius: BorderRadius.circular(20), // Rounded corners
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  child: SingleChildScrollView(
+                    child: DataTable(
+                      columnSpacing: 12.0,
+                      horizontalMargin: 10.0,
+                      headingRowColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) =>
+                              Colors.lightBlue.withOpacity(0.5)),
+                      columns: const [
+                        DataColumn(label: Text('Key')),
+                        DataColumn(label: Text('Value')),
+                        DataColumn(label: Text('Actions')),
                       ],
-                    );
-                  }).toList(),
+                      rows: dataMap.keys.map((index) {
+                        return DataRow(
+                          cells: [
+                            DataCell(TextField(
+                              controller: TextEditingController(
+                                  text: dataMap[index]!['key'] as String),
+                              onChanged: (newKey) =>
+                                  _updateRowKey(index, newKey),
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none),
+                            )),
+                            DataCell(TextField(
+                              controller: TextEditingController(
+                                  text: dataMap[index]!['value'] as String),
+                              onChanged: (newValue) =>
+                                  _updateRowValue(index, newValue),
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none),
+                            )),
+                            DataCell(_actionCell(index)),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ),
             ),
+    );
+  }
+
+  ButtonStyle activeButtonStyle(BuildContext context) {
+    return ButtonStyle(
+      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled))
+            return Colors.grey.shade300; // Light grey color when disabled
+          return Colors.lightBlue; // Regular color
+        },
+      ),
+      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled))
+            return Colors.black; // Text color when disabled
+          return Colors.white; // Text color when enabled
+        },
+      ),
     );
   }
 
@@ -277,7 +291,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   Widget _actionCell(int index) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // IconButton(
         //   icon: Icon(Icons.edit, color: Colors.blue),
