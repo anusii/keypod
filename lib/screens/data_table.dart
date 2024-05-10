@@ -247,12 +247,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ),
           const SizedBox(width: 10),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => widget.child));
-            },
+            onPressed: () => _maybeGoBack(context),
             style: activeButtonStyle(context),
-            child: const Text('Go back',
+            child: const Text('Go Back',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
@@ -348,6 +345,36 @@ class _KeyValueTableState extends State<KeyValueTable> {
         ),
       ],
     );
+  }
+
+  void _maybeGoBack(BuildContext context) {
+    if (_isDataModified) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Confirm"),
+          content: const Text(
+              "You have unsaved changes. Are you sure you want to go back?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => widget.child));
+              },
+              child: const Text("Go Back"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => widget.child));
+    }
   }
 }
 
