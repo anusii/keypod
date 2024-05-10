@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Wednesday 2024-05-08 10:28:54 +1000 Graham Williams>
+// Time-stamp: <Friday 2024-05-10 10:16:21 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -26,7 +26,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 ///
-/// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen
+/// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen, Graham Williams
 
 // TODO 20240411 gjw WHY THE IGNORE? EXPLAIN HERE
 
@@ -186,6 +186,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   Widget _build(BuildContext context, String title) {
     final dateStr = DateFormat('dd MMMM yyyy').format(DateTime.now());
+    const smallButtonGap = 10.0;
+    const largeButtonGap = 40.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -215,9 +217,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: smallButtonGap),
                   //const ShowKeys(),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -235,9 +235,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: smallButtonGap),
                         const Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -250,36 +248,89 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: smallButtonGap),
                         ElevatedButton(
                           child: const Text('Show Private Data'),
                           onPressed: () async {
                             await _showPrivateData(title);
                           },
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: smallButtonGap),
                         ElevatedButton(
                           child: const Text('Key Value Table Demo'),
                           onPressed: () async {
                             await _writePrivateData();
                           },
                         ),
-                        const SizedBox(
-                          height: 10,
+                        const SizedBox(height: largeButtonGap),
+                        const Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Local Security Key Management',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                         ElevatedButton(
-                          child: const Text('Forget Solid Pod Login'),
+                            onPressed: () {
+                              changeKeyPopup(context);
+                            },
+                            child: const Text('Change Security Key')),
+                        const SizedBox(height: smallButtonGap),
+                        ElevatedButton(
+                          child: const Text('Forget Local Security Key'),
+                          onPressed: () async {
+                            late String msg;
+                            try {
+                              await removeMasterPassword();
+                              msg = 'Successfully forgot local security key.';
+                            } on Exception catch (e) {
+                              msg = 'Failed to forget local security key: $e';
+                            }
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Notice'),
+                                content: Text(msg),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('OK'))
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: largeButtonGap),
+                        const Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Solid Server Login Management',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                          child: const Text(
+                              'Forget Remote Solid Server Login Info'),
                           onPressed: () async {
                             final deleteRes = await deleteLogIn();
 
                             var deleteMsg = '';
 
                             if (deleteRes) {
-                              deleteMsg = 'Successfully forgot login info';
+                              deleteMsg =
+                                  'Successfully forgot remote solid server login info';
                             } else {
                               deleteMsg =
                                   'Failed to forget login info. Try again in a while';
@@ -301,49 +352,13 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             );
                           },
                         ),
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          child: const Text('Forget Security Key'),
-                          onPressed: () async {
-                            late String msg;
-                            try {
-                              await removeMasterPassword();
-                              msg = 'Successfully un-remembered security key.';
-                            } on Exception catch (e) {
-                              msg = 'Failed to forget security key: $e';
-                            }
-                            await showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Notice'),
-                                content: Text(msg),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('OK'))
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              changeKeyPopup(context);
-                            },
-                            child: const Text('Change Key')),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: smallButtonGap),
                         ElevatedButton(
                             onPressed: () async {
                               await logoutPopup(context, const KeyPod());
                             },
-                            child: const Text('Logout')),
+                            child:
+                                const Text('Logout From Remote Solid Server')),
                       ],
                     ),
                   ),
