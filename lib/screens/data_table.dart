@@ -6,14 +6,14 @@ class KeyValueTable extends StatefulWidget {
   final String title;
   final String fileName;
   final Widget child;
-  final List<Map<String, dynamic>>? keyValuePairs; // Added this line
+  final List<Map<String, dynamic>>? keyValuePairs;
 
   const KeyValueTable({
     Key? key,
     required this.title,
     required this.fileName,
     required this.child,
-    this.keyValuePairs, // Initialize this in the constructor
+    this.keyValuePairs,
   }) : super(key: key);
 
   @override
@@ -21,16 +21,17 @@ class KeyValueTable extends StatefulWidget {
 }
 
 class _KeyValueTableState extends State<KeyValueTable> {
-  // List<Map<String, dynamic>> rows = [];
-  bool _isLoading = false; // Loading indicator for data submission
-  Map<int, Map<String, dynamic>> dataMap = {};
+  // Loading indicator for data submission.
 
-  bool _isDataModified = false; // Track if data has been modified
+  bool _isLoading = false;
+  Map<int, Map<String, dynamic>> dataMap = {};
+  // Track if data has been modified.
+
+  bool _isDataModified = false;
 
   @override
   void initState() {
     super.initState();
-    print("keyValuePairs: ${widget.keyValuePairs}");
     if (widget.keyValuePairs != null) {
       int i = 0;
       for (var pair in widget.keyValuePairs!) {
@@ -51,28 +52,14 @@ class _KeyValueTableState extends State<KeyValueTable> {
       if (dataMap.values.any((row) =>
           row['key'] == newKey &&
           dataMap.keys.firstWhere((k) => dataMap[k] == row) != index)) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text("Error"),
-            content: const Text("Key must be unique."),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
       } else {
         if (dataMap[index]!['key'] != newKey) {
           dataMap[index]!['key'] = newKey;
-          _isDataModified = true; // Mark data as modified
+          // Mark data as modified.
+
+          _isDataModified = true;
         }
         dataMap[index]!['key'] = newKey;
-        print("dataMap: $dataMap");
       }
     });
   }
@@ -81,7 +68,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
     setState(() {
       if (dataMap[index]!['value'] != newValue) {
         dataMap[index]!['value'] = newValue;
-        _isDataModified = true; // Mark data as modified
+        // Mark data as modified.
+
+        _isDataModified = true;
       }
     });
   }
@@ -89,7 +78,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
   void _deleteRow(int index) {
     setState(() {
       dataMap.remove(index);
-      _isDataModified = true; // Mark data as modified
+      // Mark data as modified.
+
+      _isDataModified = true;
     });
   }
 
@@ -121,10 +112,12 @@ class _KeyValueTableState extends State<KeyValueTable> {
     final pairs = convertDataMapToListOfPairs(dataMap);
 
     try {
-      // Generate TTL str with dataMap
+      // Generate TTL str with dataMap.
+
       final ttlStr = await genTTLStrNew(pairs);
 
-      // Write to POD
+      // Write to POD.
+
       await writePod(widget.fileName, ttlStr, context, widget.child);
 
       await _alert('Successfully saved ${dataMap.length} key-value pairs'
@@ -152,66 +145,76 @@ class _KeyValueTableState extends State<KeyValueTable> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: _addNewRow,
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           ElevatedButton(
             onPressed: _isDataModified
                 ? () async {
                     setState(() {
-                      _isLoading = true; // Start loading
+                      // Start loading.
+
+                      _isLoading = true;
                     });
                     final saved = await _saveToPod(context);
                     if (saved) {
                       setState(() {
-                        _isDataModified = false; // Reset modification flag
+                        // Reset modification flag.
+
+                        _isDataModified = false;
                       });
                     }
                     setState(() {
-                      _isLoading = false; // Stop loading
+                      // Stop loading.
+
+                      _isLoading = false;
                     });
                   }
-                : null, // Disable button if data is not modified
+                : null,
+            style: activeButtonStyle(
+                context), // Disable button if data is not modified
             child: const Text('Save',
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            style: activeButtonStyle(context),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => widget.child));
             },
+            style: activeButtonStyle(context),
             child: const Text('Go back',
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            style: activeButtonStyle(context),
           ),
         ],
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   CircularProgressIndicator(),
                   SizedBox(height: 20),
-                  Text("Saving in Progress", style: TextStyle(fontSize: 16)),
+                  Text('Saving in Progress', style: TextStyle(fontSize: 16)),
                 ],
               ),
             )
           : Center(
               child: Container(
-                width: MediaQuery.of(context).size.width *
-                    0.75, // 3/4 of screen width
+                // 3/4 of screen width.
+
+                width: MediaQuery.of(context).size.width * 0.75,
+                // Light grey thicker border.
+
                 decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Colors.grey.shade400,
-                      width: 2.0), // Light grey thicker border
-                  borderRadius: BorderRadius.circular(20), // Rounded corners
+                  border: Border.all(color: Colors.grey.shade400, width: 2.0),
+                  // Rounded corners.
+
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -262,16 +265,28 @@ class _KeyValueTableState extends State<KeyValueTable> {
     return ButtonStyle(
       backgroundColor: MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled))
-            return Colors.grey.shade300; // Light grey color when disabled
-          return Colors.lightBlue; // Regular color
+          if (states.contains(MaterialState.disabled)) {
+            // Light grey color when disabled.
+
+            return Colors.grey.shade300;
+          }
+
+          // Regular color.
+
+          return Colors.lightBlue;
         },
       ),
       foregroundColor: MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled))
-            return Colors.black; // Text color when disabled
-          return Colors.white; // Text color when enabled
+          if (states.contains(MaterialState.disabled)) {
+            // Text color when disabled.
+
+            return Colors.black;
+          }
+
+          // Text color when enabled.
+
+          return Colors.white;
         },
       ),
     );
@@ -279,13 +294,13 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   Widget _customCell(String text) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5.0),
         border: Border.all(color: Colors.grey.shade300),
       ),
-      child: Text(text, style: TextStyle(fontSize: 14)),
+      child: Text(text, style: const TextStyle(fontSize: 14)),
     );
   }
 
@@ -293,14 +308,8 @@ class _KeyValueTableState extends State<KeyValueTable> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // IconButton(
-        //   icon: Icon(Icons.edit, color: Colors.blue),
-        //   onPressed: () {
-        //     // Add your edit action
-        //   },
-        // ),
         IconButton(
-          icon: Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: Colors.red),
           onPressed: () => _deleteRow(index),
         ),
       ],
@@ -314,7 +323,8 @@ class KeyValuePair {
 
   KeyValuePair({required this.key, this.value});
 
-  // Optionally, to match the exact structure you might be expected to pass to genTTLStr
+  // match the exact structure which is  expected to pass to genTTLStr.
+
   get getKey => key;
   get getValue => value;
 }
