@@ -1,7 +1,35 @@
+/// New Home Screen
+///
+/// Copyright (C) 2024, Software Innovation Institute, ANU.
+///
+/// Licensed under the MIT License (the "License").
+///
+/// License: https://choosealicense.com/licenses/mit/.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+///
+/// Authors: Kevin Wang
+library;
+
 import 'package:flutter/material.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/data_table.dart';
-import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/home.dart';
 import 'package:keypod/utils/rdf.dart';
 import 'package:solidpod/solidpod.dart';
@@ -19,17 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
-        backgroundColor: Color(0xFFF0E4D7),
+        title: const Text('Home Screen'),
+        backgroundColor: const Color(0xFFF0E4D7),
       ),
-      backgroundColor: Color(0xFFF0E4D7),
+      backgroundColor: const Color(0xFFF0E4D7),
       body: Stack(
         children: <Widget>[
           _buildMainContent(),
           if (_isLoading)
             Container(
               color: Colors.black45,
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
             ),
@@ -42,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -50,14 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildButton('TESTING', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Home()),
+                MaterialPageRoute(builder: (context) => const Home()),
               );
             }),
           ],
         ),
-        Expanded(child: Container()), // Pushes the about button to the bottom
+        // Pushes the about button to the bottom.
+
+        Expanded(child: Container()),
         Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           alignment: Alignment.bottomCenter,
           child: IconButton(
             icon: const Icon(Icons.info),
@@ -74,10 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildButton(String title, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(title, style: TextStyle(fontSize: 16)),
+      child: Text(title, style: const TextStyle(fontSize: 16)),
       style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-        textStyle: TextStyle(fontSize: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+        textStyle: const TextStyle(fontSize: 16),
       ),
     );
   }
@@ -87,11 +117,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       setState(() {
-        _isLoading = true; // Show loading indicator
+        // Show loading indicator.
+
+        _isLoading = true;
       });
 
-      // Placeholder for your file and data operations
-      await Future.delayed(Duration(seconds: 2)); // Simulating a network call
+      // Simulating a network call.
+
+      await Future.delayed(const Duration(seconds: 2));
 
       // Navigate or perform additional actions after loading
 
@@ -100,7 +133,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final fileContent = await readPod(filePath, context, const Home());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
-      // Convert each tuple to a Map
+      // Convert each tuple to a Map.
+
       List<Map<String, dynamic>>? keyValuePairs = pairs?.map((pair) {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
