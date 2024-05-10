@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Friday 2024-05-10 10:16:21 +1000 Graham Williams>
+// Time-stamp: <Friday 2024-05-10 11:04:30 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -171,7 +171,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         title: Text(title),
         actions: [
           IconButton(
-            icon: const Icon(Icons.info),
+            icon: const Icon(
+              Icons.info,
+              color: Colors.purple,
+            ),
             onPressed: () async {
               aboutDialog(context);
             },
