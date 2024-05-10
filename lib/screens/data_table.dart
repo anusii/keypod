@@ -58,59 +58,98 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   bool _isDataModified = false;
 
+  // Map to hold the TextEditingController for each key and value.
+  Map<int, TextEditingController> keyControllers = {};
+  Map<int, TextEditingController> valueControllers = {};
   @override
   void initState() {
     super.initState();
     if (widget.keyValuePairs != null) {
       int i = 0;
       for (var pair in widget.keyValuePairs!) {
+        var keyController = TextEditingController(text: pair['key'] as String);
+        var valueController =
+            TextEditingController(text: pair['value'] as String);
+        keyControllers[i] = keyController;
+        valueControllers[i] = valueController;
         dataMap[i++] = {'key': pair['key'], 'value': pair['value']};
       }
     }
   }
 
+  @override
+  void dispose() {
+    // Dispose of the controllers when the widget is disposed.
+    keyControllers.forEach((key, controller) {
+      controller.dispose();
+    });
+    valueControllers.forEach((key, controller) {
+      controller.dispose();
+    });
+    super.dispose();
+  }
+
   void _addNewRow() {
     setState(() {
-      int newIndex = dataMap.length + 1;
+      int newIndex = dataMap.length;
       dataMap[newIndex] = {'key': '', 'value': ''};
+      keyControllers[newIndex] = TextEditingController();
+      valueControllers[newIndex] = TextEditingController();
     });
   }
 
   void _updateRowKey(int index, String newKey) {
-    setState(() {
-      if (dataMap.values.any((row) =>
-          row['key'] == newKey &&
-          dataMap.keys.firstWhere((k) => dataMap[k] == row) != index)) {
-      } else {
-        if (dataMap[index]!['key'] != newKey) {
-          dataMap[index]!['key'] = newKey;
-          // Mark data as modified.
-
-          _isDataModified = true;
-        }
+    if (dataMap[index]!['key'] != newKey) {
+      setState(() {
         dataMap[index]!['key'] = newKey;
-      }
-    });
+        _isDataModified = true;
+      });
+    }
   }
 
   void _updateRowValue(int index, String newValue) {
-    setState(() {
-      if (dataMap[index]!['value'] != newValue) {
+    if (dataMap[index]!['value'] != newValue) {
+      setState(() {
         dataMap[index]!['value'] = newValue;
-        // Mark data as modified.
-
         _isDataModified = true;
-      }
-    });
+      });
+    }
   }
 
   void _deleteRow(int index) {
     setState(() {
       dataMap.remove(index);
-      // Mark data as modified.
-
+      keyControllers[index]?.dispose();
+      valueControllers[index]?.dispose();
+      keyControllers.remove(index);
+      valueControllers.remove(index);
       _isDataModified = true;
     });
+  }
+
+  Widget buildDataTable() {
+    return DataTable(
+      columns: const [
+        DataColumn(label: Text('Key')),
+        DataColumn(label: Text('Value')),
+        DataColumn(label: Text('Actions')),
+      ],
+      rows: dataMap.keys.map((index) {
+        return DataRow(cells: [
+          DataCell(TextField(
+            controller: keyControllers[index],
+            onChanged: (newKey) => _updateRowKey(index, newKey),
+            decoration: const InputDecoration(border: InputBorder.none),
+          )),
+          DataCell(TextField(
+            controller: valueControllers[index],
+            onChanged: (newValue) => _updateRowValue(index, newValue),
+            decoration: const InputDecoration(border: InputBorder.none),
+          )),
+          DataCell(_actionCell(index)),
+        ]);
+      }).toList(),
+    );
   }
 
   // Show an alert message
@@ -248,41 +287,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
                     topRight: Radius.circular(20),
                   ),
                   child: SingleChildScrollView(
-                    child: DataTable(
-                      columnSpacing: 12.0,
-                      horizontalMargin: 10.0,
-                      headingRowColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) =>
-                              Colors.lightBlue.withOpacity(0.5)),
-                      columns: const [
-                        DataColumn(label: Text('Key')),
-                        DataColumn(label: Text('Value')),
-                        DataColumn(label: Text('Actions')),
-                      ],
-                      rows: dataMap.keys.map((index) {
-                        return DataRow(
-                          cells: [
-                            DataCell(TextField(
-                              controller: TextEditingController(
-                                  text: dataMap[index]!['key'] as String),
-                              onChanged: (newKey) =>
-                                  _updateRowKey(index, newKey),
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none),
-                            )),
-                            DataCell(TextField(
-                              controller: TextEditingController(
-                                  text: dataMap[index]!['value'] as String),
-                              onChanged: (newValue) =>
-                                  _updateRowValue(index, newValue),
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none),
-                            )),
-                            DataCell(_actionCell(index)),
-                          ],
-                        );
-                      }).toList(),
-                    ),
+                    child: buildDataTable(),
                   ),
                 ),
               ),
