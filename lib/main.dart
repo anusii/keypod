@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Saturday 2024-05-11 16:28:19 +1000 Graham Williams>
+// Time-stamp: <Saturday 2024-05-11 16:33:18 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -31,7 +31,7 @@ import 'package:keypod/screens/home_page.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:keypod/screens/home_page.dart';
+import 'package:keypod/screens/home.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
@@ -73,21 +73,21 @@ class KeyPod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Solid Key Pod',
       home: SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
         // DALL-E3.
 
         title: 'MANAGE YOUR SOLID KEY POD',
-        image: const AssetImage('assets/images/keypod_image.jpg'),
-        logo: const AssetImage('assets/images/keypod_logo.png'),
+        image: AssetImage('assets/images/keypod_image.jpg'),
+        logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod',
         required: false,
-        continueButtonStyle: const ContinueButtonStyle(
+        continueButtonStyle: ContinueButtonStyle(
           tooltip: 'Test changing the tooltip.',
         ),
-        loginButtonStyle: const LoginButtonStyle(
+        loginButtonStyle: LoginButtonStyle(
           background: Colors.lightGreenAccent,
         ),
         child: HomeScreen(),
