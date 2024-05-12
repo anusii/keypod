@@ -58,6 +58,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   bool _isDataModified = false;
 
+  final keyStr = 'key';
+  final valStr = 'value';
+
   // Map to hold the TextEditingController for each key and value.
   Map<int, TextEditingController> keyControllers = {};
   Map<int, TextEditingController> valueControllers = {};
@@ -67,12 +70,12 @@ class _KeyValueTableState extends State<KeyValueTable> {
     if (widget.keyValuePairs != null) {
       int i = 0;
       for (var pair in widget.keyValuePairs!) {
-        var keyController = TextEditingController(text: pair['key'] as String);
+        var keyController = TextEditingController(text: pair[keyStr] as String);
         var valueController =
-            TextEditingController(text: pair['value'] as String);
+            TextEditingController(text: pair[valStr] as String);
         keyControllers[i] = keyController;
         valueControllers[i] = valueController;
-        dataMap[i++] = {'key': pair['key'], 'value': pair['value']};
+        dataMap[i++] = {keyStr: pair['key'], valStr: pair['value']};
       }
     }
   }
@@ -92,25 +95,25 @@ class _KeyValueTableState extends State<KeyValueTable> {
   void _addNewRow() {
     setState(() {
       int newIndex = dataMap.length;
-      dataMap[newIndex] = {'key': '', 'value': ''};
+      dataMap[newIndex] = {keyStr: '', valStr: ''};
       keyControllers[newIndex] = TextEditingController();
       valueControllers[newIndex] = TextEditingController();
     });
   }
 
   void _updateRowKey(int index, String newKey) {
-    if (dataMap[index]!['key'] != newKey) {
+    if (dataMap[index]![keyStr] != newKey) {
       setState(() {
-        dataMap[index]!['key'] = newKey;
+        dataMap[index]![keyStr] = newKey;
         _isDataModified = true;
       });
     }
   }
 
   void _updateRowValue(int index, String newValue) {
-    if (dataMap[index]!['value'] != newValue) {
+    if (dataMap[index]![valStr] != newValue) {
       setState(() {
-        dataMap[index]!['value'] = newValue;
+        dataMap[index]![valStr] = newValue;
         _isDataModified = true;
       });
     }
@@ -169,6 +172,14 @@ class _KeyValueTableState extends State<KeyValueTable> {
             ));
   }
 
+  // Function to convert Map<int, Map<String, dynamic>> to List<KeyValuePair>
+  List<({String key, dynamic value})> _convertDataMapToListOfPairs(
+      Map<int, Map<String, dynamic>> dataMap) {
+    return dataMap.values
+        .map((map) => (key: map[keyStr] as String, value: map[valStr]))
+        .toList();
+  }
+
   // Save data to PODs
   Future<bool> _saveToPod(BuildContext context) async {
     setState(() {
@@ -177,12 +188,12 @@ class _KeyValueTableState extends State<KeyValueTable> {
       _isLoading = true;
     });
 
-    final pairs = convertDataMapToListOfPairs(dataMap);
+    final pairs = _convertDataMapToListOfPairs(dataMap);
 
     try {
       // Generate TTL str with dataMap.
 
-      final ttlStr = await genTTLStrNew(pairs);
+      final ttlStr = await genTTLStr(pairs);
 
       // Write to POD.
 
@@ -376,25 +387,4 @@ class _KeyValueTableState extends State<KeyValueTable> {
           context, MaterialPageRoute(builder: (context) => widget.child));
     }
   }
-}
-
-class KeyValuePair {
-  String key;
-  dynamic value;
-
-  KeyValuePair({required this.key, this.value});
-
-  // match the exact structure which is  expected to pass to genTTLStr.
-
-  get getKey => key;
-  get getValue => value;
-}
-
-// Function to convert Map<int, Map<String, dynamic>> to List<KeyValuePair>
-List<KeyValuePair> convertDataMapToListOfPairs(
-    Map<int, Map<String, dynamic>> dataMap) {
-  return dataMap.values
-      .map(
-          (map) => KeyValuePair(key: map['key'] as String, value: map['value']))
-      .toList();
 }
