@@ -73,7 +73,7 @@ class KeyPod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Solid Key Pod',
       home: SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
