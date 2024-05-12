@@ -93,7 +93,7 @@ pubspec.lock:
 
 .PHONY: linux
 linux: pubspec.lock $(BUILD_RUNNER)
-	flutter run --device-id linux --release
+	flutter run --device-id linux
 
 # Turn off debugPrint() output.
 
