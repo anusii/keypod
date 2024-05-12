@@ -27,7 +27,6 @@
 /// Authors: Dawei Chen
 library;
 
-import 'package:keypod/screens/data_table.dart';
 import 'package:rdflib/rdflib.dart';
 
 import 'package:solidpod/solidpod.dart' show getWebId;
@@ -39,27 +38,6 @@ const String appTerms = 'https://solidcommunity.au/predicates/terms#';
 /// Subject: Web ID
 /// Predicate: Key
 /// Object: Value
-
-Future<String> genTTLStrNew(List<KeyValuePair> keyValuePairs) async {
-  assert(keyValuePairs.isNotEmpty);
-  assert({for (final p in keyValuePairs) p.key}.length ==
-      keyValuePairs.length); // No duplicate keys
-
-  final webId = await getWebId();
-  assert(webId != null);
-
-  final g = Graph();
-  final f = URIRef(webId!);
-  final ns = Namespace(ns: appTerms);
-
-  for (final KeyValuePair p in keyValuePairs) {
-    g.addTripleToGroups(f, ns.withAttr(p.key), p.value);
-  }
-
-  g.serialize(abbr: 'short');
-
-  return g.serializedString;
-}
 
 Future<String> genTTLStr(
     List<({String key, dynamic value})> keyValuePairs) async {
