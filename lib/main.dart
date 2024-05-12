@@ -27,7 +27,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:keypod/screens/home_page.dart';
+import 'package:keypod/screens/home_page.dart' show HomeScreen;
 import 'package:keypod/utils/is_desktop.dart';
 import 'package:window_manager/window_manager.dart';
 
