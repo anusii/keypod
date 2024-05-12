@@ -26,13 +26,12 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:keypod/screens/home_page.dart';
 
-import 'package:solidpod/solidpod.dart';
+import 'package:keypod/screens/home_page.dart';
+import 'package:keypod/utils/is_desktop.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:keypod/screens/home.dart';
-import 'package:keypod/utils/is_desktop.dart';
+import 'package:solidpod/solidpod.dart';
 
 void main() async {
   // Suport window size and top placement for desktop apps.
@@ -73,7 +72,7 @@ class KeyPod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Solid Key Pod',
       home: SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
