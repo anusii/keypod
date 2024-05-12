@@ -36,6 +36,9 @@ import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
 class HomeScreen extends StatefulWidget {
+  ///Constructor
+  const HomeScreen();
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -146,8 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: 'Key Value Pair Editor',
                   fileName: fileName,
                   keyValuePairs: keyValuePairs,
-                  child: HomeScreen())));
-    } catch (e) {
+                  child: const HomeScreen())));
+    } on Exception catch (e) {
       print('Error: $e');
     } finally {
       if (mounted) {
