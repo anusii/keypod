@@ -9,6 +9,7 @@ numbers.
 
 ## 0.5 Future
 
++ Add a data table widget to view, insert, edit, delete rows of key-value pairs [0.4.11]
 + Use updated API to remove security key from local secure storage. [0.4.10]
 + Add a logout button for users to logout. [0.4.9]
 + Bug prevents showing data right after initialising POD [0.4.8]
