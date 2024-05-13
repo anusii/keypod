@@ -51,23 +51,24 @@ import 'package:solidpod/solidpod.dart'
         getDataDirPath,
         logoutPopup,
         readPod,
-        KeyManager,
+        removeMasterPassword,
         changeKeyPopup;
 
 /// Widget represents the home screen of the application.
 ///
 /// This is because this page is designed to be work in offline as well.
 
-class Home extends StatefulWidget {
+class TestHome extends StatefulWidget {
   /// Initialise widget variables
 
-  const Home({super.key});
+  const TestHome({super.key});
 
   @override
-  HomeState createState() => HomeState();
+  TestHomeState createState() => TestHomeState();
 }
 
-class HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class TestHomeState extends State<TestHome>
+    with SingleTickerProviderStateMixin {
   String sampleText = '';
   // Step 1: Loading state variable.
 
@@ -92,7 +93,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       final fileContent = await readPod(
         filePath,
         context,
-        const Home(),
+        const TestHome(),
       );
 
       //await Navigator.pushReplacement( // this won't show the file content if POD initialisation has just been performed
@@ -132,36 +133,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     const fileName = 'test-102.ttl';
 
     try {
-      // await writePod(
-      //   filePath,
-      //   fileContent,
-      //   context,
-      //   const Home(),
-      // );
-      // await Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => AlertDialog(
-      //                 title: const Text('Success!'),
-      //                 content:
-      //                     const Text('Data is successfully stored in PODs'),
-      //                 actions: <Widget>[
-      //                   ElevatedButton(
-      //                     child: const Text('OK'),
-      //                     onPressed: () {
-      //                       // Navigator.pop(context);
-      //                       Navigator.push(
-      //                         context,
-      //                         MaterialPageRoute(
-      //                             builder: (context) => const Home()),
-      //                       );
-      //                     },
-      //                   ),
-      //                 ])));
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
-      final fileContent = await readPod(filePath, context, const Home());
+      final fileContent = await readPod(filePath, context, const TestHome());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
 
       await Navigator.pushReplacement(
@@ -171,7 +146,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   title: 'Key Value Pair Editor',
                   fileName: fileName,
                   keyValuePairs: pairs,
-                  child: const Home())));
+                  child: const TestHome())));
     } on Exception catch (e) {
       print('Exception: $e');
     } finally {
@@ -289,7 +264,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           onPressed: () async {
                             late String msg;
                             try {
-                              await KeyManager.forgetSecurityKey();
+                              // await removeMasterPassword();
                               msg = 'Successfully forgot local security key.';
                             } on Exception catch (e) {
                               msg = 'Failed to forget local security key: $e';
