@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Friday 2024-05-10 11:06:21 +1000 Graham Williams>
+// Time-stamp: <Saturday 2024-05-11 16:33:18 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -26,19 +26,14 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:solidpod/solidpod.dart';
 
+import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:keypod/screens/home.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
-  // Remove [debugPrint] messages from production code. Comment this out to have
-  // [debugPrint] messages displayed to the console.
-
-  debugPrint = (message, {wrapWidth}) {};
-
   // Suport window size and top placement for desktop apps.
 
   if (isDesktop(PlatformWrapper())) {
@@ -77,39 +72,9 @@ class KeyPod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Solid Key Pod',
-      theme: ThemeData(
-        // Change the theme for the app here.
-
-        cardTheme: const CardTheme(
-          color: Color(0XFFECEBD9),
-        ),
-
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.all(10),
-            backgroundColor: const Color(0XFFCDB392),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            textStyle: const TextStyle(
-              color: Colors.white, // TODO 20240105 gjw NOT WORKING.
-            ),
-          ),
-        ),
-      ),
-
-      // Build the app's home widget.
-      //
-      // Because our app requires access to the data stored within the user's
-      // Solid Pod for any of its functionality, we wrap the app's home within
-      // the [SolidLogin] widget with its default [requireLogin] as true to
-      // initiate the user's authentication with the Solid server. The
-      // SolidLogin widget can be tuned to suit the look and feel of the app
-      // with appropraite login images and logo.
-
-      home: const SolidLogin(
+      home: SolidLogin(
         // Images generated using Bing Image Creator from Designer, powered by
         // DALL-E3.
 
@@ -122,7 +87,7 @@ class KeyPod extends StatelessWidget {
           tooltip: 'Test changing the tooltip.',
         ),
         loginButtonStyle: LoginButtonStyle(
-          background: Colors.green,
+          background: Colors.lightGreenAccent,
         ),
 
         child: Home(),
