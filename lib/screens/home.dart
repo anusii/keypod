@@ -51,7 +51,7 @@ import 'package:solidpod/solidpod.dart'
         getDataDirPath,
         logoutPopup,
         readPod,
-        removeMasterPassword,
+        KeyManager,
         changeKeyPopup;
 
 /// Widget represents the home screen of the application.
@@ -289,7 +289,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           onPressed: () async {
                             late String msg;
                             try {
-                              await removeMasterPassword();
+                              await KeyManager.forgetSecurityKey();
                               msg = 'Successfully forgot local security key.';
                             } on Exception catch (e) {
                               msg = 'Failed to forget local security key: $e';
