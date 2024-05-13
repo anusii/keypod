@@ -34,7 +34,7 @@ import 'package:flutter/material.dart';
 
 import 'package:solidpod/solidpod.dart' show getFileContent;
 
-import 'package:keypod/screens/home.dart';
+import 'package:keypod/screens/test_home.dart';
 
 /// A widget to show the user all the encryption keys stored in their POD.
 
@@ -186,7 +186,7 @@ class _ViewKeysState extends State<ViewKeys> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Home()),
+                  MaterialPageRoute(builder: (context) => const TestHome()),
                 );
               },
             ),

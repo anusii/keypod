@@ -38,7 +38,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
-import 'package:keypod/screens/data_table.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
 import 'package:keypod/utils/rdf.dart';
@@ -59,16 +58,17 @@ import 'package:solidpod/solidpod.dart'
 ///
 /// This is because this page is designed to be work in offline as well.
 
-class Home extends StatefulWidget {
+class TestHome extends StatefulWidget {
   /// Initialise widget variables
 
-  const Home({super.key});
+  const TestHome({super.key});
 
   @override
-  HomeState createState() => HomeState();
+  TestHomeState createState() => TestHomeState();
 }
 
-class HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class TestHomeState extends State<TestHome>
+    with SingleTickerProviderStateMixin {
   String sampleText = '';
   // Step 1: Loading state variable.
 
@@ -93,7 +93,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       final fileContent = await readPod(
         filePath,
         context,
-        const Home(),
+        const TestHome(),
       );
 
       //await Navigator.pushReplacement( // this won't show the file content if POD initialisation has just been performed
@@ -136,7 +136,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
-      final fileContent = await readPod(filePath, context, const Home());
+      final fileContent = await readPod(filePath, context, const TestHome());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
 
       await Navigator.pushReplacement(
@@ -146,7 +146,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   title: 'Key Value Pair Editor',
                   fileName: fileName,
                   keyValuePairs: pairs,
-                  child: const Home())));
+                  child: const TestHome())));
     } on Exception catch (e) {
       print('Exception: $e');
     } finally {

@@ -30,7 +30,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/data_table.dart';
-import 'package:keypod/screens/home.dart';
+import 'package:keypod/screens/test_home.dart';
 import 'package:keypod/utils/rdf.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildButton('TESTING', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Home()),
+                MaterialPageRoute(builder: (context) => const TestHome()),
               );
             }),
           ],
@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
-      final fileContent = await readPod(filePath, context, const Home());
+      final fileContent = await readPod(filePath, context, const TestHome());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
       // Convert each tuple to a Map.
 
