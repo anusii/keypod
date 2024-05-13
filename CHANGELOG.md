@@ -9,15 +9,16 @@ numbers.
 
 ## 0.5 Future
 
-- Add a logout button for users to logout. [0.4.9]
-- Bug prevents showing data right after initialising POD [0.4.8]
-- Remove hard-coded app name. Obtain the name from solidpod. [0.4.7]
-- changeKeyPopup() popup window for changing the security key. [0.4.6]
-- Add functions to generate/parse TTL string from/to key-value pairs [0.4.5]
-- Add a basic key-value editor to demonstrate the writePod function [0.4.4]
-- Split About Dialog into own file about.dart [0.4.3]
-- Show busy icon when viewing private data. [0.4.2]
-- Override the version of intl for solid-auth. [0.4.1]
++ Use updated API to remove security key from local secure storage. [0.4.10]
++ Add a logout button for users to logout. [0.4.9]
++ Bug prevents showing data right after initialising POD [0.4.8]
++ Remove hard-coded app name. Obtain the name from solidpod. [0.4.7]
++ changeKeyPopup() popup window for changing the security key. [0.4.6]
++ Add functions to generate/parse TTL string from/to key-value pairs [0.4.5]
++ Add a basic key-value editor to demonstrate the writePod function [0.4.4]
++ Split About Dialog into own file about.dart [0.4.3]
++ Show busy icon when viewing private data. [0.4.2]
++ Override the version of intl for solid-auth. [0.4.1]
 
 ## 0.4 
 
