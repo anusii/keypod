@@ -208,7 +208,6 @@ class _KeyValueEditState extends State<KeyValueEdit> {
           title: Text(widget.title),
           backgroundColor: titleBackgroundColor,
           leadingWidth: 100,
-          leading: null,
           actions: [
             Padding(
                 padding: const EdgeInsets.all(8),
