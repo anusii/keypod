@@ -1,12 +1,12 @@
 /// Check if we are running a desktop (and not a browser).
 ///
-// Time-stamp: <Wednesday 2024-01-03 16:13:27 +1100 Graham Williams>
+// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
 /// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
-/// License: https://www.gnu.org/licenses/gpl-3.0.en.html
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html.
 //
 // This program is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
