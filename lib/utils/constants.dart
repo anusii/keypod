@@ -1,6 +1,6 @@
-/// DESCRIPTION
+/// Constants used throughout the app.
 ///
-// Time-stamp: <Wednesday 2024-05-15 09:45:40 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 10:07:05 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -21,7 +21,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: AUTHORS
+/// Authors: Graham Williams
 
 library;
 
