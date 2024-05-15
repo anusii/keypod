@@ -41,7 +41,7 @@ import 'package:keypod/utils/rdf.dart';
 
 class HomeScreen extends StatefulWidget {
   ///Constructor
-  const HomeScreen();
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -112,11 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildButton(String title, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(title, style: const TextStyle(fontSize: 16)),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
         textStyle: const TextStyle(fontSize: 16),
       ),
+      child: Text(title, style: const TextStyle(fontSize: 16)),
     );
   }
 
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
       // Convert each tuple to a Map.
 
-      List<Map<String, dynamic>>? keyValuePairs = pairs?.map((pair) {
+      final keyValuePairs = pairs?.map((pair) {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
 
