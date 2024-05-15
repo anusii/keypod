@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Wednesday 2024-05-15 09:58:14 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 10:18:36 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -233,7 +233,7 @@ class TestHomeState extends State<TestHome>
                         ),
                         const SizedBox(height: smallButtonGap),
                         ElevatedButton(
-                          child: const Text('Show Private Data'),
+                          child: const Text('Show Secret Key'),
                           onPressed: () async {
                             await _showPrivateData(title);
                           },
