@@ -25,15 +25,19 @@
 // SOFTWARE.
 ///
 /// Authors: Kevin Wang
+
 library;
 
 import 'package:flutter/material.dart';
+
+import 'package:solidpod/solidpod.dart';
+import 'package:path/path.dart' as path;
+
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/data_table.dart';
 import 'package:keypod/screens/test_home.dart';
+import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
-import 'package:solidpod/solidpod.dart';
-import 'package:path/path.dart' as path;
 
 class HomeScreen extends StatefulWidget {
   ///Constructor
@@ -51,9 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
-        backgroundColor: const Color(0xFFF0E4D7),
+        backgroundColor: titleBackgroundColor,
+        automaticallyImplyLeading: false,
       ),
-      backgroundColor: const Color(0xFFF0E4D7),
+      backgroundColor: titleBackgroundColor,
       body: Stack(
         children: <Widget>[
           _buildMainContent(),
@@ -116,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _writePrivateData() async {
-    const fileName = 'test-102.ttl';
+    const fileName = dataFile;
 
     try {
       setState(() {

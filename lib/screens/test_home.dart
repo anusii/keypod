@@ -1,6 +1,6 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Friday 2024-05-10 11:04:30 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 09:58:14 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -35,13 +35,19 @@
 library;
 
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
+import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
-import 'package:path/path.dart' as path;
+
+// TODO 20240515 gjw For now we will list all the imports so we can manage the
+// API evolution. Eventually we will simply just import the package.
 
 import 'package:solidpod/solidpod.dart'
     show
@@ -51,7 +57,6 @@ import 'package:solidpod/solidpod.dart'
         getDataDirPath,
         logoutPopup,
         readPod,
-        removeMasterPassword,
         changeKeyPopup;
 
 /// Widget represents the home screen of the application.
@@ -107,7 +112,7 @@ class TestHomeState extends State<TestHome>
         ),
       );
     } on Exception catch (e) {
-      print('Exception: $e');
+      debugPrint('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -130,7 +135,7 @@ class TestHomeState extends State<TestHome>
     // final fileName = 'test-101.ttl';
     // final fileContent = 'This is for testing writePod.';
 
-    const fileName = 'test-102.ttl';
+    const fileName = dataFile;
 
     try {
       final dataDirPath = await getDataDirPath();
@@ -143,12 +148,12 @@ class TestHomeState extends State<TestHome>
           context,
           MaterialPageRoute(
               builder: (context) => KeyValueEdit(
-                  title: 'Key Value Pair Editor',
+                  title: 'Basic Key Value Editor',
                   fileName: fileName,
                   keyValuePairs: pairs,
                   child: const TestHome())));
     } on Exception catch (e) {
-      print('Exception: $e');
+      debugPrint('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -166,10 +171,14 @@ class TestHomeState extends State<TestHome>
 
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: lightGreen,
-        centerTitle: true,
+        backgroundColor: titleBackgroundColor,
         title: Text(title),
         actions: [
+          // ElevatedButton(
+          //   onPressed: () => Navigator.of(context).pop(),
+          //   child: const Text('Home',
+          //       style: TextStyle(fontWeight: FontWeight.bold)),
+          // ),
           IconButton(
             icon: const Icon(
               Icons.info,
@@ -181,10 +190,6 @@ class TestHomeState extends State<TestHome>
             tooltip: 'Popup a window about the app.',
           ),
         ],
-        // Instruct flutter to not put a leading widget automatically
-        // see https://api.flutter.dev/flutter/material/AppBar/leading.html
-        leading: null,
-        automaticallyImplyLeading: false,
       ),
       body: _isLoading
           ? const Center(
@@ -353,9 +358,8 @@ class TestHomeState extends State<TestHome>
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final appName = snapshot.data?.name;
-            final title = appName!.isNotEmpty
-                ? appName[0].toUpperCase() + appName.substring(1)
-                : '';
+            final title = 'Testing solidpod functionality using '
+                '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
             return _build(context, title);
           } else {
             return const CircularProgressIndicator();
