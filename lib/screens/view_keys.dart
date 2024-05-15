@@ -1,6 +1,6 @@
 /// A widget to view private data in a POD.
 ///
-// Time-stamp: <Thursday 2024-04-11 21:57:36 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 08:29:40 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -182,7 +182,7 @@ class _ViewKeysState extends State<ViewKeys> {
               height: 50,
             ),
             ElevatedButton(
-              child: const Text('Go back'),
+              child: const Text('Home'),
               onPressed: () {
                 Navigator.push(
                   context,

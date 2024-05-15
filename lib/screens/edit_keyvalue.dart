@@ -25,11 +25,14 @@
 // SOFTWARE.
 ///
 /// Authors: Dawei Chen
+
 library;
 
 import 'package:flutter/material.dart';
 
 import 'package:editable/editable.dart';
+
+import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
 import 'package:solidpod/solidpod.dart' show writePod;
@@ -202,19 +205,20 @@ class _KeyValueEditState extends State<KeyValueEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           title: Text(widget.title),
+          backgroundColor: titleBackgroundColor,
           leadingWidth: 100,
-          leading: TextButton.icon(
-            onPressed: _addNewRow,
-            icon: const Icon(Icons.add),
-            label: const Text('Add',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
+          leading: null,
           actions: [
             Padding(
                 padding: const EdgeInsets.all(8),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  TextButton.icon(
+                    onPressed: _addNewRow,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
                   ElevatedButton(
                       onPressed: () {
                         Navigator.push(
