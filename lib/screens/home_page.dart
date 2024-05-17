@@ -25,19 +25,23 @@
 // SOFTWARE.
 ///
 /// Authors: Kevin Wang
+
 library;
 
 import 'package:flutter/material.dart';
-import 'package:keypod/screens/about_dialog.dart';
-import 'package:keypod/screens/data_table.dart';
-import 'package:keypod/screens/test_home.dart';
-import 'package:keypod/utils/rdf.dart';
+
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
+import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/screens/data_table.dart';
+import 'package:keypod/screens/test_home.dart';
+import 'package:keypod/utils/constants.dart';
+import 'package:keypod/utils/rdf.dart';
+
 class HomeScreen extends StatefulWidget {
   ///Constructor
-  const HomeScreen();
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -51,9 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
-        backgroundColor: const Color(0xFFF0E4D7),
+        backgroundColor: titleBackgroundColor,
+        automaticallyImplyLeading: false,
       ),
-      backgroundColor: const Color(0xFFF0E4D7),
+      backgroundColor: titleBackgroundColor,
       body: Stack(
         children: <Widget>[
           _buildMainContent(),
@@ -107,16 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildButton(String title, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(title, style: const TextStyle(fontSize: 16)),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
         textStyle: const TextStyle(fontSize: 16),
       ),
+      child: Text(title, style: const TextStyle(fontSize: 16)),
     );
   }
 
   Future<void> _writePrivateData() async {
-    const fileName = 'test-102.ttl';
+    const fileName = dataFile;
 
     try {
       setState(() {
@@ -138,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
       // Convert each tuple to a Map.
 
-      List<Map<String, dynamic>>? keyValuePairs = pairs?.map((pair) {
+      final keyValuePairs = pairs?.map((pair) {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
 

@@ -45,9 +45,9 @@ Future<void> aboutDialog(BuildContext context) async {
     applicationName: appInfo.name,
     applicationVersion: appInfo.version,
     children: [
-      Container(
+      const SizedBox(
         width: 300, // Limit the width.
-        child: const SelectableText('\nA key-value pair manager.\n\n'
+        child: SelectableText('\nA key-value pair manager.\n\n'
             'Key Pod is an app for managing your secure and private'
             ' key-value data in your Solid Pod. The key-value pairs'
             ' can store any kind of data, indexed by the key.\n\n'
