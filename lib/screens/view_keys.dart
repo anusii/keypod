@@ -1,6 +1,6 @@
-/// A widget to view private data in a POD.
+/// A widget to view private key data in a Solid Pod.
 ///
-// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 10:13:40 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -21,7 +21,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: Anushka Vidanage
+/// Authors: Anushka Vidanage, Graham Williams
 
 library;
 
@@ -29,12 +29,12 @@ import 'package:flutter/material.dart';
 
 import 'package:solidpod/solidpod.dart' show getFileContent;
 
-import 'package:keypod/screens/test_home.dart';
+import 'package:keypod/utils/constants.dart';
 
-/// A widget to show the user all the encryption keys stored in their POD.
+/// A widget to show the user all the encryption keys stored in their Solid Pod.
 
 class ViewKeys extends StatefulWidget {
-  /// Constructor for ShowKeys widget
+  /// Constructor for the widget.
 
   const ViewKeys({
     required this.keyInfo,
@@ -63,8 +63,8 @@ class _ViewKeysState extends State<ViewKeys> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          centerTitle: true,
           title: Text(widget.title),
+          backgroundColor: titleBackgroundColor,
         ),
         body: loadedScreen(widget.keyInfo));
   }
@@ -139,52 +139,6 @@ class _ViewKeysState extends State<ViewKeys> {
                   ),
                 ],
                 rows: dataRows),
-            // [
-            //   DataRow(cells: [
-            //     const DataCell(Text(
-            //       'Encryption key verification',
-            //       style: TextStyle(
-            //         fontSize: 12,
-            //       ),
-            //     )),
-            //     DataCell(Text(
-            //       encFileData['encKey'][1] as String,
-            //       style: const TextStyle(
-            //         fontSize: 12,
-            //       ),
-            //     )),
-            //   ]),
-            //   DataRow(cells: [
-            //     const DataCell(Text(
-            //       'Private key',
-            //       style: TextStyle(
-            //         fontSize: 12,
-            //       ),
-            //     )),
-            //     DataCell(SizedBox(
-            //       width: 600,
-            //       child: Text(
-            //         encFileData['prvKey'][1] as String,
-            //         overflow: TextOverflow.ellipsis,
-            //         style: const TextStyle(
-            //           fontSize: 12,
-            //         ),
-            //       ),
-            //     )),
-            //   ])
-            // ]),
-            const SizedBox(
-              height: 50,
-            ),
-            ElevatedButton(
-              child: const Text('Go back'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TestHome()),
-                );
-              },
-            ),
           ],
         ),
       ),
