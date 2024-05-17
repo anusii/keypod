@@ -1,6 +1,6 @@
 /// about dialog for the app
 ///
-// Time-stamp: <Friday 2024-05-10 11:22:17 +1000 Graham Williams>
+// Time-stamp: <Friday 2024-05-17 14:31:16 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -30,14 +30,20 @@
 
 library;
 
+import 'package:solidpod/solidpod.dart';
+
 import 'package:flutter/material.dart';
 
-void aboutDialog(BuildContext context) {
+Future<void> aboutDialog(BuildContext context) async {
+  final appInfo = await getAppNameVersion();
+
   showAboutDialog(
     context: context,
     applicationLegalese: '© 2024 Software Innovation Institute ANU',
     applicationIcon:
         const ImageIcon(AssetImage('assets/images/keypod_logo.png')),
+    applicationName: appInfo.name,
+    applicationVersion: appInfo.version,
     children: [
       Container(
         width: 300, // Limit the width.
