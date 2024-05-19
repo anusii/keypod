@@ -24,26 +24,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 ///
-/// Authors: Kevin Wang
+/// Authors: Kevin Wang, Graham Williams
+
 library;
 
 import 'package:flutter/material.dart';
-import 'package:keypod/utils/rdf.dart';
+
 import 'package:solidpod/solidpod.dart';
 
+import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/utils/constants.dart';
+import 'package:keypod/utils/rdf.dart';
+
 class KeyValueTable extends StatefulWidget {
+  const KeyValueTable({
+    required this.title,
+    required this.fileName,
+    required this.child,
+    super.key,
+    this.keyValuePairs,
+  });
   final String title;
   final String fileName;
   final Widget child;
   final List<Map<String, dynamic>>? keyValuePairs;
-
-  const KeyValueTable({
-    Key? key,
-    required this.title,
-    required this.fileName,
-    required this.child,
-    this.keyValuePairs,
-  }) : super(key: key);
 
   @override
   State<KeyValueTable> createState() => _KeyValueTableState();
@@ -68,10 +72,11 @@ class _KeyValueTableState extends State<KeyValueTable> {
   void initState() {
     super.initState();
     if (widget.keyValuePairs != null) {
-      int i = 0;
-      for (var pair in widget.keyValuePairs!) {
-        var keyController = TextEditingController(text: pair[keyStr] as String);
-        var valueController =
+      var i = 0;
+      for (final pair in widget.keyValuePairs!) {
+        final keyController =
+            TextEditingController(text: pair[keyStr] as String);
+        final valueController =
             TextEditingController(text: pair[valStr] as String);
         keyControllers[i] = keyController;
         valueControllers[i] = valueController;
@@ -94,7 +99,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   void _addNewRow() {
     setState(() {
-      int newIndex = dataMap.length;
+      final newIndex = dataMap.length;
       dataMap[newIndex] = {keyStr: '', valStr: ''};
       keyControllers[newIndex] = TextEditingController();
       valueControllers[newIndex] = TextEditingController();
@@ -203,7 +208,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ' to "${widget.fileName}" in PODs');
       return true;
     } on Exception catch (e) {
-      print('Exception: $e');
+      debugPrint('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -221,7 +226,10 @@ class _KeyValueTableState extends State<KeyValueTable> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        centerTitle: true,
+        backgroundColor: titleBackgroundColor,
+        // Instruct flutter to not put a leading widget automatically
+        // see https://api.flutter.dev/flutter/material/AppBar/leading.html
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -260,8 +268,18 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ElevatedButton(
             onPressed: () => _maybeGoBack(context),
             style: activeButtonStyle(context),
-            child: const Text('Go Back',
+            child: const Text('Testing',
                 style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.info,
+              color: Colors.purple,
+            ),
+            onPressed: () async {
+              aboutDialog(context);
+            },
+            tooltip: 'Popup a window about the app.',
           ),
         ],
       ),
@@ -305,9 +323,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   ButtonStyle activeButtonStyle(BuildContext context) {
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
+      backgroundColor: WidgetStateProperty.resolveWith<Color>(
+        (states) {
+          if (states.contains(WidgetState.disabled)) {
             // Light grey color when disabled.
 
             return Colors.grey.shade300;
@@ -318,9 +336,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
           return Colors.lightBlue;
         },
       ),
-      foregroundColor: MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
+      foregroundColor: WidgetStateProperty.resolveWith<Color>(
+        (states) {
+          if (states.contains(WidgetState.disabled)) {
             // Text color when disabled.
 
             return Colors.black;
@@ -348,7 +366,6 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   Widget _actionCell(int index) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
           icon: const Icon(Icons.delete, color: Colors.red),
@@ -363,13 +380,13 @@ class _KeyValueTableState extends State<KeyValueTable> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text("Confirm"),
+          title: const Text('Confirm'),
           content: const Text(
-              "You have unsaved changes. Are you sure you want to go back?"),
+              'You have unsaved changes. Are you sure you want to go back?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancel"),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -377,7 +394,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => widget.child));
               },
-              child: const Text("Go Back"),
+              child: const Text('Home'),
             ),
           ],
         ),
