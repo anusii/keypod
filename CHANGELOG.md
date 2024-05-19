@@ -9,6 +9,7 @@ numbers.
 
 ## 0.5 Future
 
++ Remove binary installers from default branch for migrating them to Git LFS [0.4.13]
 + Review and cleanup code [0.4.12]
 + Add a data table widget to view, insert, edit, delete rows of key-value pairs [0.4.11]
 + Use updated API to remove security key from local secure storage. [0.4.10]
