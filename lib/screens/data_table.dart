@@ -1,7 +1,6 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
-///
-// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 09:38:11 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -19,7 +18,7 @@
 // FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
 // details.
 //
-// You should have received a copy of the GNU General Public License along with
+// You should have received a copy of the GNU General Public License along withk
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Kevin Wang, Graham Williams
@@ -35,17 +34,18 @@ import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
 class KeyValueTable extends StatefulWidget {
-  const KeyValueTable({
-    required this.title,
-    required this.fileName,
-    required this.child,
-    super.key,
-    this.keyValuePairs,
-  });
   final String title;
   final String fileName;
   final Widget child;
   final List<Map<String, dynamic>>? keyValuePairs;
+
+  const KeyValueTable({
+    Key? key,
+    required this.title,
+    required this.fileName,
+    required this.child,
+    this.keyValuePairs,
+  }) : super(key: key);
 
   @override
   State<KeyValueTable> createState() => _KeyValueTableState();
@@ -70,11 +70,10 @@ class _KeyValueTableState extends State<KeyValueTable> {
   void initState() {
     super.initState();
     if (widget.keyValuePairs != null) {
-      var i = 0;
-      for (final pair in widget.keyValuePairs!) {
-        final keyController =
-            TextEditingController(text: pair[keyStr] as String);
-        final valueController =
+      int i = 0;
+      for (var pair in widget.keyValuePairs!) {
+        var keyController = TextEditingController(text: pair[keyStr] as String);
+        var valueController =
             TextEditingController(text: pair[valStr] as String);
         keyControllers[i] = keyController;
         valueControllers[i] = valueController;
@@ -321,9 +320,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   ButtonStyle activeButtonStyle(BuildContext context) {
     return ButtonStyle(
-      backgroundColor: WidgetStateProperty.resolveWith<Color>(
-        (states) {
-          if (states.contains(WidgetState.disabled)) {
+      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
             // Light grey color when disabled.
 
             return Colors.grey.shade300;
@@ -334,9 +333,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
           return Colors.lightBlue;
         },
       ),
-      foregroundColor: WidgetStateProperty.resolveWith<Color>(
-        (states) {
-          if (states.contains(WidgetState.disabled)) {
+      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
             // Text color when disabled.
 
             return Colors.black;
@@ -364,6 +363,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   Widget _actionCell(int index) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
           icon: const Icon(Icons.delete, color: Colors.red),
