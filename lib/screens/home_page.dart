@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        title: const Text('Loading Key Value Pairs...'),
         backgroundColor: titleBackgroundColor,
         automaticallyImplyLeading: false,
       ),
@@ -84,18 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _buildButton('KEYPODS', _writePrivateData),
-            _buildButton('TESTING', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const TestHome()),
-              );
-            }),
-          ],
-        ),
+
         // Pushes the about button to the bottom.
         Expanded(child: Container()),
         Container(
