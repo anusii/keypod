@@ -40,3 +40,7 @@ the web-based app directly.
 Download and run the `keypod.exe` to self install the app on
 Windows.
 
+
+**NOTE**:
+- Installers are tracked using [Git LFS](https://git-lfs.com/), please follow [this instruction](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage) to install it (`apt-get install git-lfs` works on Ubuntu/Debian).
+- For further details of migrating large files in a repository to Git LFS, see [this GitHub documentation](https://docs.github.com/en/repositories/working-with-files/managing-large-files/moving-a-file-in-your-repository-to-git-large-file-storage).
