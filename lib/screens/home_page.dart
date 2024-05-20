@@ -22,7 +22,6 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Kevin Wang
-
 library;
 
 import 'package:flutter/material.dart';
@@ -37,7 +36,7 @@ import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
 class HomeScreen extends StatefulWidget {
-  ///Constructor
+  /// Constructor
   const HomeScreen({super.key});
 
   @override
@@ -46,6 +45,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Automatically click the KEYPODS button when the screen loads.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _writePrivateData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         // Pushes the about button to the bottom.
-
         Expanded(child: Container()),
         Container(
           padding: const EdgeInsets.all(20),
@@ -123,35 +130,34 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       setState(() {
         // Show loading indicator.
-
         _isLoading = true;
       });
 
       // Simulating a network call.
-
       await Future.delayed(const Duration(seconds: 2));
 
       // Navigate or perform additional actions after loading
-
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
       final fileContent = await readPod(filePath, context, const TestHome());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
       // Convert each tuple to a Map.
-
       final keyValuePairs = pairs?.map((pair) {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
 
       await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => KeyValueTable(
-                  title: 'Key Value Pair Editor',
-                  fileName: fileName,
-                  keyValuePairs: keyValuePairs,
-                  child: const HomeScreen())));
+        context,
+        MaterialPageRoute(
+          builder: (context) => KeyValueTable(
+            title: 'Key Value Pair Editor',
+            fileName: fileName,
+            keyValuePairs: keyValuePairs,
+            child: const HomeScreen(),
+          ),
+        ),
+      );
     } on Exception catch (e) {
       print('Error: $e');
     } finally {

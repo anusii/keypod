@@ -32,6 +32,7 @@ import 'package:solidpod/solidpod.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
+import 'package:keypod/screens/test_home.dart';
 
 class KeyValueTable extends StatefulWidget {
   final String title;
@@ -263,7 +264,12 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ),
           const SizedBox(width: 10),
           ElevatedButton(
-            onPressed: () => _maybeGoBack(context),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TestHome()),
+              );
+            },
             style: activeButtonStyle(context),
             child: const Text('Testing',
                 style: TextStyle(fontWeight: FontWeight.bold)),
