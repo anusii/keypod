@@ -52,6 +52,7 @@ import 'package:solidpod/solidpod.dart'
         getEncKeyPath,
         getDataDirPath,
         logoutPopup,
+        KeyManager,
         readPod,
         changeKeyPopup;
 
@@ -265,9 +266,8 @@ class TestHomeState extends State<TestHome>
                           onPressed: () async {
                             late String msg;
                             try {
-                              // await removeMasterPassword();
-                              msg =
-                                  'NOT YET IMPLEMENTED BUT IT WILL Successfully forgot local security key.';
+                              await KeyManager.forgetSecurityKey();
+                              msg = 'Successfully forgot local security key.';
                             } on Exception catch (e) {
                               msg = 'Failed to forget local security key: $e';
                             }
