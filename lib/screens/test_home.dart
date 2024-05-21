@@ -181,7 +181,7 @@ class TestHomeState extends State<TestHome>
               color: Colors.purple,
             ),
             onPressed: () async {
-              aboutDialog(context);
+              await aboutDialog(context);
             },
             tooltip: 'Popup a window about the app.',
           ),
