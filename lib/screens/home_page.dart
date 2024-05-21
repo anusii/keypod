@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Loading Key Value Pairs...'),
+        title: const Text('Loading Key Value Pairs... '),
         backgroundColor: titleBackgroundColor,
         automaticallyImplyLeading: false,
       ),
