@@ -84,20 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const SizedBox(height: 20),
-
-        // Pushes the about button to the bottom.
         Expanded(child: Container()),
-        Container(
-          padding: const EdgeInsets.all(20),
-          alignment: Alignment.bottomCenter,
-          child: IconButton(
-            icon: const Icon(Icons.info),
-            onPressed: () async {
-              aboutDialog(context);
-            },
-            tooltip: 'Popup a window about the app.',
-          ),
-        ),
       ],
     );
   }
