@@ -62,6 +62,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   final keyStr = 'key';
   final valStr = 'value';
+  final regExp = RegExp(r'\s+');
 
   // Map to hold the TextEditingController for each key and value.
   Map<int, TextEditingController> keyControllers = {};
@@ -78,7 +79,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
             TextEditingController(text: pair[valStr] as String);
         keyControllers[i] = keyController;
         valueControllers[i] = valueController;
-        dataMap[i++] = {keyStr: pair['key'], valStr: pair['value']};
+        dataMap[i++] = {keyStr: pair[keyStr], valStr: pair[valStr]};
       }
     }
   }
@@ -176,11 +177,30 @@ class _KeyValueTableState extends State<KeyValueTable> {
   }
 
   // Function to convert Map<int, Map<String, dynamic>> to List<KeyValuePair>
-  List<({String key, dynamic value})> _convertDataMapToListOfPairs(
-      Map<int, Map<String, dynamic>> dataMap) {
-    return dataMap.values
-        .map((map) => (key: map[keyStr] as String, value: map[valStr]))
-        .toList();
+  Future<List<({String key, dynamic value})>?>
+      _convertDataMapToListOfPairs() async {
+    final rowInd = dataMap.keys.toList()..sort();
+    final keys = <String>{};
+    final pairs = <({String key, dynamic value})>[];
+    for (final i in rowInd) {
+      final k = (dataMap[i]![keyStr] as String).trim();
+      if (k.isEmpty) {
+        await _alert('Invalide key: "$k"');
+        return null;
+      }
+      if (keys.contains(k)) {
+        await _alert('Duplicate key: "$k"');
+        return null;
+      }
+      if (regExp.hasMatch(k)) {
+        await _alert('Invalided key: Whitespace found in key "$k"');
+        return null;
+      }
+      keys.add(k);
+      final v = dataMap[i]![valStr];
+      pairs.add((key: k, value: v));
+    }
+    return pairs;
   }
 
   // Save data to PODs
@@ -191,7 +211,11 @@ class _KeyValueTableState extends State<KeyValueTable> {
       _isLoading = true;
     });
 
-    final pairs = _convertDataMapToListOfPairs(dataMap);
+    final pairs = await _convertDataMapToListOfPairs();
+
+    if (pairs == null) {
+      return false;
+    }
 
     try {
       // Generate TTL str with dataMap.
