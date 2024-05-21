@@ -15,8 +15,19 @@ On starting the app you will be presented with the
 <div align="center">
 	<img
 	src="https://raw.githubusercontent.com/anusii/solidpod/dev/images/keypod_login.png"
-	alt="KeyPod Login" width="400">
+	alt="KeyPod Login" width="600">
 </div>
+
+Here you have the option to **Login** to your Solid Pod before you use
+the functionality of the app. Alternatively you can **Continue** to
+the app without a log in. Many apps will provide some functionality
+without access to your actual data, and when access is needed the app
+can call `solidLoginPopup()` from the `solidpod` package to login in
+to your solid pod.
+
+If you don't currently have a Solid Pod then you can **Register** for one
+on a Solid server. The **Info** button can be tapped to browse
+more information about the app.
 
 ## Getting Started with Flutter
 
