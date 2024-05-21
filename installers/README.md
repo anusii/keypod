@@ -41,8 +41,23 @@ Download and run the `keypod.exe` to self install the app on
 Windows.
 
 
-**NOTE**:
-- Installers are tracked using [Git LFS](https://git-lfs.com/), please follow [this instruction](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage) to install it (`apt-get install git-lfs` works on Ubuntu/Debian).
-- To track a new file type using Git LFS, e.g. `*.psd` files, run `git lfs track "*.psd"` which adds a line in `.gitattributes`, commit the changes in `.gitattributes` and then use `git add/commit/push` to track large files as you would normally do for small text files.
-- To see files tracked by Git LFS, use `git lfs ls-files`, and to see the pointer files stored in the Git repository for the LFS tracked files, e.g. `keypod.apk`, type `cd ./keypod; git show HEAD:installers/keypod.apk`
-- For further details of migrating large files in a repository to Git LFS, see [this GitHub documentation](https://docs.github.com/en/repositories/working-with-files/managing-large-files/moving-a-file-in-your-repository-to-git-large-file-storage).
+# NOTE:
+
+- Installers are tracked using [Git LFS](https://git-lfs.com/), please
+  follow [this
+  instruction](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage)
+  to install it (`apt-get install git-lfs` works on Ubuntu/Debian).
+
+- To track a new file type using Git LFS, e.g. `*.psd` files, run `git
+  lfs track "*.psd"` which adds a line in `.gitattributes`, commit the
+  changes in `.gitattributes` and then use `git add/commit/push` to
+  track large files as you would normally do for small text files.
+
+- To see files tracked by Git LFS, use `git lfs ls-files`, and to see
+  the pointer files stored in the Git repository for the LFS tracked
+  files, e.g. `keypod.apk`, type `cd ./keypod; git show
+  HEAD:installers/keypod.apk`
+
+- For further details of migrating large files in a repository to Git
+  LFS, see [this GitHub
+  documentation](https://docs.github.com/en/repositories/working-with-files/managing-large-files/moving-a-file-in-your-repository-to-git-large-file-storage).
