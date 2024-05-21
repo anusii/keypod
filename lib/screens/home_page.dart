@@ -1,43 +1,44 @@
 /// New Home Screen
 ///
+// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
-/// Licensed under the MIT License (the "License").
+/// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
-/// License: https://choosealicense.com/licenses/mit/.
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+// details.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// You should have received a copy of the GNU General Public License along with
+// this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Kevin Wang
+
 library;
 
 import 'package:flutter/material.dart';
-import 'package:keypod/screens/about_dialog.dart';
-import 'package:keypod/screens/data_table.dart';
-import 'package:keypod/screens/test_home.dart';
-import 'package:keypod/utils/rdf.dart';
+
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
+import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/screens/data_table.dart';
+import 'package:keypod/screens/test_home.dart';
+import 'package:keypod/utils/constants.dart';
+import 'package:keypod/utils/rdf.dart';
+
 class HomeScreen extends StatefulWidget {
   ///Constructor
-  const HomeScreen();
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -51,9 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
-        backgroundColor: const Color(0xFFF0E4D7),
+        backgroundColor: titleBackgroundColor,
+        automaticallyImplyLeading: false,
       ),
-      backgroundColor: const Color(0xFFF0E4D7),
+      backgroundColor: titleBackgroundColor,
       body: Stack(
         children: <Widget>[
           _buildMainContent(),
@@ -107,16 +109,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildButton(String title, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(title, style: const TextStyle(fontSize: 16)),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
         textStyle: const TextStyle(fontSize: 16),
       ),
+      child: Text(title, style: const TextStyle(fontSize: 16)),
     );
   }
 
   Future<void> _writePrivateData() async {
-    const fileName = 'test-102.ttl';
+    const fileName = dataFile;
 
     try {
       setState(() {
@@ -138,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
       // Convert each tuple to a Map.
 
-      List<Map<String, dynamic>>? keyValuePairs = pairs?.map((pair) {
+      final keyValuePairs = pairs?.map((pair) {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
 

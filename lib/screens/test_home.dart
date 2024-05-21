@@ -1,30 +1,26 @@
 /// Home page after user creating account.
 ///
-// Time-stamp: <Friday 2024-05-10 11:04:30 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 11:27:30 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
-/// Licensed under the MIT License (the "License").
+/// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
-/// License: https://choosealicense.com/licenses/mit/.
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+// details.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// You should have received a copy of the GNU General Public License along with
+// this program.  If not, see <https://www.gnu.org/licenses/>.
+///
 ///
 /// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen, Graham Williams
 
@@ -35,13 +31,19 @@
 library;
 
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
+import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
-import 'package:path/path.dart' as path;
+
+// TODO 20240515 gjw For now we will list all the imports so we can manage the
+// API evolution. Eventually we will simply just import the package.
 
 import 'package:solidpod/solidpod.dart'
     show
@@ -51,7 +53,6 @@ import 'package:solidpod/solidpod.dart'
         getDataDirPath,
         logoutPopup,
         readPod,
-        removeMasterPassword,
         changeKeyPopup;
 
 /// Widget represents the home screen of the application.
@@ -107,7 +108,7 @@ class TestHomeState extends State<TestHome>
         ),
       );
     } on Exception catch (e) {
-      print('Exception: $e');
+      debugPrint('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -130,7 +131,7 @@ class TestHomeState extends State<TestHome>
     // final fileName = 'test-101.ttl';
     // final fileContent = 'This is for testing writePod.';
 
-    const fileName = 'test-102.ttl';
+    const fileName = dataFile;
 
     try {
       final dataDirPath = await getDataDirPath();
@@ -143,12 +144,12 @@ class TestHomeState extends State<TestHome>
           context,
           MaterialPageRoute(
               builder: (context) => KeyValueEdit(
-                  title: 'Key Value Pair Editor',
+                  title: 'Basic Key Value Editor',
                   fileName: fileName,
                   keyValuePairs: pairs,
                   child: const TestHome())));
     } on Exception catch (e) {
-      print('Exception: $e');
+      debugPrint('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -166,10 +167,14 @@ class TestHomeState extends State<TestHome>
 
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: lightGreen,
-        centerTitle: true,
+        backgroundColor: titleBackgroundColor,
         title: Text(title),
         actions: [
+          // ElevatedButton(
+          //   onPressed: () => Navigator.of(context).pop(),
+          //   child: const Text('Home',
+          //       style: TextStyle(fontWeight: FontWeight.bold)),
+          // ),
           IconButton(
             icon: const Icon(
               Icons.info,
@@ -181,10 +186,6 @@ class TestHomeState extends State<TestHome>
             tooltip: 'Popup a window about the app.',
           ),
         ],
-        // Instruct flutter to not put a leading widget automatically
-        // see https://api.flutter.dev/flutter/material/AppBar/leading.html
-        leading: null,
-        automaticallyImplyLeading: false,
       ),
       body: _isLoading
           ? const Center(
@@ -228,7 +229,7 @@ class TestHomeState extends State<TestHome>
                         ),
                         const SizedBox(height: smallButtonGap),
                         ElevatedButton(
-                          child: const Text('Show Private Data'),
+                          child: const Text('Show Secret Key'),
                           onPressed: () async {
                             await _showPrivateData(title);
                           },
@@ -265,7 +266,8 @@ class TestHomeState extends State<TestHome>
                             late String msg;
                             try {
                               // await removeMasterPassword();
-                              msg = 'Successfully forgot local security key.';
+                              msg =
+                                  'NOT YET IMPLEMENTED BUT IT WILL Successfully forgot local security key.';
                             } on Exception catch (e) {
                               msg = 'Failed to forget local security key: $e';
                             }
@@ -298,6 +300,12 @@ class TestHomeState extends State<TestHome>
                             ),
                           ],
                         ),
+                        // TODO 20240515 gjw Add a tooltip for the next button:
+                        //
+                        // This will remove from our local device's memory the
+                        // solid pod login information so that the next time you
+                        // start up the app you will need to login to your solid
+                        // server hosting your pod.
                         ElevatedButton(
                           child: const Text(
                               'Forget Remote Solid Server Login Info'),
@@ -331,6 +339,24 @@ class TestHomeState extends State<TestHome>
                           },
                         ),
                         const SizedBox(height: smallButtonGap),
+                        // TODO 20240515 gjw Add a tooltip for the next button:
+                        //
+                        // This will remove send a request through the browser
+                        // to the remote solid server to log the suer out of their
+                        // Pod.
+                        //
+                        // Some clarifications needed here:
+                        //
+                        // 1. On my Brave browser it displays the sign out page
+                        // with Yes/No options. Apparently that does not appear
+                        // on all browsers?
+                        //
+                        // 2. Anushka commented that it may not actually log you
+                        // out?
+                        //
+                        // 3. Explain how this is different conceptually to the
+                        // delteLogIn().
+                        //
                         ElevatedButton(
                             onPressed: () async {
                               await logoutPopup(context, const KeyPod());
@@ -353,9 +379,8 @@ class TestHomeState extends State<TestHome>
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final appName = snapshot.data?.name;
-            final title = appName!.isNotEmpty
-                ? appName[0].toUpperCase() + appName.substring(1)
-                : '';
+            final title = 'Testing solidpod functionality using '
+                '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
             return _build(context, title);
           } else {
             return const CircularProgressIndicator();

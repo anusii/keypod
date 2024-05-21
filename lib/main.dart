@@ -1,6 +1,6 @@
 /// A basic template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Saturday 2024-05-11 16:33:18 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-05-15 09:38:11 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -18,7 +18,7 @@
 // FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
 // details.
 //
-// You should have received a copy of the GNU General Public License along with
+// You should have received a copy of the GNU General Public License along withk
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Graham Williams
@@ -27,11 +27,11 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:keypod/screens/home_page.dart' show HomeScreen;
-import 'package:keypod/utils/is_desktop.dart';
+import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:solidpod/solidpod.dart';
+import 'package:keypod/screens/home_page.dart' show HomeScreen;
+import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
   // Suport window size and top placement for desktop apps.
@@ -78,13 +78,13 @@ class KeyPod extends StatelessWidget {
         // Images generated using Bing Image Creator from Designer, powered by
         // DALL-E3.
 
-        title: 'MANAGE YOUR SOLID KEY POD',
+        title: 'SOLID KEY/VALUE POD',
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
-        link: 'https://github.com/anusii/keypod',
+        link: 'https://github.com/anusii/keypod/blob/main/README.md',
         required: false,
-        continueButtonStyle: ContinueButtonStyle(
-          tooltip: 'Test changing the tooltip.',
+        infoButtonStyle: InfoButtonStyle(
+          tooltip: 'Visit the KeyPod documentation.',
         ),
         loginButtonStyle: LoginButtonStyle(
           background: Colors.lightGreenAccent,

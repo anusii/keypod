@@ -1,35 +1,37 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
+// Time-stamp: <Wednesday 2024-05-15 09:38:11 +1000 Graham Williams>
+///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
-/// Licensed under the MIT License (the "License").
+/// Licensed under the GNU General Public License, Version 3 (the "License").
 ///
-/// License: https://choosealicense.com/licenses/mit/.
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+// details.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// You should have received a copy of the GNU General Public License along withk
+// this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: Kevin Wang
+/// Authors: Kevin Wang, Graham Williams
+
 library;
 
 import 'package:flutter/material.dart';
-import 'package:keypod/utils/rdf.dart';
+
 import 'package:solidpod/solidpod.dart';
+
+import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/utils/constants.dart';
+import 'package:keypod/utils/rdf.dart';
 
 class KeyValueTable extends StatefulWidget {
   final String title;
@@ -94,7 +96,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   void _addNewRow() {
     setState(() {
-      int newIndex = dataMap.length;
+      final newIndex = dataMap.length;
       dataMap[newIndex] = {keyStr: '', valStr: ''};
       keyControllers[newIndex] = TextEditingController();
       valueControllers[newIndex] = TextEditingController();
@@ -203,7 +205,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ' to "${widget.fileName}" in PODs');
       return true;
     } on Exception catch (e) {
-      print('Exception: $e');
+      debugPrint('Exception: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -221,7 +223,10 @@ class _KeyValueTableState extends State<KeyValueTable> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        centerTitle: true,
+        backgroundColor: titleBackgroundColor,
+        // Instruct flutter to not put a leading widget automatically
+        // see https://api.flutter.dev/flutter/material/AppBar/leading.html
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -260,8 +265,18 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ElevatedButton(
             onPressed: () => _maybeGoBack(context),
             style: activeButtonStyle(context),
-            child: const Text('Go Back',
+            child: const Text('Testing',
                 style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.info,
+              color: Colors.purple,
+            ),
+            onPressed: () async {
+              aboutDialog(context);
+            },
+            tooltip: 'Popup a window about the app.',
           ),
         ],
       ),
@@ -363,13 +378,13 @@ class _KeyValueTableState extends State<KeyValueTable> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text("Confirm"),
+          title: const Text('Confirm'),
           content: const Text(
-              "You have unsaved changes. Are you sure you want to go back?"),
+              'You have unsaved changes. Are you sure you want to go back?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancel"),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -377,7 +392,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => widget.child));
               },
-              child: const Text("Go Back"),
+              child: const Text('Home'),
             ),
           ],
         ),
