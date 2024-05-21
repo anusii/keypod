@@ -35,18 +35,17 @@ import 'package:keypod/utils/rdf.dart';
 import 'package:keypod/screens/test_home.dart';
 
 class KeyValueTable extends StatefulWidget {
+  const KeyValueTable({
+    required this.title,
+    required this.fileName,
+    required this.child,
+    super.key,
+    this.keyValuePairs,
+  });
   final String title;
   final String fileName;
   final Widget child;
   final List<Map<String, dynamic>>? keyValuePairs;
-
-  const KeyValueTable({
-    Key? key,
-    required this.title,
-    required this.fileName,
-    required this.child,
-    this.keyValuePairs,
-  }) : super(key: key);
 
   @override
   State<KeyValueTable> createState() => _KeyValueTableState();
@@ -71,10 +70,11 @@ class _KeyValueTableState extends State<KeyValueTable> {
   void initState() {
     super.initState();
     if (widget.keyValuePairs != null) {
-      int i = 0;
-      for (var pair in widget.keyValuePairs!) {
-        var keyController = TextEditingController(text: pair[keyStr] as String);
-        var valueController =
+      var i = 0;
+      for (final pair in widget.keyValuePairs!) {
+        final keyController =
+            TextEditingController(text: pair[keyStr] as String);
+        final valueController =
             TextEditingController(text: pair[valStr] as String);
         keyControllers[i] = keyController;
         valueControllers[i] = valueController;
@@ -327,7 +327,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
   ButtonStyle activeButtonStyle(BuildContext context) {
     return ButtonStyle(
       backgroundColor: MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
+        (states) {
           if (states.contains(MaterialState.disabled)) {
             // Light grey color when disabled.
 
@@ -340,7 +340,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
         },
       ),
       foregroundColor: MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
+        (states) {
           if (states.contains(MaterialState.disabled)) {
             // Text color when disabled.
 
@@ -369,7 +369,6 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   Widget _actionCell(int index) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
           icon: const Icon(Icons.delete, color: Colors.red),

@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     } on Exception catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
     } finally {
       if (mounted) {
         setState(() {
