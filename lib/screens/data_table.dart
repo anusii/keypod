@@ -1,6 +1,6 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
-// Time-stamp: <Wednesday 2024-05-15 09:38:11 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-05-23 09:43:37 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -287,16 +287,17 @@ class _KeyValueTableState extends State<KeyValueTable> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           const SizedBox(width: 10),
-          ElevatedButton(
+          IconButton(
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.green,
+            ),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const TestHome()),
               );
             },
-            style: activeButtonStyle(context),
-            child: const Text('Testing',
-                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           IconButton(
             icon: const Icon(
