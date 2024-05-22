@@ -10,7 +10,7 @@ and have the changes saved to your Solid Pod.
 
 On starting the app you will be presented with the
 [solidpod](https://pub.dev/packages/solidpod) login screen (using
-`solidLogin()` from solidpod).
+`SolidLogin()` from solidpod).
 
 <div align="center">
 	<img
