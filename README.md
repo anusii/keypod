@@ -1,5 +1,16 @@
 # KeyPod &mdash; Simple Key Value Store
 
+**An ANU Software Innovation Institute demo project for Solid Pods**
+
+*Authors: Graham Williams, Anushka Vidanage, Jessica Moore, Zheyuan Xu,
+Kevin Wang, Ninad Bhat, Dawei Chen.*
+
+*[ANU Software Innovation Institute](https://sii.anu.edu.au)*
+
+*License: GNU GPL V3*
+
+## Introduction
+
 KeyPod is a simple key value data store app to serve as a template and
 to demonstrate a [Flutter](https://flutter.dev) app utilising data
 stored in [Solid Pods](https://solidcommunity.au).
@@ -54,6 +65,3 @@ by DALL-E3.
 
 The app was developed by the Software Innovation Institute of the
 Australian National University.
-
-Authors: Graham Williams, Anushka Vidanage, Jess Moore, Zheyuan Xu,
-Kevin Wang, Ninad Bhat, Dawei Chen.
