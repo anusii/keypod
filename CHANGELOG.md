@@ -7,7 +7,9 @@ Instructions: Add the updates beyond, for example, 0.6.0 under the 0.7
 heading, adding to the top of the list, and recording minor version
 numbers.
 
-## 0.5 Future
+## 0.6 FUTURE
+
+## 0.5 20240522
 
 + Update license to GPL. [0.4.14]
 + Remove binary installers from default branch for migrating them to Git LFS [0.4.13]
