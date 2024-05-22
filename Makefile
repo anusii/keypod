@@ -2,7 +2,7 @@
 #
 # Generic Makefile
 #
-# Time-stamp: <Wednesday 2024-05-22 14:53:18 +1000 Graham Williams>
+# Time-stamp: <Wednesday 2024-05-22 15:08:58 +1000 Graham Williams>
 #
 # Copyright (c) Graham.Williams@togaware.com
 #
@@ -71,3 +71,13 @@ help::
 
 locals:
 	@echo "This might be the instructions to install $(APP)"
+
+apk::
+	rsync -avzh installers/$(APP)* solidcommunity.au:/var/www/html/installers/
+	ssh solidcommunity.au chmod -R go+rX /var/www/html/installers/
+	ssh solidcommunity.au chmod go=x /var/www/html/installers/
+
+tgz::
+	rsync -avzh installers/$(APP)* solidcommunity.au:/var/www/html/installers/
+	ssh solidcommunity.au chmod -R go+rX /var/www/html/installers/
+	ssh solidcommunity.au chmod go=x /var/www/html/installers/
