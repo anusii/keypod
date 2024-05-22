@@ -55,7 +55,7 @@ flutter:
 
   distributions
     apk	    Builds installers/$(APP).apk
-    targz   Builds installers/$(APP).tar.gz
+    tgz     Builds installers/$(APP).tar.gz
 
   publish   Publish a package to pub.dev
 
@@ -279,19 +279,25 @@ coview:
 realclean::
 	rm -rf coverage
 
-targz: $(APP)-$(VER)-linux-x86_64.tar.gz
+# Crate an installer for Linux as a tar.gz archive.
+
+tgz:: $(APP)-$(VER)-linux-x86_64.tar.gz
 
 $(APP)-$(VER)-linux-x86_64.tar.gz:
 	mkdir -p installers
 	rm -rf build/linux/x64/release
-	flutter build linux
+	flutter build linux --release
 	tar --transform 's|^build/linux/x64/release/bundle|$(APP)|' -czvf $@ build/linux/x64/release/bundle
+	cp $@ installers/
 	mv $@ installers/$(APP).tar.gz
 
-apk:
-	flutter build apk
+apk::
+	flutter build apk --release
 	cp build/app/outputs/flutter-apk/app-release.apk installers/$(APP).apk
+	cp build/app/outputs/flutter-apk/app-release.apk installers/$(APP)-$(VER).apk
 
+appbundle:
+	flutter build appbundle --release
 
 realclean::
 	flutter clean
@@ -318,3 +324,33 @@ endif
 .PHONY: publish
 publish:
 	dart pub publish
+
+### TODO THESE SHOULD BE CHECKED AND CLEANED UP
+
+
+.PHONY: docs
+docs::
+	rsync -avzh doc/api/ root@solidcommunity.au:/var/www/html/docs/$(APP)/
+
+.PHONY: versions
+versions:
+	perl -pi -e 's|applicationVersion = ".*";|applicationVersion = "$(VER)";|' \
+	lib/constants/app.dart
+
+.PHONY: wc
+wc: lib/*.dart
+	@cat lib/*.dart lib/*/*.dart lib/*/*/*.dart \
+	| egrep -v '^/' \
+	| egrep -v '^ *$$' \
+	| wc -l
+
+#
+# Manage the production install on the remote server.
+#
+
+.PHONY: solidcommunity
+solidcommunity:
+	rsync -avzh ./ solidcommunity.au:projects/$(APP)/ \
+	--exclude .dart_tool --exclude build --exclude ios --exclude macos \
+	--exclude linux --exclude windows --exclude android
+	ssh solidcommunity.au '(cd projects/$(APP); flutter upgrade; make prod)'
