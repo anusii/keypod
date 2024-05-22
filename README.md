@@ -1,4 +1,4 @@
-# KeyPod --- A Simple Key Value Store
+# KeyPod &mdash; Simple Key Value Store
 
 KeyPod is a simple key value data store app to serve as a template and
 to demonstrate a [Flutter](https://flutter.dev) app utilising data
@@ -25,7 +25,7 @@ without access to your actual data, and when access is needed the app
 can call `solidLoginPopup()` from the `solidpod` package to login in
 to your solid pod.
 
-If you don't currently have a Solid Pod then you can **Register** for one
+If you don't have a Solid Pod yet then you can **Register** for one
 on a Solid server. The **Info** button can be tapped to browse
 more information about the app.
 
