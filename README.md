@@ -11,7 +11,7 @@ Kevin Wang, Ninad Bhat, Dawei Chen.*
 
 ## Introduction
 
-KeyPod is a simple key value data store app to serve as a template and
+KeyPod is a simple key value data store app that can be used as a template and
 to demonstrate a [Flutter](https://flutter.dev) app utilising data
 stored in [Solid Pods](https://solidcommunity.au).
 
