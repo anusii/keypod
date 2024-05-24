@@ -1,6 +1,6 @@
-/// New Home Screen
+/// The template app home screen showing a simple key value table.
 ///
-// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+// Time-stamp: <Friday 2024-05-24 15:39:59 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -21,7 +21,8 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: Kevin Wang
+/// Authors: Kevin Wang, Graham Williams
+
 library;
 
 import 'package:flutter/material.dart';
@@ -29,16 +30,17 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
-import 'package:keypod/screens/about_dialog.dart';
 import 'package:keypod/screens/data_table.dart';
-import 'package:keypod/screens/test_home.dart';
+import 'package:keypod/screens/demo.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
 class HomeScreen extends StatefulWidget {
-  /// Constructor
+  /// Constructor for the home screen.
+
   const HomeScreen({super.key});
 
+  //TODO 20240524 gjw fix
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -89,16 +91,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildButton(String title, VoidCallback onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-        textStyle: const TextStyle(fontSize: 16),
-      ),
-      child: Text(title, style: const TextStyle(fontSize: 16)),
-    );
-  }
+  // TODO 20240524 gjw Is this used? My linter is complaining.
+  //
+  // Widget _buildButton(String title, VoidCallback onPressed) {
+  //   return ElevatedButton(
+  //     onPressed: onPressed,
+  //     style: ElevatedButton.styleFrom(
+  //       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+  //       textStyle: const TextStyle(fontSize: 16),
+  //     ),
+  //     child: Text(title, style: const TextStyle(fontSize: 16)),
+  //   );
+  // }
 
   Future<void> _writePrivateData() async {
     const fileName = dataFile;
@@ -116,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
-      final fileContent = await readPod(filePath, context, const TestHome());
+      final fileContent = await readPod(filePath, context, const DemoScreen());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
       // Convert each tuple to a Map.
       final keyValuePairs = pairs?.map((pair) {

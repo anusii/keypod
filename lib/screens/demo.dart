@@ -1,6 +1,6 @@
-/// Home page after user creating account.
+/// A screen to demonstrate various capabilities of solidlogin.
 ///
-// Time-stamp: <Wednesday 2024-05-15 11:27:30 +1000 Graham Williams>
+// Time-stamp: <Friday 2024-05-24 15:31:41 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -36,7 +36,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:keypod/main.dart';
-import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
 import 'package:keypod/utils/constants.dart';
@@ -56,20 +56,18 @@ import 'package:solidpod/solidpod.dart'
         readPod,
         changeKeyPopup;
 
-/// Widget represents the home screen of the application.
-///
-/// This is because this page is designed to be work in offline as well.
+/// A widget for the demonstation screen of the application.
 
-class TestHome extends StatefulWidget {
-  /// Initialise widget variables
+class DemoScreen extends StatefulWidget {
+  /// Initialise widget variables.
 
-  const TestHome({super.key});
+  const DemoScreen({super.key});
 
   @override
-  TestHomeState createState() => TestHomeState();
+  DemoScreenState createState() => DemoScreenState();
 }
 
-class TestHomeState extends State<TestHome>
+class DemoScreenState extends State<DemoScreen>
     with SingleTickerProviderStateMixin {
   String sampleText = '';
   // Step 1: Loading state variable.
@@ -95,7 +93,7 @@ class TestHomeState extends State<TestHome>
       final fileContent = await readPod(
         filePath,
         context,
-        const TestHome(),
+        const DemoScreen(),
       );
 
       //await Navigator.pushReplacement( // this won't show the file content if POD initialisation has just been performed
@@ -138,7 +136,7 @@ class TestHomeState extends State<TestHome>
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
-      final fileContent = await readPod(filePath, context, const TestHome());
+      final fileContent = await readPod(filePath, context, const DemoScreen());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
 
       await Navigator.pushReplacement(
@@ -148,7 +146,7 @@ class TestHomeState extends State<TestHome>
                   title: 'Basic Key Value Editor',
                   fileName: fileName,
                   keyValuePairs: pairs,
-                  child: const TestHome())));
+                  child: const DemoScreen())));
     } on Exception catch (e) {
       debugPrint('Exception: $e');
     } finally {
@@ -162,87 +160,113 @@ class TestHomeState extends State<TestHome>
   }
 
   Widget _build(BuildContext context, String title) {
-    final dateStr = DateFormat('dd MMMM yyyy').format(DateTime.now());
-    const smallButtonGap = 10.0;
-    const largeButtonGap = 40.0;
+    // Build the widget.
+
+    // Include a timestamp on the screen.
+
+    final dateStr = DateFormat('HH:mm:ss dd MMMM yyyy').format(DateTime.now());
+
+    // Some vertical spacing for the widget.
+
+    const smallGapV = SizedBox(height: 10.0);
+    const largeGapV = SizedBox(height: 40.0);
+
+    // Some handy widgets that will be displyed. These are defined here to
+    // reduce the complexity of the code below.
+
+    final about = IconButton(
+      icon: const Icon(
+        Icons.info,
+        color: Colors.purple,
+      ),
+      onPressed: () async {
+        await aboutDialog(context);
+      },
+      tooltip: 'Popup a window about the app.',
+    );
+
+    final date = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Date: $dateStr',
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+
+    const webid = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'WebID: TO BE IMPLEMENTED',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+
+    const welcomeHeading = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Welcome to your new app!',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+
+    // TODO 20240524 gjw A WORK IN PROGRESS TO MIGRATE THE WIDGETS BELOW UP
+    // HERE.
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: titleBackgroundColor,
         title: Text(title),
         actions: [
-          // ElevatedButton(
-          //   onPressed: () => Navigator.of(context).pop(),
-          //   child: const Text('Home',
-          //       style: TextStyle(fontWeight: FontWeight.bold)),
-          // ),
-          IconButton(
-            icon: const Icon(
-              Icons.info,
-              color: Colors.purple,
-            ),
-            onPressed: () async {
-              await aboutDialog(context);
-            },
-            tooltip: 'Popup a window about the app.',
-          ),
+          about,
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child:
-                  // Step 2: Show loading indicator.
-
-                  CircularProgressIndicator())
+          // If loading show the loading indicator.
+          ? const Center(child: CircularProgressIndicator())
+          // Otherwise we show the screen.
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: smallButtonGap),
-                  //const ShowKeys(),
+                  smallGapV,
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Date: $dateStr',
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: smallButtonGap),
-                        const Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Welcome to your new app!',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: smallButtonGap),
+                        date,
+                        webid,
+                        largeGapV,
+                        welcomeHeading,
+                        smallGapV,
+                        // TODO 20240524 gjw CONTINUE HERE
                         ElevatedButton(
                           child: const Text('Show Secret Key'),
                           onPressed: () async {
                             await _showPrivateData(title);
                           },
                         ),
-                        const SizedBox(height: smallButtonGap),
+                        smallGapV,
                         ElevatedButton(
                           child: const Text('Key Value Table Demo'),
                           onPressed: () async {
                             await _writePrivateData();
                           },
                         ),
-                        const SizedBox(height: largeButtonGap),
+                        largeGapV,
                         const Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -260,7 +284,7 @@ class TestHomeState extends State<TestHome>
                               changeKeyPopup(context);
                             },
                             child: const Text('Change Security Key')),
-                        const SizedBox(height: smallButtonGap),
+                        smallGapV,
                         ElevatedButton(
                           child: const Text('Forget Local Security Key'),
                           onPressed: () async {
@@ -287,7 +311,7 @@ class TestHomeState extends State<TestHome>
                             );
                           },
                         ),
-                        const SizedBox(height: largeButtonGap),
+                        largeGapV,
                         const Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -338,7 +362,7 @@ class TestHomeState extends State<TestHome>
                             );
                           },
                         ),
-                        const SizedBox(height: smallButtonGap),
+                        smallGapV,
                         // TODO 20240515 gjw Add a tooltip for the next button:
                         //
                         // This will remove send a request through the browser
@@ -375,16 +399,17 @@ class TestHomeState extends State<TestHome>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<({String name, String version})>(
-        future: getAppNameVersion(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final appName = snapshot.data?.name;
-            final title = 'Testing solidpod functionality using '
-                '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
-            return _build(context, title);
-          } else {
-            return const CircularProgressIndicator();
-          }
-        });
+      future: getAppNameVersion(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final appName = snapshot.data?.name;
+          final title = 'Demonstrating solidpod functionality using '
+              '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
+          return _build(context, title);
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
+    );
   }
 }

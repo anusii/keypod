@@ -1,6 +1,6 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
-// Time-stamp: <Thursday 2024-05-23 09:43:37 +1000 Graham Williams>
+// Time-stamp: <Friday 2024-05-24 15:40:13 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -29,10 +29,10 @@ import 'package:flutter/material.dart';
 
 import 'package:solidpod/solidpod.dart';
 
-import 'package:keypod/screens/about_dialog.dart';
+import 'package:keypod/dialogs/about.dart';
+import 'package:keypod/screens/demo.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
-import 'package:keypod/screens/test_home.dart';
 
 class KeyValueTable extends StatefulWidget {
   const KeyValueTable({
@@ -295,7 +295,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const TestHome()),
+                MaterialPageRoute(builder: (context) => const DemoScreen()),
               );
             },
           ),
@@ -351,9 +351,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   ButtonStyle activeButtonStyle(BuildContext context) {
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      backgroundColor: WidgetStateProperty.resolveWith<Color>(
         (states) {
-          if (states.contains(MaterialState.disabled)) {
+          if (states.contains(WidgetState.disabled)) {
             // Light grey color when disabled.
 
             return Colors.grey.shade300;
@@ -364,9 +364,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
           return Colors.lightBlue;
         },
       ),
-      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+      foregroundColor: WidgetStateProperty.resolveWith<Color>(
         (states) {
-          if (states.contains(MaterialState.disabled)) {
+          if (states.contains(WidgetState.disabled)) {
             // Text color when disabled.
 
             return Colors.black;
