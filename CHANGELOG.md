@@ -9,6 +9,8 @@ numbers.
 
 ## 0.6 FUTURE
 
++ Fix: not redirecting appropriately after initialising POD [0.5.1]
+
 ## 0.5 20240522
 
 + Update license to GPL. [0.4.14]
