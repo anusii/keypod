@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
 
-      await Navigator.pushReplacement(
+      await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => KeyValueTable(
