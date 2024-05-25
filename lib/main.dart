@@ -1,6 +1,6 @@
-/// A basic template app to begin a Solid Pod project.
+/// A template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Friday 2024-05-24 14:58:34 +1000 Graham Williams>
+// Time-stamp: <Saturday 2024-05-25 18:48:24 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:keypod/screens/home.dart' show HomeScreen;
+import 'package:keypod/screens/home.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
@@ -50,7 +50,7 @@ void main() async {
 
       // The [title] is used for the window manager's window title.
 
-      title: 'KeyPod - Private Solid Pod for Storing Key Value Pairs',
+      title: 'KeyPod - Private Solid Pod for Storing Key-Value Pairs',
     );
 
     await windowManager.waitUntilReadyToShow(windowOptions, () async {

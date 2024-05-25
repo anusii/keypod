@@ -1,6 +1,6 @@
-/// The template app home screen showing a simple key value table.
+/// A simple key value table for the home screen.
 ///
-// Time-stamp: <Friday 2024-05-24 15:39:59 +1000 Graham Williams>
+// Time-stamp: <Saturday 2024-05-25 21:01:06 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -40,18 +40,19 @@ class HomeScreen extends StatefulWidget {
 
   const HomeScreen({super.key});
 
-  //TODO 20240524 gjw fix
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // Automatically click the KEYPODS button when the screen loads.
+
+    // Automatically tap the KEYPODS button when the screen loads.
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _writePrivateData();
     });
@@ -109,11 +110,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       setState(() {
-        // Show loading indicator.
+        // Show the loading indicator.
         _isLoading = true;
       });
 
-      // Simulating a network call.
+      // Simulate a network call.
+
       await Future.delayed(const Duration(seconds: 2));
 
       // Navigate or perform additional actions after loading
@@ -122,7 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final fileContent = await readPod(filePath, context, const DemoScreen());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
-      // Convert each tuple to a Map.
+
+      // Convert each tuple to a map.
+
       final keyValuePairs = pairs?.map((pair) {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
@@ -143,7 +147,8 @@ class _HomeScreenState extends State<HomeScreen> {
     } finally {
       if (mounted) {
         setState(() {
-          _isLoading = false; // Hide loading indicator
+          // Hide the loading indicator.
+          _isLoading = false;
         });
       }
     }
