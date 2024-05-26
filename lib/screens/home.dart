@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Saturday 2024-05-25 21:01:06 +1000 Graham Williams>
+// Time-stamp: <Sunday 2024-05-26 11:05:15 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -22,6 +22,10 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Kevin Wang, Graham Williams
+
+// TODO 20240526 gjw EITHER REPAIR ALL CONTEXT ISSUES OR EXPLAIN WHY NOT?
+
+// ignore_for_file: use_build_context_synchronously
 
 library;
 

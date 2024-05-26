@@ -1,6 +1,6 @@
 /// A screen to demonstrate various capabilities of solidlogin.
 ///
-// Time-stamp: <Friday 2024-05-24 15:31:41 +1000 Graham Williams>
+// Time-stamp: <Sunday 2024-05-26 11:04:50 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -24,7 +24,7 @@
 ///
 /// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen, Graham Williams
 
-// TODO 20240411 gjw WHY THE IGNORE? EXPLAIN HERE
+// TODO 20240411 gjw EITHER REPAIR ALL CONTEXT ISSUES OR EXPLAIN WHY NOT?
 
 // ignore_for_file: use_build_context_synchronously
 
