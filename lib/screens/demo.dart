@@ -30,6 +30,8 @@
 
 library;
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -73,6 +75,9 @@ class DemoScreenState extends State<DemoScreen>
   // Step 1: Loading state variable.
 
   bool _isLoading = false;
+
+  // Indicator for write encrypted/plaintext data
+  bool _writeEncrypted = false;
 
   @override
   void initState() {
@@ -130,7 +135,7 @@ class DemoScreenState extends State<DemoScreen>
     // final fileName = 'test-101.ttl';
     // final fileContent = 'This is for testing writePod.';
 
-    const fileName = dataFile;
+    final fileName = _writeEncrypted ? dataFile : dataFilePlain;
 
     try {
       final dataDirPath = await getDataDirPath();
@@ -146,6 +151,7 @@ class DemoScreenState extends State<DemoScreen>
                   title: 'Basic Key Value Editor',
                   fileName: fileName,
                   keyValuePairs: pairs,
+                  encrypted: _writeEncrypted,
                   child: const DemoScreen())));
     } on Exception catch (e) {
       debugPrint('Exception: $e');
@@ -170,6 +176,10 @@ class DemoScreenState extends State<DemoScreen>
 
     const smallGapV = SizedBox(height: 10.0);
     const largeGapV = SizedBox(height: 40.0);
+
+    // A small horizontal spacing for the widget.
+
+    const smallGapH = SizedBox(width: 10.0);
 
     // Some handy widgets that will be displyed. These are defined here to
     // reduce the complexity of the code below.
@@ -266,6 +276,27 @@ class DemoScreenState extends State<DemoScreen>
                             await _writePrivateData();
                           },
                         ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              smallGapH,
+                              const Text(
+                                'Encrypt Data?',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              smallGapH,
+                              Switch(
+                                value: _writeEncrypted,
+                                onChanged: (val) {
+                                  setState(() {
+                                    _writeEncrypted = val;
+                                    debugPrint(
+                                        '_writeEncrypted = $_writeEncrypted');
+                                  });
+                                },
+                              )
+                            ]),
+
                         largeGapV,
                         const Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
