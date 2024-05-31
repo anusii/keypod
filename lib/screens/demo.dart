@@ -30,25 +30,19 @@
 
 library;
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as path;
-
-import 'package:keypod/main.dart';
 import 'package:keypod/dialogs/about.dart';
+import 'package:keypod/main.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
-// TODO 20240515 gjw For now we will list all the imports so we can manage the
-// API evolution. Eventually we will simply just import the package.
-
 import 'package:solidpod/solidpod.dart'
     show
+        deleteDataFile,
         deleteLogIn,
         getAppNameVersion,
         getEncKeyPath,
@@ -58,7 +52,10 @@ import 'package:solidpod/solidpod.dart'
         readPod,
         changeKeyPopup;
 
-/// A widget for the demonstation screen of the application.
+// TODO 20240515 gjw For now we will list all the imports so we can manage the
+// API evolution. Eventually we will simply just import the package.
+
+/// A widget for the demonstration screen of the application.
 
 class DemoScreen extends StatefulWidget {
   /// Initialise widget variables.
@@ -77,7 +74,7 @@ class DemoScreenState extends State<DemoScreen>
   bool _isLoading = false;
 
   // Indicator for write encrypted/plaintext data
-  bool _writeEncrypted = false;
+  bool _writeEncrypted = true;
 
   @override
   void initState() {
@@ -139,7 +136,7 @@ class DemoScreenState extends State<DemoScreen>
 
     try {
       final dataDirPath = await getDataDirPath();
-      final filePath = path.join(dataDirPath, fileName);
+      final filePath = [dataDirPath, fileName].join('/');
 
       final fileContent = await readPod(filePath, context, const DemoScreen());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
@@ -269,6 +266,11 @@ class DemoScreenState extends State<DemoScreen>
                             await _showPrivateData(title);
                           },
                         ),
+                        smallGapV,
+                        ElevatedButton(
+                            onPressed: () async =>
+                                deleteDataFile(dataFile, context),
+                            child: const Text('Delete Data File')),
                         smallGapV,
                         ElevatedButton(
                           child: const Text('Key Value Table Demo'),
