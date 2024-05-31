@@ -40,12 +40,14 @@ class KeyValueEdit extends StatefulWidget {
       {required this.title,
       required this.fileName,
       required this.child,
+      this.encrypted = true,
       this.keyValuePairs,
       super.key});
 
   final String title;
   final String fileName; // file to be saved in PODs
   final Widget child;
+  final bool encrypted;
   final List<({String key, dynamic value})>?
       keyValuePairs; // initial key value pairs
 
@@ -179,7 +181,8 @@ class _KeyValueEditState extends State<KeyValueEdit> {
       final ttlStr = await genTTLStr(pairs!);
 
       // Write to POD
-      await writePod(widget.fileName, ttlStr, context, widget.child);
+      await writePod(widget.fileName, ttlStr, context, widget.child,
+          encrypted: widget.encrypted);
 
       await _alert('Successfully saved ${dataMap.length} key-value pairs'
           ' to "${widget.fileName}" in PODs');

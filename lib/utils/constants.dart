@@ -30,3 +30,5 @@ import 'package:flutter/material.dart';
 const titleBackgroundColor = Color(0xFFF0E4D7);
 
 const dataFile = 'key-value.ttl';
+
+const dataFilePlain = 'key-value-plain.ttl';
