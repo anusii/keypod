@@ -9,6 +9,7 @@ numbers.
 
 ## 0.6 FUTURE
 
++ Demonstrate the read/write of non-encrypted data file [0.5.2]
 + Fix: not redirecting appropriately after initialising POD [0.5.1]
 
 ## 0.5 20240522
