@@ -9,6 +9,7 @@ numbers.
 
 ## 0.6 FUTURE
 
++ Demonstrate the delete of individual key when deleting an encrypted data file [0.5.3]
 + Demonstrate the read/write of non-encrypted data file [0.5.2]
 + Fix: not redirecting appropriately after initialising POD [0.5.1]
 
