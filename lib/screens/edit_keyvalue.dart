@@ -28,7 +28,7 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:editable/editable.dart';
-
+import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
@@ -114,22 +114,7 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     return true;
   }
 
-  // Show an alert message
-  Future<void> _alert(String msg, [String title = 'Notice']) async {
-    await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(title),
-              content: Text(msg),
-              actions: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'))
-              ],
-            ));
-  }
+  Future<void> _alert(String msg) async => alert(context, msg);
 
   // Get key value pairs
   Future<List<({String key, dynamic value})>?> _getKeyValuePairs() async {
