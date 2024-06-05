@@ -27,12 +27,14 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'package:solidpod/solidpod.dart';
-
 import 'package:keypod/dialogs/about.dart';
+import 'package:keypod/dialogs/alert.dart';
+import 'package:keypod/main.dart';
 import 'package:keypod/screens/demo.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
+
+import 'package:solidpod/solidpod.dart';
 
 class KeyValueTable extends StatefulWidget {
   const KeyValueTable({
@@ -159,22 +161,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
     );
   }
 
-  // Show an alert message
-  Future<void> _alert(String msg, [String title = 'Notice']) async {
-    await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(title),
-              content: Text(msg),
-              actions: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'))
-              ],
-            ));
-  }
+  Future<void> _alert(String msg) async => alert(context, msg);
 
   // Function to convert Map<int, Map<String, dynamic>> to List<KeyValuePair>
   Future<List<({String key, dynamic value})>?>
@@ -245,6 +232,8 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   @override
   Widget build(BuildContext context) {
+    const smallGapH = SizedBox(width: 10);
+    const medGapV = SizedBox(height: 20);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -257,7 +246,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
             icon: const Icon(Icons.add),
             onPressed: _addNewRow,
           ),
-          const SizedBox(width: 10),
+          smallGapH,
           ElevatedButton(
             onPressed: _isDataModified
                 ? () async {
@@ -286,29 +275,35 @@ class _KeyValueTableState extends State<KeyValueTable> {
             child: const Text('Save',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
-          const SizedBox(width: 10),
+          smallGapH,
           IconButton(
             icon: const Icon(
               Icons.settings,
               color: Colors.green,
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const DemoScreen()),
-              );
-            },
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const DemoScreen()),
+            ),
+            tooltip: 'Show demo',
           ),
           IconButton(
             icon: const Icon(
               Icons.info,
               color: Colors.purple,
             ),
-            onPressed: () async {
-              aboutDialog(context);
-            },
-            tooltip: 'Popup a window about the app.',
+            onPressed: () async => aboutDialog(context),
+            tooltip: 'About the app',
           ),
+          IconButton(
+            icon: const Icon(
+              Icons.logout_sharp,
+              color: Colors.black,
+            ),
+            onPressed: () async => logoutPopup(context, const KeyPod()),
+            tooltip: 'Logout the app',
+          ),
+          smallGapH,
         ],
       ),
       body: _isLoading
@@ -317,7 +312,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   CircularProgressIndicator(),
-                  SizedBox(height: 20),
+                  medGapV,
                   Text('Saving in Progress', style: TextStyle(fontSize: 16)),
                 ],
               ),
