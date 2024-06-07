@@ -118,9 +118,10 @@ class HomeScreenState extends State<HomeScreen> {
         _isLoading = true;
       });
 
+      // TODO (dc): Please explain this simulation, why is it necessary?
       // Simulate a network call.
 
-      await Future.delayed(const Duration(seconds: 2));
+      // await Future.delayed(const Duration(seconds: 2));
 
       // Navigate or perform additional actions after loading
       final dataDirPath = await getDataDirPath();
