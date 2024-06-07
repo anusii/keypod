@@ -1,6 +1,6 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
-// Time-stamp: <Friday 2024-05-24 15:40:13 +1000 Graham Williams>
+// Time-stamp: <Friday 2024-06-07 15:45:14 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -27,14 +27,14 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'package:solidpod/solidpod.dart';
+
 import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/demo.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
-
-import 'package:solidpod/solidpod.dart';
 
 class KeyValueTable extends StatefulWidget {
   const KeyValueTable({
@@ -285,7 +285,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
               context,
               MaterialPageRoute(builder: (context) => const DemoScreen()),
             ),
-            tooltip: 'Show demo',
+            tooltip: 'Test the solidpod functionality.',
           ),
           IconButton(
             icon: const Icon(
@@ -293,7 +293,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
               color: Colors.purple,
             ),
             onPressed: () async => aboutDialog(context),
-            tooltip: 'About the app',
+            tooltip: 'About the app.',
           ),
           IconButton(
             icon: const Icon(
@@ -301,7 +301,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
               color: Colors.black,
             ),
             onPressed: () async => logoutPopup(context, const KeyPod()),
-            tooltip: 'Logout the app',
+            tooltip: 'Logout of your solid pod.',
           ),
           smallGapH,
         ],
