@@ -9,6 +9,7 @@ numbers.
 
 ## 0.6 FUTURE
 
++ Fix: not redirecting back to demo page from basic key-value editor [0.5.5]
 + Add logout icon button to home page [0.5.4]
 + Demonstrate the delete of individual key when deleting an encrypted data file [0.5.3]
 + Demonstrate the read/write of non-encrypted data file [0.5.2]

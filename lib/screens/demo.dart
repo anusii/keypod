@@ -141,7 +141,7 @@ class DemoScreenState extends State<DemoScreen>
       final fileContent = await readPod(filePath, context, const DemoScreen());
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
 
-      await Navigator.pushReplacement(
+      await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => KeyValueEdit(

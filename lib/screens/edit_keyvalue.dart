@@ -62,8 +62,8 @@ class _KeyValueEditState extends State<KeyValueEdit> {
   static const rowKey = 'row'; // key of row index in editedRows
   static const keyStr = 'key';
   static const valStr = 'value';
-  final List rows = [];
-  final List cols = [
+  final List<dynamic> rows = [];
+  final List<dynamic> cols = [
     {'title': 'Key', 'key': keyStr},
     {'title': 'Value', 'key': valStr},
   ];
@@ -204,12 +204,10 @@ class _KeyValueEditState extends State<KeyValueEdit> {
                         style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => widget.child));
-                      },
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => widget.child)),
                       child: const Text('Go back',
                           style: TextStyle(fontWeight: FontWeight.bold))),
                   const SizedBox(width: 10),
