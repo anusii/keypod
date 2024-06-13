@@ -98,7 +98,7 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     });
   }
 
-  bool _saveEditedRows() {
+  void _saveEditedRows() {
     final editedRows = _editableKey.currentState?.editedRows as List;
     // print('edited_rows: ${editedRows}');
     // print('#rows: ${_editableKey.currentState?.rowCount}');
@@ -106,12 +106,13 @@ class _KeyValueEditState extends State<KeyValueEdit> {
     // print('rows:');
     // print(rows); // edits are not saved in `rows'
     if (editedRows.isEmpty) {
-      return false;
+      return;
     }
     for (final r in editedRows) {
-      dataMap[r[rowKey] as int] = (key: r[keyStr] as String, value: r[valStr]);
+      final rowInd = r[rowKey] as int;
+      dataMap[rowInd] = (key: r[keyStr] as String, value: r[valStr]);
+      rows[rowInd] = {keyStr: r[keyStr], valStr: r[valStr]};
     }
-    return true;
   }
 
   Future<void> _alert(String msg) async => alert(context, msg);
@@ -144,11 +145,8 @@ class _KeyValueEditState extends State<KeyValueEdit> {
 
   // Save data to PODs
   Future<bool> _saveToPod(BuildContext context) async {
-    final saved = _saveEditedRows();
-    if (!saved) {
-      await _alert('Data not changed!');
-      return false;
-    }
+    _saveEditedRows();
+
     final pairs = await _getKeyValuePairs();
     if (dataMap.isEmpty) {
       await _alert('No data to submit');
