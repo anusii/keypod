@@ -314,7 +314,7 @@ class DemoScreenState extends State<DemoScreen>
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              changeKeyPopup(context);
+                              changeKeyPopup(context, widget);
                             },
                             child: const Text('Change Security Key')),
                         smallGapV,
