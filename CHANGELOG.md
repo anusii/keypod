@@ -9,6 +9,7 @@ numbers.
 
 ## 0.6 FUTURE
 
++ Demonstrate the implementation of validating input security keys [0.5.7]
 + Demonstrate the use of the same filename to store encrypted/unencrypted data [0.5.6]
 + Fix: not redirecting back to demo page from basic key-value editor [0.5.5]
 + Add logout icon button to home page [0.5.4]
