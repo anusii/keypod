@@ -42,11 +42,12 @@ import 'package:keypod/utils/rdf.dart';
 
 import 'package:solidpod/solidpod.dart'
     show
+        AppInfo,
         deleteDataFile,
         deleteLogIn,
-        getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
+        getWebId,
         logoutPopup,
         KeyManager,
         readPod,
@@ -162,7 +163,7 @@ class DemoScreenState extends State<DemoScreen>
     }
   }
 
-  Widget _build(BuildContext context, String title) {
+  Widget _build(BuildContext context, String title, String? webId) {
     // Build the widget.
 
     // Include a timestamp on the screen.
@@ -205,12 +206,13 @@ class DemoScreenState extends State<DemoScreen>
       ],
     );
 
-    const webid = Row(
+    final webid = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'WebID: TO BE IMPLEMENTED',
+          webId == null ? 'WebID: Not Logged In' : 'WebID: $webId',
           style: TextStyle(
+            color: webId == null ? Colors.red : Colors.green,
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -429,16 +431,20 @@ class DemoScreenState extends State<DemoScreen>
     );
   }
 
+  Future<({String name, String? webId})> _getInfo() async =>
+      (name: await AppInfo.name, webId: await getWebId());
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<({String name, String version})>(
-      future: getAppNameVersion(),
+    return FutureBuilder<({String name, String? webId})>(
+      future: _getInfo(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final appName = snapshot.data?.name;
           final title = 'Demonstrating solidpod functionality using '
               '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
-          return _build(context, title);
+          final webId = snapshot.data?.webId;
+          return _build(context, title, webId);
         } else {
           return const CircularProgressIndicator();
         }
