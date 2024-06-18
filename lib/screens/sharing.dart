@@ -1,0 +1,417 @@
+/// A screen to demonstrate various capabilities of solidlogin.
+///
+// Time-stamp: <Sunday 2024-05-26 11:04:50 +1000 Graham Williams>
+///
+/// Copyright (C) 2024, Software Innovation Institute, ANU.
+///
+/// Licensed under the GNU General Public License, Version 3 (the "License").
+///
+/// License: https://www.gnu.org/licenses/gpl-3.0.en.html.
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+// details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program.  If not, see <https://www.gnu.org/licenses/>.
+///
+///
+/// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen, Graham Williams
+
+// TODO 20240411 gjw EITHER REPAIR ALL CONTEXT ISSUES OR EXPLAIN WHY NOT?
+
+// ignore_for_file: use_build_context_synchronously
+
+library;
+
+import 'package:flutter/material.dart';
+
+import 'package:intl/intl.dart';
+import 'package:keypod/dialogs/about.dart';
+import 'package:keypod/screens/edit_keyvalue.dart';
+import 'package:keypod/screens/view_keys.dart';
+import 'package:keypod/utils/constants.dart';
+import 'package:keypod/utils/rdf.dart';
+
+import 'package:solidpod/solidpod.dart'
+    show
+        getAppNameVersion,
+        getEncKeyPath,
+        getDataDirPath,
+        readPod,
+        grantPermission;
+
+// TODO 20240515 gjw For now we will list all the imports so we can manage the
+// API evolution. Eventually we will simply just import the package.
+
+/// A widget for the demonstration screen of the application.
+
+class SharingScreen extends StatefulWidget {
+  /// Initialise widget variables.
+
+  const SharingScreen({super.key});
+
+  @override
+  SharingScreenState createState() => SharingScreenState();
+}
+
+class SharingScreenState extends State<SharingScreen>
+    with SingleTickerProviderStateMixin {
+  String sampleText = '';
+  // Step 1: Loading state variable.
+
+  bool _isLoading = false;
+
+  // Indicator for write encrypted/plaintext data
+  bool _writeEncrypted = true;
+
+  bool readChecked = false;
+  bool writeChecked = false;
+  bool controlChecked = false;
+
+  // Form controllers
+  final formKey = GlobalKey<FormState>();
+  final formControllerWebId = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _showPrivateData(String title) async {
+    setState(() {
+      // Begin loading.
+
+      _isLoading = true;
+    });
+
+    // final appName = await getAppName();
+    try {
+      // final filePath = '$appName/encryption/enc-keys.ttl';
+      final filePath = await getEncKeyPath();
+      final fileContent = await readPod(
+        filePath,
+        context,
+        const SharingScreen(),
+      );
+
+      //await Navigator.pushReplacement( // this won't show the file content if POD initialisation has just been performed
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ViewKeys(
+            keyInfo: fileContent!,
+            title: title,
+          ),
+        ),
+      );
+    } on Exception catch (e) {
+      debugPrint('Exception: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          // End loading.
+
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _writePrivateData() async {
+    setState(() {
+      // Begin loading.
+      _isLoading = true;
+    });
+
+    // final appName = await getAppName();
+
+    // final fileName = 'test-101.ttl';
+    // final fileContent = 'This is for testing writePod.';
+
+    final fileName = _writeEncrypted ? dataFile : dataFilePlain;
+
+    try {
+      final dataDirPath = await getDataDirPath();
+      final filePath = [dataDirPath, fileName].join('/');
+
+      final fileContent =
+          await readPod(filePath, context, const SharingScreen());
+      final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
+
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => KeyValueEdit(
+                  title: 'Basic Key Value Editor',
+                  fileName: fileName,
+                  keyValuePairs: pairs,
+                  encrypted: _writeEncrypted,
+                  child: const SharingScreen())));
+    } on Exception catch (e) {
+      debugPrint('Exception: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          // End loading.
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Widget _build(BuildContext context, String title) {
+    // Build the widget.
+
+    // Include a timestamp on the screen.
+
+    final dateStr = DateFormat('HH:mm:ss dd MMMM yyyy').format(DateTime.now());
+
+    // Some vertical spacing for the widget.
+
+    const smallGapV = SizedBox(height: 10.0);
+    const largeGapV = SizedBox(height: 40.0);
+
+    // A small horizontal spacing for the widget.
+
+    const smallGapH = SizedBox(width: 10.0);
+
+    // Some handy widgets that will be displyed. These are defined here to
+    // reduce the complexity of the code below.
+
+    final about = IconButton(
+      icon: const Icon(
+        Icons.info,
+        color: Colors.purple,
+      ),
+      onPressed: () async {
+        await aboutDialog(context);
+      },
+      tooltip: 'Popup a window about the app.',
+    );
+
+    final date = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Date: $dateStr',
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+
+    const webid = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'WebID: TO BE IMPLEMENTED',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+
+    const welcomeHeading = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Share your key/value pair file with other PODs',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: titleBackgroundColor,
+        title: Text(title),
+        actions: [
+          about,
+        ],
+      ),
+      body: _isLoading
+          // If loading show the loading indicator.
+          ? const Center(child: CircularProgressIndicator())
+          // Otherwise we show the screen.
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  smallGapV,
+                  Form(
+                    key: formKey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          date,
+                          webid,
+                          largeGapV,
+                          welcomeHeading,
+                          smallGapV,
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: TextFormField(
+                                  controller: formControllerWebId,
+                                  decoration: const InputDecoration(
+                                      hintText:
+                                          'Recipient\'s WebID (Eg: https://pods.solidcommunity.au/john-doe/profile/card#me)'),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Empty field';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              smallGapH,
+                              CheckboxListTile(
+                                title: const Text('Read'),
+                                value: readChecked,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    readChecked = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity
+                                    .leading, //  <-- leading Checkbox
+                              ),
+                              CheckboxListTile(
+                                title: const Text('Write'),
+                                value: writeChecked,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    writeChecked = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity
+                                    .leading, //  <-- leading Checkbox
+                              ),
+                              CheckboxListTile(
+                                title: const Text('Control'),
+                                value: controlChecked,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    controlChecked = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity
+                                    .leading, //  <-- leading Checkbox
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: ElevatedButton(
+                                  child: const Text('Grant Permission'),
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      if (readChecked ||
+                                          writeChecked ||
+                                          controlChecked) {
+                                        final webId = formControllerWebId.text;
+
+                                        final permList = [];
+                                        if (readChecked) {
+                                          permList.add('read');
+                                        }
+                                        if (writeChecked) {
+                                          permList.add('write');
+                                        }
+                                        if (controlChecked) {
+                                          permList.add('control');
+                                        }
+                                        assert(permList.isNotEmpty);
+
+                                        await grantPermission(
+                                            dataFile,
+                                            permList,
+                                            webId,
+                                            true,
+                                            context,
+                                            const SharingScreen());
+
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SharingScreen(),
+                                          ),
+                                        );
+                                      } else {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: const Text('ERROR!'),
+                                            content: const Text(
+                                                'Please select one or more permissions'),
+                                            actions: [
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('OK'))
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                ),
+                              ),
+                              largeGapV,
+                              const Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Granted permissions',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<({String name, String version})>(
+      future: getAppNameVersion(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final appName = snapshot.data?.name;
+          final title = 'Demonstrating data sharing functionality using '
+              '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
+          return _build(context, title);
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
+    );
+  }
+}
