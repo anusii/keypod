@@ -41,10 +41,10 @@ import 'package:keypod/utils/rdf.dart';
 
 import 'package:solidpod/solidpod.dart'
     show
-        getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
         readPod,
+        readPermission,
         grantPermission;
 
 // TODO 20240515 gjw For now we will list all the imports so we can manage the
@@ -166,7 +166,7 @@ class SharingScreenState extends State<SharingScreen>
     }
   }
 
-  Widget _build(BuildContext context, String title) {
+  Widget _build(BuildContext context, String title, List<Object>? loadedData) {
     // Build the widget.
 
     // Include a timestamp on the screen.
@@ -234,6 +234,9 @@ class SharingScreenState extends State<SharingScreen>
         ),
       ],
     );
+
+    // Load the permission data
+    final filePermMap = loadedData?.first as Map;
 
     return Scaffold(
       appBar: AppBar(
@@ -327,13 +330,13 @@ class SharingScreenState extends State<SharingScreen>
 
                                         final permList = [];
                                         if (readChecked) {
-                                          permList.add('read');
+                                          permList.add('Read');
                                         }
                                         if (writeChecked) {
-                                          permList.add('write');
+                                          permList.add('Write');
                                         }
                                         if (controlChecked) {
-                                          permList.add('control');
+                                          permList.add('Control');
                                         }
                                         assert(permList.isNotEmpty);
 
@@ -345,7 +348,7 @@ class SharingScreenState extends State<SharingScreen>
                                             context,
                                             const SharingScreen());
 
-                                        await Navigator.push(
+                                        await Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
@@ -386,6 +389,103 @@ class SharingScreenState extends State<SharingScreen>
                                   ),
                                 ],
                               ),
+                              // ElevatedButton(
+                              //   child: const Text('Read Permission'),
+                              //   onPressed: () {
+                              //     readPermission(dataFile, context, widget);
+                              //   },
+                              // ),
+                              DataTable(columnSpacing: 20, columns: const [
+                                DataColumn(
+                                    label: Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'Receiver WebID',
+                                        ),
+                                      ),
+                                    ),
+                                    tooltip:
+                                        'WebID of the POD receiving permissions'),
+                                DataColumn(
+                                    label: Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'Permissions',
+                                        ),
+                                      ),
+                                    ),
+                                    tooltip: 'List of permissions given'),
+                                DataColumn(
+                                    label: Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'Actions',
+                                        ),
+                                      ),
+                                    ),
+                                    tooltip: 'Delete permission'),
+                              ], rows: [
+                                for (final receiverWebId in filePermMap.keys)
+                                  DataRow(cells: [
+                                    DataCell(Container(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 10, 0, 0),
+                                      //width: cWidth,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text(
+                                            receiverWebId as String,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                                    DataCell(
+                                      Text(
+                                        (filePermMap[receiverWebId] as List)
+                                            .join(', '),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            size: 24.0,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        'Please Confirm'),
+                                                    content: const Text(
+                                                        'Are you sure you want to remove this permission?'),
+                                                    actions: [
+                                                      // The "Yes" button
+                                                      TextButton(
+                                                          onPressed:
+                                                              () async {},
+                                                          child: const Text(
+                                                              'Yes')),
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            // Close the dialog
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child:
+                                                              const Text('No'))
+                                                    ],
+                                                  );
+                                                });
+                                          }),
+                                    )
+                                  ])
+                              ])
                             ],
                           ),
                         ],
@@ -400,14 +500,15 @@ class SharingScreenState extends State<SharingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<({String name, String version})>(
-      future: getAppNameVersion(),
+    return FutureBuilder(
+      future: Future.wait([readPermission(dataFile, context, widget)]),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final appName = snapshot.data?.name;
-          final title = 'Demonstrating data sharing functionality using '
-              '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
-          return _build(context, title);
+          // final appName = snapshot.data?[0];
+          // final title = 'Demonstrating data sharing functionality using '
+          //     '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
+          const title = 'Demonstrating data sharing functionality';
+          return _build(context, title, snapshot.data);
         } else {
           return const CircularProgressIndicator();
         }
