@@ -77,9 +77,18 @@ class DemoScreenState extends State<DemoScreen>
   // Indicator for write encrypted/plaintext data
   bool _writeEncrypted = true;
 
+  // The current webID
+  String? _webId;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void _resetWebId() {
+    setState(() {
+      _webId = null;
+    });
   }
 
   Future<void> _showPrivateData(String title) async {
@@ -163,7 +172,7 @@ class DemoScreenState extends State<DemoScreen>
     }
   }
 
-  Widget _build(BuildContext context, String title, String? webId) {
+  Widget _build(BuildContext context, String title) {
     // Build the widget.
 
     // Include a timestamp on the screen.
@@ -210,9 +219,9 @@ class DemoScreenState extends State<DemoScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          webId == null ? 'WebID: Not Logged In' : 'WebID: $webId',
+          _webId == null ? 'WebID: Not Logged In' : 'WebID: $_webId',
           style: TextStyle(
-            color: webId == null ? Colors.red : Colors.green,
+            color: _webId == null ? Colors.red : Colors.green,
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -327,6 +336,7 @@ class DemoScreenState extends State<DemoScreen>
                             try {
                               await KeyManager.forgetSecurityKey();
                               msg = 'Successfully forgot local security key.';
+                              _resetWebId();
                             } on Exception catch (e) {
                               msg = 'Failed to forget local security key: $e';
                             }
@@ -395,6 +405,8 @@ class DemoScreenState extends State<DemoScreen>
                                 ],
                               ),
                             );
+
+                            _resetWebId();
                           },
                         ),
                         smallGapV,
@@ -443,8 +455,8 @@ class DemoScreenState extends State<DemoScreen>
           final appName = snapshot.data?.name;
           final title = 'Demonstrating solidpod functionality using '
               '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
-          final webId = snapshot.data?.webId;
-          return _build(context, title, webId);
+          _webId = snapshot.data?.webId;
+          return _build(context, title);
         } else {
           return const CircularProgressIndicator();
         }
