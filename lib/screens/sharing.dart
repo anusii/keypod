@@ -35,17 +35,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
-import 'package:keypod/screens/view_keys.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
 import 'package:solidpod/solidpod.dart'
-    show
-        getEncKeyPath,
-        getDataDirPath,
-        readPod,
-        readPermission,
-        grantPermission;
+    show getDataDirPath, readPod, readPermission, grantPermission;
 
 // TODO 20240515 gjw For now we will list all the imports so we can manage the
 // API evolution. Eventually we will simply just import the package.
@@ -82,46 +76,6 @@ class SharingScreenState extends State<SharingScreen>
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<void> _showPrivateData(String title) async {
-    setState(() {
-      // Begin loading.
-
-      _isLoading = true;
-    });
-
-    // final appName = await getAppName();
-    try {
-      // final filePath = '$appName/encryption/enc-keys.ttl';
-      final filePath = await getEncKeyPath();
-      final fileContent = await readPod(
-        filePath,
-        context,
-        const SharingScreen(),
-      );
-
-      //await Navigator.pushReplacement( // this won't show the file content if POD initialisation has just been performed
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ViewKeys(
-            keyInfo: fileContent!,
-            title: title,
-          ),
-        ),
-      );
-    } on Exception catch (e) {
-      debugPrint('Exception: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          // End loading.
-
-          _isLoading = false;
-        });
-      }
-    }
   }
 
   Future<void> _writePrivateData() async {
@@ -284,6 +238,89 @@ class SharingScreenState extends State<SharingScreen>
                                 ),
                               ),
                               smallGapH,
+                              ElevatedButton(
+                                child: const Text('Check Permission'),
+                                onPressed: () {
+                                  final webId = formControllerWebId.text;
+
+                                  Map permControllerMap = {
+                                    'Read': readChecked,
+                                    'Write': writeChecked,
+                                    'Control': controlChecked,
+                                  };
+
+                                  if (webId.isNotEmpty) {
+                                    if (filePermMap.containsKey(webId)) {
+                                      final permList =
+                                          filePermMap[webId] as List;
+
+                                      if (permList.contains('Read') ||
+                                          permList.contains('read')) {
+                                        setState(() {
+                                          readChecked = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          readChecked = false;
+                                        });
+                                      }
+                                      if (permList.contains('Write') ||
+                                          permList.contains('write')) {
+                                        setState(() {
+                                          writeChecked = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          writeChecked = false;
+                                        });
+                                      }
+                                      if (permList.contains('Control') ||
+                                          permList.contains('control')) {
+                                        setState(() {
+                                          controlChecked = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          controlChecked = false;
+                                        });
+                                      }
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('INFO!'),
+                                          content: const Text(
+                                              'You have not provided any permissions for this webId.'),
+                                          actions: [
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'))
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('ERROR!'),
+                                        content:
+                                            const Text('Please enter a webID.'),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'))
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                              smallGapH,
                               CheckboxListTile(
                                 title: const Text('Read'),
                                 value: readChecked,
@@ -433,7 +470,7 @@ class SharingScreenState extends State<SharingScreen>
                                       //width: cWidth,
                                       child: Column(
                                         children: <Widget>[
-                                          Text(
+                                          SelectableText(
                                             receiverWebId as String,
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold),
