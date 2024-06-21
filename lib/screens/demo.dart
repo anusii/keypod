@@ -42,11 +42,12 @@ import 'package:keypod/utils/rdf.dart';
 
 import 'package:solidpod/solidpod.dart'
     show
+        AppInfo,
         deleteDataFile,
         deleteLogIn,
-        getAppNameVersion,
         getEncKeyPath,
         getDataDirPath,
+        getWebId,
         logoutPopup,
         KeyManager,
         readPod,
@@ -76,9 +77,18 @@ class DemoScreenState extends State<DemoScreen>
   // Indicator for write encrypted/plaintext data
   bool _writeEncrypted = true;
 
+  // The current webID
+  String? _webId;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void _resetWebId() {
+    setState(() {
+      _webId = null;
+    });
   }
 
   Future<void> _showPrivateData(String title) async {
@@ -205,12 +215,13 @@ class DemoScreenState extends State<DemoScreen>
       ],
     );
 
-    const webid = Row(
+    final webid = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'WebID: TO BE IMPLEMENTED',
+          _webId == null ? 'WebID: Not Logged In' : 'WebID: $_webId',
           style: TextStyle(
+            color: _webId == null ? Colors.red : Colors.green,
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -325,6 +336,7 @@ class DemoScreenState extends State<DemoScreen>
                             try {
                               await KeyManager.forgetSecurityKey();
                               msg = 'Successfully forgot local security key.';
+                              _resetWebId();
                             } on Exception catch (e) {
                               msg = 'Failed to forget local security key: $e';
                             }
@@ -393,6 +405,8 @@ class DemoScreenState extends State<DemoScreen>
                                 ],
                               ),
                             );
+
+                            _resetWebId();
                           },
                         ),
                         smallGapV,
@@ -429,15 +443,19 @@ class DemoScreenState extends State<DemoScreen>
     );
   }
 
+  Future<({String name, String? webId})> _getInfo() async =>
+      (name: await AppInfo.name, webId: await getWebId());
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<({String name, String version})>(
-      future: getAppNameVersion(),
+    return FutureBuilder<({String name, String? webId})>(
+      future: _getInfo(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final appName = snapshot.data?.name;
           final title = 'Demonstrating solidpod functionality using '
               '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
+          _webId = snapshot.data?.webId;
           return _build(context, title);
         } else {
           return const CircularProgressIndicator();
