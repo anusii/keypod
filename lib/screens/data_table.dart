@@ -33,6 +33,7 @@ import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/demo.dart';
+import 'package:keypod/screens/sharing.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
@@ -286,6 +287,17 @@ class _KeyValueTableState extends State<KeyValueTable> {
               MaterialPageRoute(builder: (context) => const DemoScreen()),
             ),
             tooltip: 'Test the solidpod functionality.',
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.share,
+              color: Colors.blue,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SharingScreen()),
+            ),
+            tooltip: 'Test the file sharing functionality.',
           ),
           IconButton(
             icon: const Icon(
