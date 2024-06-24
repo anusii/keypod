@@ -39,7 +39,12 @@ import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
 import 'package:solidpod/solidpod.dart'
-    show getDataDirPath, readPod, readPermission, grantPermission;
+    show
+        getDataDirPath,
+        grantPermission,
+        readPermission,
+        readPod,
+        revokePermission;
 
 // TODO 20240515 gjw For now we will list all the imports so we can manage the
 // API evolution. Eventually we will simply just import the package.
@@ -498,8 +503,24 @@ class SharingScreenState extends State<SharingScreen>
                                                     actions: [
                                                       // The "Yes" button
                                                       TextButton(
-                                                          onPressed:
-                                                              () async {},
+                                                          onPressed: () async {
+                                                            await revokePermission(
+                                                                dataFile,
+                                                                true,
+                                                                receiverWebId,
+                                                                context,
+                                                                const SharingScreen());
+
+                                                            await Navigator
+                                                                .pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const SharingScreen(),
+                                                              ),
+                                                            );
+                                                          },
                                                           child: const Text(
                                                               'Yes')),
                                                       TextButton(
