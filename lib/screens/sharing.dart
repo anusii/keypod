@@ -22,7 +22,7 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 ///
-/// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen, Graham Williams
+/// Authors: Anushka Vidanage
 
 // TODO 20240411 gjw EITHER REPAIR ALL CONTEXT ISSUES OR EXPLAIN WHY NOT?
 
@@ -243,12 +243,6 @@ class SharingScreenState extends State<SharingScreen>
                                 onPressed: () {
                                   final webId = formControllerWebId.text;
 
-                                  Map permControllerMap = {
-                                    'Read': readChecked,
-                                    'Write': writeChecked,
-                                    'Control': controlChecked,
-                                  };
-
                                   if (webId.isNotEmpty) {
                                     if (filePermMap.containsKey(webId)) {
                                       final permList =
@@ -379,6 +373,7 @@ class SharingScreenState extends State<SharingScreen>
 
                                         await grantPermission(
                                             dataFile,
+                                            true,
                                             permList,
                                             webId,
                                             true,
@@ -538,7 +533,7 @@ class SharingScreenState extends State<SharingScreen>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait([readPermission(dataFile, context, widget)]),
+      future: Future.wait([readPermission(dataFile, true, context, widget)]),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           // final appName = snapshot.data?[0];
