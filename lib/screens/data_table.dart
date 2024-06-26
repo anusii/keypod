@@ -297,7 +297,28 @@ class _KeyValueTableState extends State<KeyValueTable> {
               context,
               MaterialPageRoute(builder: (context) => const SharingScreen()),
             ),
-            tooltip: 'Test the file sharing functionality.',
+            tooltip: 'In-app file sharing functionality',
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.share_rounded,
+              color: Colors.deepOrangeAccent,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GrantPermissionUi(
+                  backgroundColor: titleBackgroundColor,
+                  child: KeyValueTable(
+                    title: widget.title,
+                    fileName: widget.fileName,
+                    keyValuePairs: widget.keyValuePairs,
+                    child: widget.child,
+                  ),
+                ),
+              ),
+            ),
+            tooltip: 'Solidpod file sharing functionality.',
           ),
           IconButton(
             icon: const Icon(
