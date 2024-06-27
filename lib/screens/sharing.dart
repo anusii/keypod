@@ -1,6 +1,6 @@
-/// A screen to demonstrate various capabilities of solidlogin.
+/// A screen to demonstrate the capabilities of file sharing.
 ///
-// Time-stamp: <Thursday 2024-06-27 15:45:33 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 19:48:02 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -22,7 +22,7 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 ///
-/// Authors: Zheyuan Xu, Anushka Vidanage, Kevin Wang, Dawei Chen, Graham Williams
+/// Authors: Anushka Vidanage
 
 // TODO 20240411 gjw EITHER REPAIR ALL CONTEXT ISSUES OR EXPLAIN WHY NOT?
 
@@ -34,9 +34,11 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:keypod/dialogs/about.dart';
+import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/utils/constants.dart';
 
-import 'package:solidpod/solidpod.dart' show readPermission, grantPermission;
+import 'package:solidpod/solidpod.dart'
+    show grantPermission, readPermission, revokePermission;
 
 // TODO 20240515 gjw For now we will list all the imports so we can manage the
 // API evolution. Eventually we will simply just import the package.
@@ -54,16 +56,10 @@ class SharingScreen extends StatefulWidget {
 
 class SharingScreenState extends State<SharingScreen>
     with SingleTickerProviderStateMixin {
-  String sampleText = '';
   // Step 1: Loading state variable.
+  bool _isLoading = false;
 
-  final bool _isLoading = false;
-
-  // Indicator for write encrypted/plaintext data
-  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
-
-//  final bool _writeEncrypted = true;
-
+  // Checkbox status flags
   bool readChecked = false;
   bool writeChecked = false;
   bool controlChecked = false;
@@ -76,50 +72,6 @@ class SharingScreenState extends State<SharingScreen>
   void initState() {
     super.initState();
   }
-
-  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
-
-  // Future<void> _writePrivateData() async {
-  //   setState(() {
-  //     // Begin loading.
-  //     _isLoading = true;
-  //   });
-
-  //   // final appName = await getAppName();
-
-  //   // final fileName = 'test-101.ttl';
-  //   // final fileContent = 'This is for testing writePod.';
-
-  //   final fileName = _writeEncrypted ? dataFile : dataFilePlain;
-
-  //   try {
-  //     final dataDirPath = await getDataDirPath();
-  //     final filePath = [dataDirPath, fileName].join('/');
-
-  //     final fileContent =
-  //         await readPod(filePath, context, const SharingScreen());
-  //     final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
-
-  //     await Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (context) => KeyValueEdit(
-  //                 title: 'Basic Key Value Editor',
-  //                 fileName: fileName,
-  //                 keyValuePairs: pairs,
-  //                 encrypted: _writeEncrypted,
-  //                 child: const SharingScreen())));
-  //   } on Exception catch (e) {
-  //     debugPrint('Exception: $e');
-  //   } finally {
-  //     if (mounted) {
-  //       setState(() {
-  //         // End loading.
-  //         _isLoading = false;
-  //       });
-  //     }
-  //   }
-  // }
 
   Widget _build(BuildContext context, String title, List<Object>? loadedData) {
     // Build the widget.
@@ -157,19 +109,6 @@ class SharingScreenState extends State<SharingScreen>
         Text(
           'Date: $dateStr',
           style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-
-    const webid = Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'WebID: TO BE IMPLEMENTED',
-          style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -216,7 +155,6 @@ class SharingScreenState extends State<SharingScreen>
                       child: Column(
                         children: [
                           date,
-                          webid,
                           largeGapV,
                           welcomeHeading,
                           smallGapV,
@@ -241,16 +179,8 @@ class SharingScreenState extends State<SharingScreen>
                               smallGapH,
                               ElevatedButton(
                                 child: const Text('Check Permission'),
-                                onPressed: () {
+                                onPressed: () async {
                                   final webId = formControllerWebId.text;
-
-                                  // TODO 20240627 gjw NOTE REFERENCED. CAN IT BE REMOVED?
-
-                                  // final Map permControllerMap = {
-                                  //   'Read': readChecked,
-                                  //   'Write': writeChecked,
-                                  //   'Control': controlChecked,
-                                  // };
 
                                   if (webId.isNotEmpty) {
                                     if (filePermMap.containsKey(webId)) {
@@ -288,38 +218,14 @@ class SharingScreenState extends State<SharingScreen>
                                         });
                                       }
                                     } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text('INFO!'),
-                                          content: const Text(
-                                              'You have not provided any permissions for this webId.'),
-                                          actions: [
-                                            ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('OK'))
-                                          ],
-                                        ),
-                                      );
+                                      await alert(
+                                          context,
+                                          'You have not provided any permissions for this webId.',
+                                          'NOTICE!');
                                     }
                                   } else {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text('ERROR!'),
-                                        content:
-                                            const Text('Please enter a webID.'),
-                                        actions: [
-                                          ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('OK'))
-                                        ],
-                                      ),
-                                    );
+                                    await alert(context,
+                                        'Please enter a webID.', 'ERROR!');
                                   }
                                 },
                               ),
@@ -382,6 +288,7 @@ class SharingScreenState extends State<SharingScreen>
 
                                         await grantPermission(
                                             dataFile,
+                                            true,
                                             permList,
                                             webId,
                                             true,
@@ -396,21 +303,10 @@ class SharingScreenState extends State<SharingScreen>
                                           ),
                                         );
                                       } else {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: const Text('ERROR!'),
-                                            content: const Text(
-                                                'Please select one or more permissions'),
-                                            actions: [
-                                              ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('OK'))
-                                            ],
-                                          ),
-                                        );
+                                        await alert(
+                                            context,
+                                            'Please select one or more permissions',
+                                            'ERROR!');
                                       }
                                     }
                                   },
@@ -501,13 +397,29 @@ class SharingScreenState extends State<SharingScreen>
                                                   return AlertDialog(
                                                     title: const Text(
                                                         'Please Confirm'),
-                                                    content: const Text(
-                                                        'Are you sure you want to remove this permission?'),
+                                                    content: Text(
+                                                        'Are you sure you want to remove the [${(filePermMap[receiverWebId] as List).join(', ')}] permission/s from $receiverWebId?'),
                                                     actions: [
                                                       // The "Yes" button
                                                       TextButton(
-                                                          onPressed:
-                                                              () async {},
+                                                          onPressed: () async {
+                                                            await revokePermission(
+                                                                dataFile,
+                                                                true,
+                                                                receiverWebId,
+                                                                context,
+                                                                const SharingScreen());
+
+                                                            await Navigator
+                                                                .pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const SharingScreen(),
+                                                              ),
+                                                            );
+                                                          },
                                                           child: const Text(
                                                               'Yes')),
                                                       TextButton(
@@ -541,12 +453,9 @@ class SharingScreenState extends State<SharingScreen>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait([readPermission(dataFile, context, widget)]),
+      future: Future.wait([readPermission(dataFile, true, context, widget)]),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // final appName = snapshot.data?[0];
-          // final title = 'Demonstrating data sharing functionality using '
-          //     '${appName!.isNotEmpty ? appName[0].toUpperCase() + appName.substring(1) : ""}';
           const title = 'Demonstrating data sharing functionality';
           return _build(context, title, snapshot.data);
         } else {
