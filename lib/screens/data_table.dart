@@ -1,6 +1,6 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
-// Time-stamp: <Thursday 2024-06-27 09:59:54 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 15:26:06 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -289,19 +289,19 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ),
           IconButton(
             icon: const Icon(
+              Icons.logout_sharp,
+              color: Colors.orange,
+            ),
+            onPressed: () async => logoutPopup(context, const KeyPod()),
+            tooltip: 'Logout of your solid pod.',
+          ),
+          IconButton(
+            icon: const Icon(
               Icons.info,
               color: Colors.purple,
             ),
             onPressed: () async => aboutDialog(context),
             tooltip: 'About the app.',
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.logout_sharp,
-              color: Colors.black,
-            ),
-            onPressed: () async => logoutPopup(context, const KeyPod()),
-            tooltip: 'Logout of your solid pod.',
           ),
           smallGapH,
         ],
