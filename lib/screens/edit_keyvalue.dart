@@ -1,6 +1,6 @@
 /// A widget to edit key/value pairs and save them in a POD.
 ///
-// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 15:43:12 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -164,8 +164,11 @@ class _KeyValueEditState extends State<KeyValueEdit> {
       final ttlStr = await genTTLStr(pairs!);
 
       // Write to POD
-      await writePod(widget.fileName, ttlStr, context, widget.child,
-          encrypted: widget.encrypted);
+
+      if (context.mounted) {
+        await writePod(widget.fileName, ttlStr, context, widget.child,
+            encrypted: widget.encrypted);
+      }
 
       await _alert('Successfully saved ${dataMap.length} key-value pairs'
           ' to "${widget.fileName}" in PODs');
@@ -212,7 +215,7 @@ class _KeyValueEditState extends State<KeyValueEdit> {
                   ElevatedButton(
                       onPressed: () async {
                         final saved = await _saveToPod(context);
-                        if (saved) {
+                        if (saved && context.mounted) {
                           await Navigator.push(
                               context,
                               MaterialPageRoute(

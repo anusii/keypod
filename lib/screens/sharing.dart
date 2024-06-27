@@ -1,6 +1,6 @@
 /// A screen to demonstrate various capabilities of solidlogin.
 ///
-// Time-stamp: <Sunday 2024-05-26 11:04:50 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 15:45:33 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -34,12 +34,9 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:keypod/dialogs/about.dart';
-import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/utils/constants.dart';
-import 'package:keypod/utils/rdf.dart';
 
-import 'package:solidpod/solidpod.dart'
-    show getDataDirPath, readPod, readPermission, grantPermission;
+import 'package:solidpod/solidpod.dart' show readPermission, grantPermission;
 
 // TODO 20240515 gjw For now we will list all the imports so we can manage the
 // API evolution. Eventually we will simply just import the package.
@@ -60,10 +57,12 @@ class SharingScreenState extends State<SharingScreen>
   String sampleText = '';
   // Step 1: Loading state variable.
 
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   // Indicator for write encrypted/plaintext data
-  final bool _writeEncrypted = true;
+  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
+
+//  final bool _writeEncrypted = true;
 
   bool readChecked = false;
   bool writeChecked = false;
@@ -78,47 +77,49 @@ class SharingScreenState extends State<SharingScreen>
     super.initState();
   }
 
-  Future<void> _writePrivateData() async {
-    setState(() {
-      // Begin loading.
-      _isLoading = true;
-    });
+  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
 
-    // final appName = await getAppName();
+  // Future<void> _writePrivateData() async {
+  //   setState(() {
+  //     // Begin loading.
+  //     _isLoading = true;
+  //   });
 
-    // final fileName = 'test-101.ttl';
-    // final fileContent = 'This is for testing writePod.';
+  //   // final appName = await getAppName();
 
-    final fileName = _writeEncrypted ? dataFile : dataFilePlain;
+  //   // final fileName = 'test-101.ttl';
+  //   // final fileContent = 'This is for testing writePod.';
 
-    try {
-      final dataDirPath = await getDataDirPath();
-      final filePath = [dataDirPath, fileName].join('/');
+  //   final fileName = _writeEncrypted ? dataFile : dataFilePlain;
 
-      final fileContent =
-          await readPod(filePath, context, const SharingScreen());
-      final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
+  //   try {
+  //     final dataDirPath = await getDataDirPath();
+  //     final filePath = [dataDirPath, fileName].join('/');
 
-      await Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => KeyValueEdit(
-                  title: 'Basic Key Value Editor',
-                  fileName: fileName,
-                  keyValuePairs: pairs,
-                  encrypted: _writeEncrypted,
-                  child: const SharingScreen())));
-    } on Exception catch (e) {
-      debugPrint('Exception: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          // End loading.
-          _isLoading = false;
-        });
-      }
-    }
-  }
+  //     final fileContent =
+  //         await readPod(filePath, context, const SharingScreen());
+  //     final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
+
+  //     await Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //             builder: (context) => KeyValueEdit(
+  //                 title: 'Basic Key Value Editor',
+  //                 fileName: fileName,
+  //                 keyValuePairs: pairs,
+  //                 encrypted: _writeEncrypted,
+  //                 child: const SharingScreen())));
+  //   } on Exception catch (e) {
+  //     debugPrint('Exception: $e');
+  //   } finally {
+  //     if (mounted) {
+  //       setState(() {
+  //         // End loading.
+  //         _isLoading = false;
+  //       });
+  //     }
+  //   }
+  // }
 
   Widget _build(BuildContext context, String title, List<Object>? loadedData) {
     // Build the widget.
@@ -243,11 +244,13 @@ class SharingScreenState extends State<SharingScreen>
                                 onPressed: () {
                                   final webId = formControllerWebId.text;
 
-                                  final Map permControllerMap = {
-                                    'Read': readChecked,
-                                    'Write': writeChecked,
-                                    'Control': controlChecked,
-                                  };
+                                  // TODO 20240627 gjw NOTE REFERENCED. CAN IT BE REMOVED?
+
+                                  // final Map permControllerMap = {
+                                  //   'Read': readChecked,
+                                  //   'Write': writeChecked,
+                                  //   'Control': controlChecked,
+                                  // };
 
                                   if (webId.isNotEmpty) {
                                     if (filePermMap.containsKey(webId)) {
