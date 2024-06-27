@@ -1,6 +1,6 @@
-/// about dialog for the app
+/// An About dialog for the app.
 ///
-// Time-stamp: <Friday 2024-05-17 14:31:16 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 13:56:27 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -21,7 +21,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
-/// Authors: Kevin Wang
+/// Authors: Kevin Wang, Graham Williams
 
 library;
 
@@ -35,8 +35,11 @@ Future<void> aboutDialog(BuildContext context) async {
   showAboutDialog(
     context: context,
     applicationLegalese: '© 2024 Software Innovation Institute ANU',
-    applicationIcon:
-        const ImageIcon(AssetImage('assets/images/keypod_logo.png')),
+    applicationIcon: Image.asset(
+      'assets/images/keypod_logo.png',
+      width: 100,
+      height: 100,
+    ),
     applicationName: appInfo.name,
     applicationVersion: appInfo.version,
     children: [
