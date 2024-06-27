@@ -1,6 +1,6 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
-// Time-stamp: <Friday 2024-06-07 15:45:14 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 09:59:54 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -279,17 +279,6 @@ class _KeyValueTableState extends State<KeyValueTable> {
           smallGapH,
           IconButton(
             icon: const Icon(
-              Icons.settings,
-              color: Colors.green,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const DemoScreen()),
-            ),
-            tooltip: 'Test the solidpod functionality.',
-          ),
-          IconButton(
-            icon: const Icon(
               Icons.share,
               color: Colors.blue,
             ),
@@ -297,7 +286,7 @@ class _KeyValueTableState extends State<KeyValueTable> {
               context,
               MaterialPageRoute(builder: (context) => const SharingScreen()),
             ),
-            tooltip: 'Test the file sharing functionality.',
+            tooltip: 'Share Keys.',
           ),
           IconButton(
             icon: const Icon(
