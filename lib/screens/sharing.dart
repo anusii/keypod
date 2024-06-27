@@ -57,7 +57,7 @@ class SharingScreen extends StatefulWidget {
 class SharingScreenState extends State<SharingScreen>
     with SingleTickerProviderStateMixin {
   // Step 1: Loading state variable.
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   // Checkbox status flags
   bool readChecked = false;
