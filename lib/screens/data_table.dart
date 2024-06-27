@@ -32,7 +32,6 @@ import 'package:solidpod/solidpod.dart';
 import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/main.dart';
-import 'package:keypod/screens/demo.dart';
 import 'package:keypod/screens/sharing.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';

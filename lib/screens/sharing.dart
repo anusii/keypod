@@ -63,7 +63,7 @@ class SharingScreenState extends State<SharingScreen>
   bool _isLoading = false;
 
   // Indicator for write encrypted/plaintext data
-  bool _writeEncrypted = true;
+  final bool _writeEncrypted = true;
 
   bool readChecked = false;
   bool writeChecked = false;
@@ -243,7 +243,7 @@ class SharingScreenState extends State<SharingScreen>
                                 onPressed: () {
                                   final webId = formControllerWebId.text;
 
-                                  Map permControllerMap = {
+                                  final Map permControllerMap = {
                                     'Read': readChecked,
                                     'Write': writeChecked,
                                     'Control': controlChecked,
