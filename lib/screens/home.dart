@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Sunday 2024-05-26 11:05:15 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 09:55:12 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///

@@ -9,6 +9,7 @@ numbers.
 
 ## 0.6 FUTURE
 
++ Separate the demo/test into solidpod itself [0.5.10]
 + Show webId on demo page if user has logged in [0.5.9]
 + Demo: Check and grant access permissions [0.5.8]
 + Demonstrate the implementation of validating input security keys [0.5.7]

@@ -1,6 +1,6 @@
 /// A screen to demonstrate the capabilities of file sharing.
 ///
-// Time-stamp: <Sunday 2024-06-26 12:12:00 +1000 Anushka Vidanage>
+// Time-stamp: <Thursday 2024-06-27 19:48:02 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -57,7 +57,7 @@ class SharingScreen extends StatefulWidget {
 class SharingScreenState extends State<SharingScreen>
     with SingleTickerProviderStateMixin {
   // Step 1: Loading state variable.
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   // Checkbox status flags
   bool readChecked = false;

@@ -1,6 +1,6 @@
 /// A data table to edit key/value pairs and save them in a POD.
 ///
-// Time-stamp: <Friday 2024-06-07 15:45:14 +1000 Graham Williams>
+// Time-stamp: <Thursday 2024-06-27 19:44:55 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -32,7 +32,6 @@ import 'package:solidpod/solidpod.dart';
 import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/main.dart';
-import 'package:keypod/screens/demo.dart';
 import 'package:keypod/screens/sharing.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
@@ -212,7 +211,9 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
       // Write to POD.
 
-      await writePod(widget.fileName, ttlStr, context, widget.child);
+      if (context.mounted) {
+        await writePod(widget.fileName, ttlStr, context, widget.child);
+      }
 
       await _alert('Successfully saved ${dataMap.length} key-value pairs'
           ' to "${widget.fileName}" in PODs');
@@ -279,17 +280,6 @@ class _KeyValueTableState extends State<KeyValueTable> {
           smallGapH,
           IconButton(
             icon: const Icon(
-              Icons.settings,
-              color: Colors.green,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const DemoScreen()),
-            ),
-            tooltip: 'Test the solidpod functionality.',
-          ),
-          IconButton(
-            icon: const Icon(
               Icons.share,
               color: Colors.blue,
             ),
@@ -322,19 +312,19 @@ class _KeyValueTableState extends State<KeyValueTable> {
           ),
           IconButton(
             icon: const Icon(
+              Icons.logout_sharp,
+              color: Colors.orange,
+            ),
+            onPressed: () async => logoutPopup(context, const KeyPod()),
+            tooltip: 'Logout of your solid pod.',
+          ),
+          IconButton(
+            icon: const Icon(
               Icons.info,
               color: Colors.purple,
             ),
             onPressed: () async => aboutDialog(context),
             tooltip: 'About the app.',
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.logout_sharp,
-              color: Colors.black,
-            ),
-            onPressed: () async => logoutPopup(context, const KeyPod()),
-            tooltip: 'Logout of your solid pod.',
           ),
           smallGapH,
         ],
@@ -408,17 +398,19 @@ class _KeyValueTableState extends State<KeyValueTable> {
     );
   }
 
-  Widget _customCell(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5.0),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Text(text, style: const TextStyle(fontSize: 14)),
-    );
-  }
+  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
+
+  // Widget _customCell(String text) {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(5.0),
+  //       border: Border.all(color: Colors.grey.shade300),
+  //     ),
+  //     child: Text(text, style: const TextStyle(fontSize: 14)),
+  //   );
+  // }
 
   Widget _actionCell(int index) {
     return Row(
@@ -431,33 +423,35 @@ class _KeyValueTableState extends State<KeyValueTable> {
     );
   }
 
-  void _maybeGoBack(BuildContext context) {
-    if (_isDataModified) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Confirm'),
-          content: const Text(
-              'You have unsaved changes. Are you sure you want to go back?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => widget.child));
-              },
-              child: const Text('Home'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => widget.child));
-    }
-  }
+  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
+
+//   void _maybeGoBack(BuildContext context) {
+//     if (_isDataModified) {
+//       showDialog(
+//         context: context,
+//         builder: (context) => AlertDialog(
+//           title: const Text('Confirm'),
+//           content: const Text(
+//               'You have unsaved changes. Are you sure you want to go back?'),
+//           actions: <Widget>[
+//             TextButton(
+//               onPressed: () => Navigator.of(context).pop(),
+//               child: const Text('Cancel'),
+//             ),
+//             TextButton(
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//                 Navigator.push(context,
+//                     MaterialPageRoute(builder: (context) => widget.child));
+//               },
+//               child: const Text('Home'),
+//             ),
+//           ],
+//         ),
+//       );
+//     } else {
+//       Navigator.push(
+//           context, MaterialPageRoute(builder: (context) => widget.child));
+//     }
+//   }
 }
