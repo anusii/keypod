@@ -38,7 +38,7 @@ import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/utils/constants.dart';
 
 import 'package:solidpod/solidpod.dart'
-    show grantPermission, readPermission, revokePermission;
+    show getAgentType, grantPermission, readPermission, revokePermission;
 
 // TODO 20240515 gjw For now we will list all the imports so we can manage the
 // API evolution. Eventually we will simply just import the package.
@@ -336,12 +336,21 @@ class SharingScreenState extends State<SharingScreen>
                                     label: Expanded(
                                       child: Center(
                                         child: Text(
-                                          'Receiver WebID',
+                                          'Receiver',
                                         ),
                                       ),
                                     ),
                                     tooltip:
                                         'WebID of the POD receiving permissions'),
+                                DataColumn(
+                                    label: Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'Receiver type',
+                                        ),
+                                      ),
+                                    ),
+                                    tooltip: 'Type of the receiver'),
                                 DataColumn(
                                     label: Expanded(
                                       child: Center(
@@ -379,7 +388,16 @@ class SharingScreenState extends State<SharingScreen>
                                     )),
                                     DataCell(
                                       Text(
-                                        (filePermMap[receiverWebId] as List)
+                                        getAgentType(
+                                            filePermMap[receiverWebId]
+                                                ['agentType'] as String,
+                                            receiverWebId),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        (filePermMap[receiverWebId]
+                                                ['permissions'] as List)
                                             .join(', '),
                                       ),
                                     ),
