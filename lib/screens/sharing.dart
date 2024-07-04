@@ -63,6 +63,7 @@ class SharingScreenState extends State<SharingScreen>
   bool readChecked = false;
   bool writeChecked = false;
   bool controlChecked = false;
+  bool appendChecked = false;
 
   // Form controllers
   final formKey = GlobalKey<FormState>();
@@ -184,8 +185,8 @@ class SharingScreenState extends State<SharingScreen>
 
                                   if (webId.isNotEmpty) {
                                     if (filePermMap.containsKey(webId)) {
-                                      final permList =
-                                          filePermMap[webId] as List;
+                                      final permList = filePermMap[webId]
+                                          ['permissions'] as List;
 
                                       if (permList.contains('Read') ||
                                           permList.contains('read')) {
@@ -215,6 +216,16 @@ class SharingScreenState extends State<SharingScreen>
                                       } else {
                                         setState(() {
                                           controlChecked = false;
+                                        });
+                                      }
+                                      if (permList.contains('Append') ||
+                                          permList.contains('append')) {
+                                        setState(() {
+                                          appendChecked = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          appendChecked = false;
                                         });
                                       }
                                     } else {
@@ -263,6 +274,17 @@ class SharingScreenState extends State<SharingScreen>
                                 controlAffinity: ListTileControlAffinity
                                     .leading, //  <-- leading Checkbox
                               ),
+                              CheckboxListTile(
+                                title: const Text('Append'),
+                                value: appendChecked,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    appendChecked = newValue!;
+                                  });
+                                },
+                                controlAffinity: ListTileControlAffinity
+                                    .leading, //  <-- leading Checkbox
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: ElevatedButton(
@@ -283,6 +305,9 @@ class SharingScreenState extends State<SharingScreen>
                                         }
                                         if (controlChecked) {
                                           permList.add('Control');
+                                        }
+                                        if (appendChecked) {
+                                          permList.add('Append');
                                         }
                                         assert(permList.isNotEmpty);
 
@@ -416,7 +441,7 @@ class SharingScreenState extends State<SharingScreen>
                                                     title: const Text(
                                                         'Please Confirm'),
                                                     content: Text(
-                                                        'Are you sure you want to remove the [${(filePermMap[receiverWebId] as List).join(', ')}] permission/s from $receiverWebId?'),
+                                                        'Are you sure you want to remove the [${(filePermMap[receiverWebId]['permissions'] as List).join(', ')}] permission/s from $receiverWebId?'),
                                                     actions: [
                                                       // The "Yes" button
                                                       TextButton(
@@ -424,6 +449,10 @@ class SharingScreenState extends State<SharingScreen>
                                                             await revokePermission(
                                                                 dataFile,
                                                                 true,
+                                                                filePermMap[receiverWebId]
+                                                                        [
+                                                                        'permissions']
+                                                                    as List,
                                                                 receiverWebId,
                                                                 context,
                                                                 const SharingScreen());
