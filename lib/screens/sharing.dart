@@ -441,7 +441,7 @@ class SharingScreenState extends State<SharingScreen>
                                                     title: const Text(
                                                         'Please Confirm'),
                                                     content: Text(
-                                                        'Are you sure you want to remove the [${(filePermMap[receiverWebId] as List).join(', ')}] permission/s from $receiverWebId?'),
+                                                        'Are you sure you want to remove the [${(filePermMap[receiverWebId]['permissions'] as List).join(', ')}] permission/s from $receiverWebId?'),
                                                     actions: [
                                                       // The "Yes" button
                                                       TextButton(
@@ -449,6 +449,10 @@ class SharingScreenState extends State<SharingScreen>
                                                             await revokePermission(
                                                                 dataFile,
                                                                 true,
+                                                                filePermMap[receiverWebId]
+                                                                        [
+                                                                        'permissions']
+                                                                    as List,
                                                                 receiverWebId,
                                                                 context,
                                                                 const SharingScreen());
