@@ -3,14 +3,14 @@
 Recorded here are the high level changes for the GYSAC Patient
 (indipod) app.
 
-Instructions: Add the updates beyond, for example, 0.6.0 under the 0.7
-heading, adding to the top of the list, and recording minor version
-numbers.
+Guide: Each version update is recorded here with a short user-oriented
+description of the update. Updates in the 0.5.n series are heading
+toward a 0.6 release.
 
 ## 0.6 FUTURE
 
-+ Separate the demo/test into solidpod itself [0.5.10]
-+ Show webId on demo page if user has logged in [0.5.9]
++ Separate the demo/test into solidpod itself [0.5.10 20240705]
++ Show webId on demo page if user has logged in [0.5.9 20240630]
 + Demo: Check and grant access permissions [0.5.8]
 + Demonstrate the implementation of validating input security keys [0.5.7]
 + Demonstrate the use of the same filename to store encrypted/unencrypted data [0.5.6]
