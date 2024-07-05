@@ -32,7 +32,6 @@ import 'package:solidpod/solidpod.dart';
 import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/dialogs/alert.dart';
 import 'package:keypod/main.dart';
-import 'package:keypod/screens/sharing.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
@@ -276,18 +275,6 @@ class _KeyValueTableState extends State<KeyValueTable> {
                 context), // Disable button if data is not modified
             child: const Text('Save',
                 style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          smallGapH,
-          IconButton(
-            icon: const Icon(
-              Icons.share,
-              color: Colors.blue,
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SharingScreen()),
-            ),
-            tooltip: 'In-app file sharing functionality',
           ),
           IconButton(
             icon: const Icon(
