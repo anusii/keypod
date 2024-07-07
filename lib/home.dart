@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Thursday 2024-06-27 09:55:12 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 07:52:56 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -25,7 +25,7 @@
 
 // TODO 20240526 gjw EITHER REPAIR ALL CONTEXT ISSUES OR EXPLAIN WHY NOT?
 
-// ignore_for_file: use_build_context_synchronously
+// REMOVE ignore_for_file: use_build_context_synchronously
 
 library;
 
@@ -39,16 +39,16 @@ import 'package:keypod/screens/demo.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
-class HomeScreen extends StatefulWidget {
+class Home extends StatefulWidget {
   /// Constructor for the home screen.
 
-  const HomeScreen({super.key});
+  const Home({super.key});
 
   @override
-  HomeScreenState createState() => HomeScreenState();
+  HomeState createState() => HomeState();
 }
 
-class HomeScreenState extends State<HomeScreen> {
+class HomeState extends State<Home> {
   bool _isLoading = false;
 
   @override
@@ -143,7 +143,7 @@ class HomeScreenState extends State<HomeScreen> {
             title: 'Key Value Pair Editor',
             fileName: fileName,
             keyValuePairs: keyValuePairs,
-            child: const HomeScreen(),
+            child: const Home(),
           ),
         ),
       );

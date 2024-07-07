@@ -1,6 +1,6 @@
 /// A template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Saturday 2024-05-25 18:48:24 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 08:13:38 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:keypod/screens/home.dart';
+import 'package:keypod/home.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
@@ -72,24 +72,30 @@ class KeyPod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// We wrap the actual home widget within a [SolidLogin]. If the app has
+    /// functionality that does not require access to Pod data then [required]
+    /// can be `false`. If the user connects to their Pod then we can ensure
+    /// their session information will be saved. If we aim to save the data to
+    /// the Pod or view data from the Pod, then if the user did not log i during
+    /// startup then we can call [SolidLoginPopup] to establish the connection
+    /// at that time. The login token and the security key are (optionally)
+    /// cached so that the login information is not required every time.
+
     return const MaterialApp(
       title: 'Solid Key Pod',
       home: SolidLogin(
-        // Images generated using Bing Image Creator from Designer, powered by
-        // DALL-E3.
-
+        required: false,
         title: 'SOLID KEY/VALUE POD',
         image: AssetImage('assets/images/keypod_image.jpg'),
         logo: AssetImage('assets/images/keypod_logo.png'),
         link: 'https://github.com/anusii/keypod/blob/main/README.md',
-        required: false,
         infoButtonStyle: InfoButtonStyle(
           tooltip: 'Visit the KeyPod documentation.',
         ),
         loginButtonStyle: LoginButtonStyle(
           background: Colors.lightGreenAccent,
         ),
-        child: HomeScreen(),
+        child: Home(),
       ),
     );
   }
