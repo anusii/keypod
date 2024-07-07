@@ -1,6 +1,6 @@
 /// A template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Monday 2024-07-08 09:05:46 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 09:32:13 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -72,20 +72,30 @@ class KeyPod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// We wrap the actual home widget within a [SolidLogin]. If the app has
-    /// functionality that does not require access to Pod data then [required]
-    /// can be `false`. If the user connects to their Pod then we can ensure
-    /// their session information will be saved. If we aim to save the data to
-    /// the Pod or view data from the Pod, then if the user did not log i during
-    /// startup then we can call [SolidLoginPopup] to establish the connection
-    /// at that time. The login token and the security key are (optionally)
-    /// cached so that the login information is not required every time.
-
     return const MaterialApp(
       title: 'Solid Key Pod',
       home: SelectionArea(
+        // Wrap the whole app inside a SelectionArea to ensure we get selectable
+        // text where it can be, as a default.
+
         child: SolidLogin(
+          // Wrap the actual home widget within a [SolidLogin].
+
+          // If the app has functionality that does not require access to Pod
+          // data then [required] can be `false`. If the user connects to their
+          // Pod then we can ensure their session information will be saved. If
+          // we aim to save the data to the Pod or view data from the Pod, then
+          // if the user did not log in during startup we can call
+          // [SolidLoginPopup] to establish the connection at that time. The
+          // login token and the security key are (optionally) cached so that
+          // the login information is not required every time.
+
+          // For demonstration purposes we do not require a login through the
+          // SolidLogin. Our app here will request a login immediately anyhow
+          // since it has no functionality without data from the SolidPod.
+
           required: false,
+
           title: 'SOLID KEY/VALUE POD',
           image: AssetImage('assets/images/keypod_image.jpg'),
           logo: AssetImage('assets/images/keypod_logo.png'),

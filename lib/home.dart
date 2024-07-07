@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Monday 2024-07-08 07:52:56 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 09:23:10 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -153,6 +153,7 @@ class HomeState extends State<Home> {
       if (mounted) {
         setState(() {
           // Hide the loading indicator.
+
           _isLoading = false;
         });
       }
