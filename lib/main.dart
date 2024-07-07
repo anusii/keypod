@@ -1,6 +1,6 @@
 /// A template app to begin a Solid Pod project.
 ///
-// Time-stamp: <Monday 2024-07-08 08:13:38 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 09:05:46 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -83,19 +83,21 @@ class KeyPod extends StatelessWidget {
 
     return const MaterialApp(
       title: 'Solid Key Pod',
-      home: SolidLogin(
-        required: false,
-        title: 'SOLID KEY/VALUE POD',
-        image: AssetImage('assets/images/keypod_image.jpg'),
-        logo: AssetImage('assets/images/keypod_logo.png'),
-        link: 'https://github.com/anusii/keypod/blob/main/README.md',
-        infoButtonStyle: InfoButtonStyle(
-          tooltip: 'Visit the KeyPod documentation.',
+      home: SelectionArea(
+        child: SolidLogin(
+          required: false,
+          title: 'SOLID KEY/VALUE POD',
+          image: AssetImage('assets/images/keypod_image.jpg'),
+          logo: AssetImage('assets/images/keypod_logo.png'),
+          link: 'https://github.com/anusii/keypod/blob/main/README.md',
+          infoButtonStyle: InfoButtonStyle(
+            tooltip: 'Visit the KeyPod documentation.',
+          ),
+          loginButtonStyle: LoginButtonStyle(
+            background: Colors.lightGreenAccent,
+          ),
+          child: Home(),
         ),
-        loginButtonStyle: LoginButtonStyle(
-          background: Colors.lightGreenAccent,
-        ),
-        child: Home(),
       ),
     );
   }
