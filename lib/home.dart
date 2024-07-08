@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Monday 2024-07-08 13:42:31 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 21:35:12 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -35,7 +35,6 @@ import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:keypod/features/key_value_editor.dart';
-import 'package:keypod/screens/demo.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
 
@@ -51,20 +50,12 @@ class Home extends StatefulWidget {
 ///
 
 class HomeState extends State<Home> {
-  ////////////////////////////////////////////////////////////////////////
-  // STATE
-  ////////////////////////////////////////////////////////////////////////
-
   // Track if the data is loading.
 
   bool _isLoading = false;
 
-  ////////////////////////////////////////////////////////////////////////
-  // WRITE PRIVATE DATA
-  ////////////////////////////////////////////////////////////////////////
-
   Future<void> _writePrivateData() async {
-    // TODO 20240708 gjw PLEASE DESCRIBE WAHT THIS FUNCTION FOR FOR
+    // TODO 20240708 gjw PLEASE DESCRIBE WHAT THIS FUNCTION DOES
 
     const fileName = dataFile;
 
@@ -83,7 +74,14 @@ class HomeState extends State<Home> {
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
-      final fileContent = await readPod(filePath, context, const DemoScreen());
+      // TODO 20240708 gjw WHY IS DemoScreen (OR ANY WIDGET) HERE?
+      //
+      // I repalced DemoScreen with Text(). Still works. I have also removed
+      // demo.dart. It is not part of this app now.
+
+      // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS
+
+      final fileContent = await readPod(filePath, context, const Text('Why'));
       final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
 
       // Convert each tuple to a map.
@@ -91,6 +89,8 @@ class HomeState extends State<Home> {
       final keyValuePairs = pairs?.map((pair) {
         return {'key': pair.key, 'value': pair.value};
       }).toList();
+
+      // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS
 
       await Navigator.push(
         context,
@@ -116,7 +116,22 @@ class HomeState extends State<Home> {
     }
   }
 
-  // TODO 20240708 gjw BETTER EXPLAIN WHY THIS INIT IS REQUIRED
+  Widget _buildMainContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        const SizedBox(height: 20),
+        Expanded(child: Container()),
+      ],
+    );
+  }
+
+  // TODO 20240708 gjw EXPLAIN WHY THIS INIT IS REQUIRED
+  //
+  // Change the work flow so that on LOGIN or CONTINUE we come the the main app
+  // page which simply has a central button. When pushed the data is retrieved
+  // from the Solid Pod (logging in if needed) and then displayed. The following
+  // is not really very transparent for a template app.
 
   @override
   void initState() {
@@ -151,16 +166,6 @@ class HomeState extends State<Home> {
             ),
         ],
       ),
-    );
-  }
-
-  Widget _buildMainContent() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const SizedBox(height: 20),
-        Expanded(child: Container()),
-      ],
     );
   }
 }
