@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Monday 2024-07-08 21:35:12 +1000 Graham Williams>
+// Time-stamp: <Tuesday 2024-07-09 08:50:09 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -54,7 +54,7 @@ class HomeState extends State<Home> {
 
   bool _isLoading = false;
 
-  Future<void> _writePrivateData() async {
+  Future<void> _writePrivateData(BuildContext context) async {
     // TODO 20240708 gjw PLEASE DESCRIBE WHAT THIS FUNCTION DOES
 
     const fileName = dataFile;
@@ -79,30 +79,43 @@ class HomeState extends State<Home> {
       // I repalced DemoScreen with Text(). Still works. I have also removed
       // demo.dart. It is not part of this app now.
 
-      // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS
+      // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS.
+      //
+      // I added context as a function parameter and added the checks on
+      // context.mounted. Seems to fix the lint. But the real solution might be
+      // a restructure. The BuildContext is used for navigation etc. Is it
+      // needed in readPod. Seems like it would be better to use a provider in
+      // readPod (using riverPod?) to test login etc? It seems to be being used
+      // to track state.
 
-      final fileContent = await readPod(filePath, context, const Text('Why'));
-      final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
+      if (context.mounted) {
+        final fileContent = await readPod(filePath, context, const Text('Why'));
 
-      // Convert each tuple to a map.
+        final pairs =
+            fileContent == null ? null : await parseTTLStr(fileContent);
 
-      final keyValuePairs = pairs?.map((pair) {
-        return {'key': pair.key, 'value': pair.value};
-      }).toList();
+        // Convert each tuple to a map.
 
-      // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS
+        final keyValuePairs = pairs?.map((pair) {
+          return {'key': pair.key, 'value': pair.value};
+        }).toList();
 
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => KeyValueEditor(
-            title: 'Key Value Pair Editor',
-            fileName: fileName,
-            keyValuePairs: keyValuePairs,
-            child: const Home(),
-          ),
-        ),
-      );
+        // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS
+
+        if (context.mounted) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => KeyValueEditor(
+                title: 'Key Value Pair Editor',
+                fileName: fileName,
+                keyValuePairs: keyValuePairs,
+                child: const Home(),
+              ),
+            ),
+          );
+        }
+      }
     } on Exception catch (e) {
       debugPrint('Error: $e');
     } finally {
@@ -141,7 +154,7 @@ class HomeState extends State<Home> {
     // BUTTON?
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _writePrivateData();
+      _writePrivateData(context);
     });
   }
 
