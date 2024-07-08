@@ -1,7 +1,7 @@
 /// A template app to begin a Solid Pod project.
-///
-// Time-stamp: <Monday 2024-07-08 09:32:13 +1000 Graham Williams>
-///
+//
+// Time-stamp: <Monday 2024-07-08 19:01:58 +1000 Graham Williams>
+//
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
 /// Licensed under the GNU General Public License, Version 3 (the "License").
@@ -18,7 +18,7 @@
 // FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
 // details.
 //
-// You should have received a copy of the GNU General Public License along withk
+// You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Graham Williams
@@ -34,7 +34,11 @@ import 'package:keypod/home.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
-  // Suport window size and top placement for desktop apps.
+  // This is the main entry point for the app. The [async] is required because
+  // we asynchronously [await] some activity below.
+
+  // Suport placing the new window on top of all other windows on starting up
+  // the desktop app.
 
   if (isDesktop(PlatformWrapper())) {
     WidgetsFlutterBinding.ensureInitialized();
@@ -42,9 +46,12 @@ void main() async {
     await windowManager.ensureInitialized();
 
     const windowOptions = WindowOptions(
+      // We can set various desktop window options here.
+
       // Setting [alwaysOnTop] here will ensure the app starts on top of other
-      // apps on the desktop so that it is visible. We later turn it of as we
-      // don't want to force it always on top.
+      // apps on the desktop so that it is visible (otherwise it is often lost
+      // below other windows on startup which can be a little disconcerting). We
+      // later turn it off as we don't want to force it always on top.
 
       alwaysOnTop: true,
 
@@ -52,6 +59,8 @@ void main() async {
 
       title: 'KeyPod - Private Solid Pod for Storing Key-Value Pairs',
     );
+
+    // Once the window manager is ready wet recofigure it a little.
 
     await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
@@ -96,7 +105,7 @@ class KeyPod extends StatelessWidget {
 
           required: false,
 
-          title: 'SOLID KEY/VALUE POD',
+          title: 'KEY/VALUE SOLID POD',
           image: AssetImage('assets/images/keypod_image.jpg'),
           logo: AssetImage('assets/images/keypod_logo.png'),
           link: 'https://github.com/anusii/keypod/blob/main/README.md',
