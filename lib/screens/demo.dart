@@ -1,6 +1,6 @@
 /// A screen to demonstrate various capabilities of solidlogin.
 ///
-// Time-stamp: <Sunday 2024-05-26 11:04:50 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 13:39:50 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -33,7 +33,7 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:keypod/dialogs/about.dart';
+import 'package:keypod/utils/show_my_about.dart';
 import 'package:keypod/main.dart';
 import 'package:keypod/screens/edit_keyvalue.dart';
 import 'package:keypod/screens/view_keys.dart';
@@ -197,7 +197,7 @@ class DemoScreenState extends State<DemoScreen>
         color: Colors.purple,
       ),
       onPressed: () async {
-        await aboutDialog(context);
+        await showMyAbout(context);
       },
       tooltip: 'Popup a window about the app.',
     );
