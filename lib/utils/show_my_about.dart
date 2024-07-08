@@ -1,6 +1,6 @@
 /// An About dialog for the app.
 ///
-// Time-stamp: <Monday 2024-07-08 09:20:05 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 13:18:36 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:solidpod/solidpod.dart';
 
-Future<void> aboutDialog(BuildContext context) async {
+Future<void> showMyAbout(BuildContext context) async {
   final appInfo = await getAppNameVersion();
 
   if (context.mounted) {
