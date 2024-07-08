@@ -1,6 +1,6 @@
 /// Common utilities for working on RDF data.
 ///
-// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 13:21:35 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -22,6 +22,9 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Dawei Chen
+
+// TODO 20240708 gjw CAN ANY OF THIS GO TO RDFLIB?
+
 library;
 
 import 'package:rdflib/rdflib.dart';
@@ -29,6 +32,7 @@ import 'package:rdflib/rdflib.dart';
 import 'package:solidpod/solidpod.dart' show getWebId;
 
 // Namespace for keys
+
 const String appTerms = 'https://solidcommunity.au/predicates/terms#';
 
 /// Serialise key/value pairs [keyValuePairs] in TTL format where
