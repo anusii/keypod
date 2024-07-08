@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Monday 2024-07-08 09:23:10 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 13:42:31 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -34,7 +34,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
-import 'package:keypod/screens/data_table.dart';
+import 'package:keypod/features/key_value_editor.dart';
 import 'package:keypod/screens/demo.dart';
 import 'package:keypod/utils/constants.dart';
 import 'package:keypod/utils/rdf.dart';
@@ -48,14 +48,82 @@ class Home extends StatefulWidget {
   HomeState createState() => HomeState();
 }
 
+///
+
 class HomeState extends State<Home> {
+  ////////////////////////////////////////////////////////////////////////
+  // STATE
+  ////////////////////////////////////////////////////////////////////////
+
+  // Track if the data is loading.
+
   bool _isLoading = false;
+
+  ////////////////////////////////////////////////////////////////////////
+  // WRITE PRIVATE DATA
+  ////////////////////////////////////////////////////////////////////////
+
+  Future<void> _writePrivateData() async {
+    // TODO 20240708 gjw PLEASE DESCRIBE WAHT THIS FUNCTION FOR FOR
+
+    const fileName = dataFile;
+
+    try {
+      setState(() {
+        // Show the loading indicator.
+        _isLoading = true;
+      });
+
+      // TODO (dc): Please explain this simulation, why is it necessary?
+      // Simulate a network call.
+
+      // await Future.delayed(const Duration(seconds: 2));
+
+      // Navigate or perform additional actions after loading
+      final dataDirPath = await getDataDirPath();
+      final filePath = path.join(dataDirPath, fileName);
+
+      final fileContent = await readPod(filePath, context, const DemoScreen());
+      final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
+
+      // Convert each tuple to a map.
+
+      final keyValuePairs = pairs?.map((pair) {
+        return {'key': pair.key, 'value': pair.value};
+      }).toList();
+
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => KeyValueEditor(
+            title: 'Key Value Pair Editor',
+            fileName: fileName,
+            keyValuePairs: keyValuePairs,
+            child: const Home(),
+          ),
+        ),
+      );
+    } on Exception catch (e) {
+      debugPrint('Error: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          // Hide the loading indicator.
+
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  // TODO 20240708 gjw BETTER EXPLAIN WHY THIS INIT IS REQUIRED
 
   @override
   void initState() {
     super.initState();
 
-    // Automatically tap the KEYPODS button when the screen loads.
+    // Automatically tap the KEYPODS button when the screen loads. WHAT KEYPODS
+    // BUTTON?
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _writePrivateData();
@@ -94,69 +162,5 @@ class HomeState extends State<Home> {
         Expanded(child: Container()),
       ],
     );
-  }
-
-  // TODO 20240524 gjw Is this used? My linter is complaining.
-  //
-  // Widget _buildButton(String title, VoidCallback onPressed) {
-  //   return ElevatedButton(
-  //     onPressed: onPressed,
-  //     style: ElevatedButton.styleFrom(
-  //       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-  //       textStyle: const TextStyle(fontSize: 16),
-  //     ),
-  //     child: Text(title, style: const TextStyle(fontSize: 16)),
-  //   );
-  // }
-
-  Future<void> _writePrivateData() async {
-    const fileName = dataFile;
-
-    try {
-      setState(() {
-        // Show the loading indicator.
-        _isLoading = true;
-      });
-
-      // TODO (dc): Please explain this simulation, why is it necessary?
-      // Simulate a network call.
-
-      // await Future.delayed(const Duration(seconds: 2));
-
-      // Navigate or perform additional actions after loading
-      final dataDirPath = await getDataDirPath();
-      final filePath = path.join(dataDirPath, fileName);
-
-      final fileContent = await readPod(filePath, context, const DemoScreen());
-      final pairs = fileContent == null ? null : await parseTTLStr(fileContent);
-
-      // Convert each tuple to a map.
-
-      final keyValuePairs = pairs?.map((pair) {
-        return {'key': pair.key, 'value': pair.value};
-      }).toList();
-
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => KeyValueTable(
-            title: 'Key Value Pair Editor',
-            fileName: fileName,
-            keyValuePairs: keyValuePairs,
-            child: const Home(),
-          ),
-        ),
-      );
-    } on Exception catch (e) {
-      debugPrint('Error: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          // Hide the loading indicator.
-
-          _isLoading = false;
-        });
-      }
-    }
   }
 }
