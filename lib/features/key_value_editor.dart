@@ -1,6 +1,6 @@
 /// A key-value editor.
 ///
-// Time-stamp: <Monday 2024-07-08 13:20:04 +1000 Graham Williams>
+// Time-stamp: <Monday 2024-07-08 19:39:26 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -245,13 +245,12 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.add,
+              Icons.add_card,
               color: Colors.orange,
             ),
-            tooltip: 'Add a new row to the tble of key-value pairs.',
+            tooltip: 'Add a new row to the table of key-value pairs.',
             onPressed: _addNewRow,
           ),
-          smallGapH,
           IconButton(
             icon: const Icon(Icons.save),
             tooltip: 'Save the key-value pairs to your Solid Pod.',
