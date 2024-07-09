@@ -39,10 +39,10 @@ with a desktop icon for their desktop:
 wget https://solidcommunity.au/installers/keypod.tar.gz -O keypod.tar.gz
 tar zxvf keypod.tar.gz -C ${HOME}/.local/share/
 ln -s ${HOME}/.local/share/keypod/keypod ${HOME}/.local/bin/keypod
-wget https://raw.githubusercontent.com/gjwgit/keypod/dev/installers/keypod.desktop -O ${HOME}/.local/share/applications/keypod.desktop
+wget https://raw.githubusercontent.com/anusii/keypod/dev/installers/keypod.desktop -O ${HOME}/.local/share/applications/keypod.desktop
 sed -i "s/USER/$(whoami)/g" ${HOME}/.local/share/applications/keypod.desktop
 mkdir -p ${HOME}/.local/share/icons/hicolor/256x256/apps/
-wget https://github.com/gjwgit/keypod/raw/dev/installers/keypod.png -O ${HOME}/.local/share/icons/hicolor/256x256/apps/keypod.png
+wget https://github.com/anusii/keypod/raw/dev/installers/keypod.png -O ${HOME}/.local/share/icons/hicolor/256x256/apps/keypod.png
 ```
 
 To install for any user on the computer:
