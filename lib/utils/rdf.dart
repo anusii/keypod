@@ -1,6 +1,6 @@
 /// Common utilities for working on RDF data.
 ///
-// Time-stamp: <Wednesday 2024-07-10 05:34:23 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 09:49:30 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -67,7 +67,11 @@ Future<String> genTTLStr(
 /// Predicate: Key
 /// Object: Value
 
+// TODO 20240710 gjw COULD THIS USE rdflib::parseTTL
+
 Future<List<({String key, dynamic value})>> parseTTLStr(String ttlStr) async {
+  // TODO 20240710 gjw COMMENT THAT WE COULD DO WITH USING MORE asserts()
+
   assert(ttlStr.isNotEmpty);
   final g = Graph();
   g.parseTurtle(ttlStr);
