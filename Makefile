@@ -31,6 +31,7 @@ DEST=/var/www/html/$(APP)
 # Often the support Makefiles will be in the local support folder, or
 # else installed in the local user's shares.
 
+INC_BASE=$(HOME)/.local/share/make
 INC_BASE=support
 
 # Specific Makefiles will be loaded if they are found in
@@ -40,6 +41,7 @@ INC_BASE=support
 
 INC_DOCKER=skip
 INC_MLHUB=skip
+INC_WEBCAM=skip
 
 # Load any modules available.
 
@@ -57,8 +59,9 @@ endif
 define HELP
 $(APP):
 
-  solidcommunity	Install to https://$(APP).solidcommunity.au
-  wc                    Count the number of lines of code.
+    local	     Install to $(HOME)/.local/share/$(APP)
+    tgz	     Upload the installer to solidcommunity.com
+  apk	     Upload the installer to solidcommunity.com
 
 endef
 export HELP
@@ -69,15 +72,21 @@ help::
 ########################################################################
 # LOCAL TARGETS
 
-locals:
-	@echo "This might be the instructions to install $(APP)"
+#
+# Manage the production install on the remote server.
+#
+
+clean::
+	rm -f README.html
+
+# Android: Upload to Solid Community installers for general access.
 
 apk::
-	rsync -avzh installers/$(APP)* solidcommunity.au:/var/www/html/installers/
+	rsync -avzh --exclude *~ installers/$(APP)*.apk solidcommunity.au:/var/www/html/installers/
 	ssh solidcommunity.au chmod -R go+rX /var/www/html/installers/
 	ssh solidcommunity.au chmod go=x /var/www/html/installers/
 
 tgz::
-	rsync -avzh installers/$(APP)* solidcommunity.au:/var/www/html/installers/
+	rsync -avzh installers/$(APP)*.tar.gz solidcommunity.au:/var/www/html/installers/
 	ssh solidcommunity.au chmod -R go+rX /var/www/html/installers/
 	ssh solidcommunity.au chmod go=x /var/www/html/installers/
