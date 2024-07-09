@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Wednesday 2024-07-10 05:50:38 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 05:57:09 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -35,7 +35,7 @@ import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:keypod/features/key_value_editor.dart';
-import 'package:keypod/utils/constants.dart';
+import 'package:keypod/constants/colours.dart';
 import 'package:keypod/utils/rdf.dart';
 
 class Home extends StatefulWidget {
