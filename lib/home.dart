@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Wednesday 2024-07-10 08:25:12 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 09:34:33 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -66,7 +66,8 @@ class HomeState extends State<Home> {
         _isLoading = true;
       });
 
-      // TODO (dc): Please explain this simulation, why is it necessary?
+      // TODO dc: PLEASE EXPLAIN THIS SIMULATION, WHY IS IT NECESSARY?
+      //
       // Simulate a network call.
 
       // await Future.delayed(const Duration(seconds: 2));
@@ -143,17 +144,17 @@ class HomeState extends State<Home> {
 
   // TODO 20240708 gjw EXPLAIN WHY THIS INIT IS REQUIRED
   //
-  // Change the work flow so that on LOGIN or CONTINUE we come the the main app
-  // page which simply has a central button. When pushed the data is retrieved
-  // from the Solid Pod (logging in if needed) and then displayed. The following
-  // is not really very transparent for a template app.
+  // Perhaps, instead, change the work flow so that on LOGIN or CONTINUE we come
+  // the the main app page which simply has a central button. When pushed the
+  // data is retrieved from the Solid Pod (logging in if needed) and then
+  // displayed. The following is not really very transparent for a template app.
 
   @override
   void initState() {
     super.initState();
 
-    // Automatically tap the KEYPODS button when the screen loads. WHAT KEYPODS
-    // BUTTON?
+    // Automatically press the KEYPODS button when the screen loads. WHAT
+    // KEYPODS BUTTON?
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _writePrivateData(context);
