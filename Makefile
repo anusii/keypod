@@ -2,7 +2,7 @@
 #
 # Generic Makefile
 #
-# Time-stamp: <Wednesday 2024-05-22 15:08:58 +1000 Graham Williams>
+# Time-stamp: <Tuesday 2024-07-09 20:17:01 +1000 Graham Williams>
 #
 # Copyright (c) Graham.Williams@togaware.com
 #
@@ -59,7 +59,7 @@ endif
 define HELP
 $(APP):
 
-    local	     Install to $(HOME)/.local/share/$(APP)
+  local	     Install to $(HOME)/.local/share/$(APP)
     tgz	     Upload the installer to solidcommunity.com
   apk	     Upload the installer to solidcommunity.com
 
@@ -85,6 +85,13 @@ apk::
 	rsync -avzh --exclude *~ installers/$(APP)*.apk solidcommunity.au:/var/www/html/installers/
 	ssh solidcommunity.au chmod -R go+rX /var/www/html/installers/
 	ssh solidcommunity.au chmod go=x /var/www/html/installers/
+
+# Linux: Install locally.
+
+local: tgz
+	tar zxvf installers/$(APP).tar.gz -C $(HOME)/.local/share/
+
+# Linux: Upload to Solid Community installers for general access.
 
 tgz::
 	rsync -avzh installers/$(APP)*.tar.gz solidcommunity.au:/var/www/html/installers/
