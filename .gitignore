@@ -8,6 +8,7 @@ generated*
 Generated*
 .vscode
 installers/keypod-*
+installers/*.tar.gz
 
 ########################################################################
 # This is the default github gitignore
