@@ -1,6 +1,6 @@
 /// Constants used throughout the app.
 ///
-// Time-stamp: <Wednesday 2024-07-10 05:35:47 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 05:54:04 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -29,4 +29,4 @@ import 'package:flutter/material.dart';
 
 const titleBackgroundColor = Color(0xFFF0E4D7);
 
-const dataFile = 'key-value.ttl';
+const iconColor = Colors.orange;

@@ -1,6 +1,6 @@
 /// A key-value editor.
 ///
-// Time-stamp: <Monday 2024-07-08 19:39:26 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 05:55:08 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -30,10 +30,10 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 
 import 'package:keypod/dialogs/alert.dart';
+import 'package:keypod/dialogs/show_my_about.dart';
 import 'package:keypod/main.dart';
-import 'package:keypod/utils/constants.dart';
+import 'package:keypod/constants/colours.dart';
 import 'package:keypod/utils/rdf.dart';
-import 'package:keypod/utils/show_my_about.dart';
 
 class KeyValueEditor extends StatefulWidget {
   const KeyValueEditor({
@@ -246,7 +246,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
           IconButton(
             icon: const Icon(
               Icons.add_card,
-              color: Colors.orange,
+              color: iconColor,
             ),
             tooltip: 'Add a new row to the table of key-value pairs.',
             onPressed: _addNewRow,
@@ -284,7 +284,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
           IconButton(
             icon: const Icon(
               Icons.share_rounded,
-              color: Colors.orange,
+              color: iconColor,
             ),
             tooltip: 'Configure your Solid Pod sharing.',
             onPressed: () => Navigator.push(
@@ -305,7 +305,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
           IconButton(
             icon: const Icon(
               Icons.logout_sharp,
-              color: Colors.orange,
+              color: iconColor,
             ),
             tooltip: 'Logout of your Solid Pod.',
             onPressed: () async => logoutPopup(context, const KeyPod()),
@@ -313,7 +313,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
           IconButton(
             icon: const Icon(
               Icons.info,
-              color: Colors.orange,
+              color: iconColor,
             ),
             tooltip: 'Popup the app About dialog.',
             onPressed: () async => showMyAbout(context),
@@ -371,7 +371,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
 
           // Text color when enabled.
 
-          return Colors.orange;
+          return iconColor;
         },
       ),
     );
@@ -381,7 +381,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
     return Row(
       children: [
         IconButton(
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: iconColor),
           onPressed: () => _deleteRow(index),
         ),
       ],

@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Tuesday 2024-07-09 08:50:09 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 05:50:38 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -57,7 +57,7 @@ class HomeState extends State<Home> {
   Future<void> _writePrivateData(BuildContext context) async {
     // TODO 20240708 gjw PLEASE DESCRIBE WHAT THIS FUNCTION DOES
 
-    const fileName = dataFile;
+    const fileName = 'key-value.ttl';
 
     try {
       setState(() {
