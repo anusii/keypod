@@ -143,19 +143,25 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
         DataColumn(label: Text('Actions')),
       ],
       rows: dataMap.keys.map((index) {
-        return DataRow(cells: [
-          DataCell(TextField(
-            controller: keyControllers[index],
-            onChanged: (newKey) => _updateRowKey(index, newKey),
-            decoration: const InputDecoration(border: InputBorder.none),
-          )),
-          DataCell(TextField(
-            controller: valueControllers[index],
-            onChanged: (newValue) => _updateRowValue(index, newValue),
-            decoration: const InputDecoration(border: InputBorder.none),
-          )),
-          DataCell(_actionCell(index)),
-        ]);
+        return DataRow(
+          cells: [
+            DataCell(
+              TextField(
+                controller: keyControllers[index],
+                onChanged: (newKey) => _updateRowKey(index, newKey),
+                decoration: const InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            DataCell(
+              TextField(
+                controller: valueControllers[index],
+                onChanged: (newValue) => _updateRowValue(index, newValue),
+                decoration: const InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            DataCell(_actionCell(index)),
+          ],
+        );
       }).toList(),
     );
   }
@@ -277,7 +283,8 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
                   }
                 : null,
             style: activeButtonStyle(
-                context), // Disable button if data is not modified
+              context,
+            ), // Disable button if data is not modified
             // child: const Text('Save',
             //     style: TextStyle(fontWeight: FontWeight.bold)),
           ),

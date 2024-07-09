@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Wednesday 2024-07-10 05:57:09 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 08:25:12 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -62,6 +62,7 @@ class HomeState extends State<Home> {
     try {
       setState(() {
         // Show the loading indicator.
+
         _isLoading = true;
       });
 
@@ -70,7 +71,8 @@ class HomeState extends State<Home> {
 
       // await Future.delayed(const Duration(seconds: 2));
 
-      // Navigate or perform additional actions after loading
+      // Navigate or perform additional actions after loading.
+
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
