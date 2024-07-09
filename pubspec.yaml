@@ -26,6 +26,7 @@ dependencies:
   solidpod:
     # Use a local path whilst solidpod is under development.
     path: solidpod
+    # Use git until the latest is released to pub.dev.
     ## git:
     ##   url: https://github.com/anusii/solidpod
     ##   ref: dev
@@ -34,16 +35,14 @@ dependencies:
   window_manager: ^0.3.9
 
 dev_dependencies:
-  #build_runner: ^2.4.7
 
   dart_code_metrics:
     git:
       url: https://github.com/anusii/dart-code-metrics.git
       ref: main
 
-  #flutter_test:
-  #  sdk: flutter
-  #mockito: ^5.4.4
+  flutter_test:
+    sdk: flutter
 
   ubuntu_lints: ^0.4.0
 
