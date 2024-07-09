@@ -337,16 +337,20 @@ versions:
 	perl -pi -e 's|applicationVersion = ".*";|applicationVersion = "$(VER)";|' \
 	lib/constants/app.dart
 
+# Count the number of lines of code, excluding comments, blank lines,
+# and lines only with closing brackets.
+
 .PHONY: wc
 wc: lib/*.dart
-	@cat lib/*.dart lib/*/*.dart lib/*/*/*.dart \
-	| egrep -v '^/' \
+	find lib -type f -name '*.dart' -print \
+	| xargs cat \
+	| egrep -v '^ */' \
 	| egrep -v '^ *$$' \
-	| wc -l
+	| egrep -v '^ *[\)\}]+[;,]?$$' \
+	| egrep -v '^ *\],$$' \
+	| wc -l	
 
-#
 # Manage the production install on the remote server.
-#
 
 .PHONY: solidcommunity
 solidcommunity:
