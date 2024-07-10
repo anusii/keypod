@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Wednesday 2024-07-10 09:34:33 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 10:24:13 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -53,6 +53,11 @@ class HomeState extends State<Home> {
   // Track if the data is loading.
 
   bool _isLoading = false;
+
+  // TODO 20240710 gjw CONSIDER REPLACING ALL THIS WITH A BUTTON
+  //
+  // Always be presented with a button and we press the button to load the data
+  // from the Pod.
 
   Future<void> _writePrivateData(BuildContext context) async {
     // TODO 20240708 gjw PLEASE DESCRIBE WHAT THIS FUNCTION DOES
