@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Wednesday 2024-07-10 13:35:54 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 20:59:14 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -34,6 +34,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
+import 'package:keypod/app.dart';
 import 'package:keypod/features/key_value_editor.dart';
 import 'package:keypod/constants/colours.dart';
 import 'package:keypod/utils/rdf.dart';
@@ -47,8 +48,6 @@ class KeyPodHome extends StatefulWidget {
   KeyPodHomeState createState() => KeyPodHomeState();
 }
 
-///
-
 class KeyPodHomeState extends State<KeyPodHome> {
   // Track if the data is loading.
 
@@ -59,7 +58,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
   // Always be presented with a button and we press the button to load the data
   // from the Pod.
 
-  Future<void> _writePrivateData(BuildContext context) async {
+  Future<void> _loadData(BuildContext context) async {
     // TODO 20240708 gjw PLEASE DESCRIBE WHAT THIS FUNCTION DOES
 
     const fileName = 'key-value.ttl';
@@ -82,22 +81,19 @@ class KeyPodHomeState extends State<KeyPodHome> {
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
 
-      // TODO 20240708 gjw WHY IS DemoScreen (OR ANY WIDGET) HERE?
+      // The build context and the app widget are passed through to the
+      // readPod() on the chance that it is required when the user CANCEL's the
+      // secret key dialog.
       //
-      // I repalced DemoScreen with Text(). Still works. I have also removed
-      // demo.dart. It is not part of this app now.
-
-      // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS.
+      // TODO 20240710 gjw CANCEL OF SECRET KEY SHOULD GO BACK TO PARENT?
       //
-      // I added context as a function parameter and added the checks on
-      // context.mounted. Seems to fix the lint. But the real solution might be
-      // a restructure. The BuildContext is used for navigation etc. Is it
-      // needed in readPod. Seems like it would be better to use a provider in
-      // readPod (using riverPod?) to test login etc? It seems to be being used
-      // to track state.
+      // The parent is the KeyPodApp() - should that be implemented as the
+      // default? Ideally the call is readPod(filePath) or eventually pod.read(filePath).
 
       if (context.mounted) {
-        final fileContent = await readPod(filePath, context, const Text('Why'));
+        // Need to ensure the context is mounted to avoid async gaps.
+
+        final fileContent = await readPod(filePath, context, const KeyPodApp());
 
         final pairs =
             fileContent == null ? null : await parseTTLStr(fileContent);
@@ -107,8 +103,6 @@ class KeyPodHomeState extends State<KeyPodHome> {
         final keyValuePairs = pairs?.map((pair) {
           return {'key': pair.key, 'value': pair.value};
         }).toList();
-
-        // TODO 20240708 gjw FIX CONTEXT ACROSS ASYNC GAPS
 
         if (context.mounted) {
           await Navigator.push(
@@ -127,7 +121,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
     } on Exception catch (e) {
       debugPrint('Error: $e');
     } finally {
-      if (mounted) {
+      if (context.mounted) {
         setState(() {
           // Hide the loading indicator.
 
@@ -149,10 +143,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
 
   // TODO 20240708 gjw EXPLAIN WHY THIS INIT IS REQUIRED
   //
-  // Perhaps, instead, change the work flow so that on LOGIN or CONTINUE we come
-  // the the main app page which simply has a central button. When pushed the
-  // data is retrieved from the Solid Pod (logging in if needed) and then
-  // displayed. The following is not really very transparent for a template app.
+  // WORK WITH KEVIN TO RE-ENGINEER FOR THE NEW KeyPodApp BUTTON PAGE
 
   @override
   void initState() {
@@ -162,7 +153,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
     // KEYPODS BUTTON?
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _writePrivateData(context);
+      _loadData(context);
     });
   }
 

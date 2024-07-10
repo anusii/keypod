@@ -1,6 +1,6 @@
 /// The root widget for the KeyPod app.
 ///
-/// Time-stamp: <Wednesday 2024-07-10 13:41:48 +1000 Graham Williams>
+/// Time-stamp: <Thursday 2024-07-11 08:15:15 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute.
 ///
@@ -44,27 +44,28 @@ class KeyPodApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('KeyPod Template App for SolidPod')),
-        body: Stack(
-          children: [
-            // Your main content goes here
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => KeyPodHome(),
-                    ),
-                  );
-                },
-                child: const Text('Load Data from your Solid Pod'),
-              ),
+    // TODO 20240710 gjw how to get the WebID here?
+    var webId = 'WEBID';
+    return Scaffold(
+      appBar: AppBar(title: const Text('KeyPod Template App for SolidPod')),
+      body: Stack(
+        children: [
+          const SizedBox(height: 20),
+          Text('   TODO Report here if authenticated $webId'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const KeyPodHome(),
+                  ),
+                );
+              },
+              child: const Text('Load Data from your Solid Pod'),
             ),
-          ],
-          //KeyPodHome(),
-        ),
+          ),
+        ],
+        //KeyPodHome(),
       ),
     );
   }
