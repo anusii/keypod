@@ -44,8 +44,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # Mockito is used for mock up testing. Removing it results in errors
-  # when checking code coverage.
+  # Mockito is used for mock up testing. See `test/mocks.dart`.
 
   mockito: ^5.4.4
 
