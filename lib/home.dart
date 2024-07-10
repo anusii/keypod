@@ -1,6 +1,6 @@
 /// A simple key value table for the home screen.
 ///
-// Time-stamp: <Wednesday 2024-07-10 10:24:13 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 13:35:54 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -38,18 +38,18 @@ import 'package:keypod/features/key_value_editor.dart';
 import 'package:keypod/constants/colours.dart';
 import 'package:keypod/utils/rdf.dart';
 
-class Home extends StatefulWidget {
+class KeyPodHome extends StatefulWidget {
   /// Constructor for the home screen.
 
-  const Home({super.key});
+  const KeyPodHome({super.key});
 
   @override
-  HomeState createState() => HomeState();
+  KeyPodHomeState createState() => KeyPodHomeState();
 }
 
 ///
 
-class HomeState extends State<Home> {
+class KeyPodHomeState extends State<KeyPodHome> {
   // Track if the data is loading.
 
   bool _isLoading = false;
@@ -118,7 +118,7 @@ class HomeState extends State<Home> {
                 title: 'Key Value Pair Editor',
                 fileName: fileName,
                 keyValuePairs: keyValuePairs,
-                child: const Home(),
+                child: const KeyPodHome(),
               ),
             ),
           );

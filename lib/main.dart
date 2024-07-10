@@ -1,6 +1,6 @@
 /// A template app to begin a Solid Pod project.
 //
-// Time-stamp: <Tuesday 2024-07-09 09:07:17 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 13:40:34 +1000 Graham Williams>
 //
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:keypod/home.dart';
+import 'package:keypod/app.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
@@ -126,7 +126,7 @@ class KeyPod extends StatelessWidget {
           loginButtonStyle: LoginButtonStyle(
             background: Colors.lightGreenAccent,
           ),
-          child: Home(),
+          child: KeyPodApp(),
         ),
       ),
     );
