@@ -7,8 +7,13 @@ Guide: Each version update is recorded here with a short user-oriented
 description of the update. Updates in the 0.5.n series are heading
 toward a 0.6 release.
 
-## 0.6 FUTURE
+## 0.7 FUTURE
 
+
+
+## 0.6 Refactored, Permissions 20240717
+
++ Refactor [0.5.11 20240717 gjw]
 + Separate the demo/test into solidpod itself [0.5.10 20240705]
 + Show webId on demo page if user has logged in [0.5.9 20240630]
 + Demo: Check and grant access permissions [0.5.8]
