@@ -1,6 +1,6 @@
 /// The root widget for the KeyPod app.
 ///
-/// Time-stamp: <Thursday 2024-07-11 08:15:15 +1000 Graham Williams>
+/// Time-stamp: <Tuesday 2024-07-16 10:58:41 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute.
 ///
@@ -31,7 +31,7 @@ import 'package:flutter/material.dart';
 
 import 'package:keypod/home.dart';
 
-/// A widget for the root of the KeyPod app encompassing the Rattle home widget.
+/// A widget for the root of the KeyPod app encompassing the KeyPod home widget.
 ///
 /// The root widget covers the screen of the app. This widget is stateless as it
 /// does not need to manage any state itself.
@@ -40,18 +40,18 @@ class KeyPodApp extends StatelessWidget {
   const KeyPodApp({super.key});
 
   /// Build the root widget as a [MaterialApp] widget, setting up the app theme,
-  /// and populating the widget with the Rattle home page widget.
+  /// and populating the widget with the KeyPod home page widget.
 
   @override
   Widget build(BuildContext context) {
     // TODO 20240710 gjw how to get the WebID here?
-    var webId = 'WEBID';
+    const webId = 'WEBID';
     return Scaffold(
       appBar: AppBar(title: const Text('KeyPod Template App for SolidPod')),
       body: Stack(
         children: [
           const SizedBox(height: 20),
-          Text('   TODO Report here if authenticated $webId'),
+          const Text('   TODO Report here if authenticated $webId'),
           Center(
             child: ElevatedButton(
               onPressed: () {
