@@ -42,11 +42,13 @@ class KeyValueEditor extends StatefulWidget {
     required this.child,
     super.key,
     this.keyValuePairs,
+    this.webId,
   });
   final String title;
   final String fileName;
   final Widget child;
   final List<Map<String, dynamic>>? keyValuePairs;
+  final String? webId;
 
   @override
   State<KeyValueEditor> createState() => _KeyValueEditorState();
@@ -323,7 +325,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
               color: iconColor,
             ),
             tooltip: 'Popup the app About dialog.',
-            onPressed: () async => showMyAbout(context),
+            onPressed: () async => showMyAbout(context, webId: widget.webId),
           ),
           smallGapH,
         ],

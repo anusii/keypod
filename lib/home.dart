@@ -80,6 +80,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
 
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
+      final webId = await getWebId();
 
       // The build context and the app widget are passed through to the
       // readPod() on the chance that it is required when the user CANCEL's the
@@ -112,6 +113,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
                 title: 'Key Value Pair Editor',
                 fileName: fileName,
                 keyValuePairs: keyValuePairs,
+                webId: webId,
                 child: const KeyPodHome(),
               ),
             ),
