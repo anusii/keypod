@@ -1,6 +1,6 @@
-/// A data table to edit key/value pairs and save them in a POD.
+/// A key-value editor.
 ///
-// Time-stamp: <Thursday 2024-06-27 19:44:55 +1000 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 05:55:08 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -29,14 +29,14 @@ import 'package:flutter/material.dart';
 
 import 'package:solidpod/solidpod.dart';
 
-import 'package:keypod/dialogs/about.dart';
 import 'package:keypod/dialogs/alert.dart';
+import 'package:keypod/dialogs/show_my_about.dart';
 import 'package:keypod/main.dart';
-import 'package:keypod/utils/constants.dart';
+import 'package:keypod/constants/colours.dart';
 import 'package:keypod/utils/rdf.dart';
 
-class KeyValueTable extends StatefulWidget {
-  const KeyValueTable({
+class KeyValueEditor extends StatefulWidget {
+  const KeyValueEditor({
     required this.title,
     required this.fileName,
     required this.child,
@@ -49,10 +49,10 @@ class KeyValueTable extends StatefulWidget {
   final List<Map<String, dynamic>>? keyValuePairs;
 
   @override
-  State<KeyValueTable> createState() => _KeyValueTableState();
+  State<KeyValueEditor> createState() => _KeyValueEditorState();
 }
 
-class _KeyValueTableState extends State<KeyValueTable> {
+class _KeyValueEditorState extends State<KeyValueEditor> {
   // Loading indicator for data submission.
 
   bool _isLoading = false;
@@ -143,19 +143,25 @@ class _KeyValueTableState extends State<KeyValueTable> {
         DataColumn(label: Text('Actions')),
       ],
       rows: dataMap.keys.map((index) {
-        return DataRow(cells: [
-          DataCell(TextField(
-            controller: keyControllers[index],
-            onChanged: (newKey) => _updateRowKey(index, newKey),
-            decoration: const InputDecoration(border: InputBorder.none),
-          )),
-          DataCell(TextField(
-            controller: valueControllers[index],
-            onChanged: (newValue) => _updateRowValue(index, newValue),
-            decoration: const InputDecoration(border: InputBorder.none),
-          )),
-          DataCell(_actionCell(index)),
-        ]);
+        return DataRow(
+          cells: [
+            DataCell(
+              TextField(
+                controller: keyControllers[index],
+                onChanged: (newKey) => _updateRowKey(index, newKey),
+                decoration: const InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            DataCell(
+              TextField(
+                controller: valueControllers[index],
+                onChanged: (newValue) => _updateRowValue(index, newValue),
+                decoration: const InputDecoration(border: InputBorder.none),
+              ),
+            ),
+            DataCell(_actionCell(index)),
+          ],
+        );
       }).toList(),
     );
   }
@@ -244,11 +250,16 @@ class _KeyValueTableState extends State<KeyValueTable> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(
+              Icons.add_card,
+              color: iconColor,
+            ),
+            tooltip: 'Add a new row to the table of key-value pairs.',
             onPressed: _addNewRow,
           ),
-          smallGapH,
-          ElevatedButton(
+          IconButton(
+            icon: const Icon(Icons.save),
+            tooltip: 'Save the key-value pairs to your Solid Pod.',
             onPressed: _isDataModified
                 ? () async {
                     setState(() {
@@ -272,21 +283,23 @@ class _KeyValueTableState extends State<KeyValueTable> {
                   }
                 : null,
             style: activeButtonStyle(
-                context), // Disable button if data is not modified
-            child: const Text('Save',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+              context,
+            ), // Disable button if data is not modified
+            // child: const Text('Save',
+            //     style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           IconButton(
             icon: const Icon(
               Icons.share_rounded,
-              color: Colors.deepOrangeAccent,
+              color: iconColor,
             ),
+            tooltip: 'Configure your Solid Pod sharing.',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => GrantPermissionUi(
                   backgroundColor: titleBackgroundColor,
-                  child: KeyValueTable(
+                  child: KeyValueEditor(
                     title: widget.title,
                     fileName: widget.fileName,
                     keyValuePairs: widget.keyValuePairs,
@@ -295,23 +308,22 @@ class _KeyValueTableState extends State<KeyValueTable> {
                 ),
               ),
             ),
-            tooltip: 'Solidpod file sharing functionality.',
           ),
           IconButton(
             icon: const Icon(
               Icons.logout_sharp,
-              color: Colors.orange,
+              color: iconColor,
             ),
+            tooltip: 'Logout of your Solid Pod.',
             onPressed: () async => logoutPopup(context, const KeyPod()),
-            tooltip: 'Logout of your solid pod.',
           ),
           IconButton(
             icon: const Icon(
               Icons.info,
-              color: Colors.purple,
+              color: iconColor,
             ),
-            onPressed: () async => aboutDialog(context),
-            tooltip: 'About the app.',
+            tooltip: 'Popup the app About dialog.',
+            onPressed: () async => showMyAbout(context),
           ),
           smallGapH,
         ],
@@ -356,89 +368,30 @@ class _KeyValueTableState extends State<KeyValueTable> {
 
   ButtonStyle activeButtonStyle(BuildContext context) {
     return ButtonStyle(
-      backgroundColor: WidgetStateProperty.resolveWith<Color>(
-        (states) {
-          if (states.contains(WidgetState.disabled)) {
-            // Light grey color when disabled.
-
-            return Colors.grey.shade300;
-          }
-
-          // Regular color.
-
-          return Colors.lightBlue;
-        },
-      ),
       foregroundColor: WidgetStateProperty.resolveWith<Color>(
         (states) {
           if (states.contains(WidgetState.disabled)) {
             // Text color when disabled.
 
-            return Colors.black;
+            return Colors.grey.shade400;
           }
 
           // Text color when enabled.
 
-          return Colors.white;
+          return iconColor;
         },
       ),
     );
   }
 
-  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
-
-  // Widget _customCell(String text) {
-  //   return Container(
-  //     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       borderRadius: BorderRadius.circular(5.0),
-  //       border: Border.all(color: Colors.grey.shade300),
-  //     ),
-  //     child: Text(text, style: const TextStyle(fontSize: 14)),
-  //   );
-  // }
-
   Widget _actionCell(int index) {
     return Row(
       children: [
         IconButton(
-          icon: const Icon(Icons.delete, color: Colors.red),
+          icon: const Icon(Icons.delete, color: iconColor),
           onPressed: () => _deleteRow(index),
         ),
       ],
     );
   }
-
-  // TODO 20240627 gjw THE FOLLOWING IS NOT REFERENCED. CAN IT BE REMOVED?
-
-//   void _maybeGoBack(BuildContext context) {
-//     if (_isDataModified) {
-//       showDialog(
-//         context: context,
-//         builder: (context) => AlertDialog(
-//           title: const Text('Confirm'),
-//           content: const Text(
-//               'You have unsaved changes. Are you sure you want to go back?'),
-//           actions: <Widget>[
-//             TextButton(
-//               onPressed: () => Navigator.of(context).pop(),
-//               child: const Text('Cancel'),
-//             ),
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//                 Navigator.push(context,
-//                     MaterialPageRoute(builder: (context) => widget.child));
-//               },
-//               child: const Text('Home'),
-//             ),
-//           ],
-//         ),
-//       );
-//     } else {
-//       Navigator.push(
-//           context, MaterialPageRoute(builder: (context) => widget.child));
-//     }
-//   }
 }

@@ -1,6 +1,6 @@
 /// Common utilities for working on RDF data.
 ///
-// Time-stamp: <Sunday 2023-12-31 16:40:28 +1100 Graham Williams>
+// Time-stamp: <Wednesday 2024-07-10 09:49:30 +1000 Graham Williams>
 ///
 /// Copyright (C) 2024, Software Innovation Institute, ANU.
 ///
@@ -22,6 +22,9 @@
 // this program.  If not, see <https://www.gnu.org/licenses/>.
 ///
 /// Authors: Dawei Chen
+
+// TODO 20240708 gjw CAN ANY OF THIS GO TO RDFLIB?
+
 library;
 
 import 'package:rdflib/rdflib.dart';
@@ -29,6 +32,7 @@ import 'package:rdflib/rdflib.dart';
 import 'package:solidpod/solidpod.dart' show getWebId;
 
 // Namespace for keys
+
 const String appTerms = 'https://solidcommunity.au/predicates/terms#';
 
 /// Serialise key/value pairs [keyValuePairs] in TTL format where
@@ -37,10 +41,12 @@ const String appTerms = 'https://solidcommunity.au/predicates/terms#';
 /// Object: Value
 
 Future<String> genTTLStr(
-    List<({String key, dynamic value})> keyValuePairs) async {
+  List<({String key, dynamic value})> keyValuePairs,
+) async {
   assert(keyValuePairs.isNotEmpty);
-  assert({for (final p in keyValuePairs) p.key}.length ==
-      keyValuePairs.length); // No duplicate keys
+  assert(
+    {for (final p in keyValuePairs) p.key}.length == keyValuePairs.length,
+  ); // No duplicate keys
   final webId = await getWebId();
   assert(webId != null);
   final g = Graph();
@@ -61,7 +67,11 @@ Future<String> genTTLStr(
 /// Predicate: Key
 /// Object: Value
 
+// TODO 20240710 gjw COULD THIS USE rdflib::parseTTL
+
 Future<List<({String key, dynamic value})>> parseTTLStr(String ttlStr) async {
+  // TODO 20240710 gjw COMMENT THAT WE COULD DO WITH USING MORE asserts()
+
   assert(ttlStr.isNotEmpty);
   final g = Graph();
   g.parseTurtle(ttlStr);
@@ -81,31 +91,4 @@ Future<List<({String key, dynamic value})>> parseTTLStr(String ttlStr) async {
     }
   }
   return pairs;
-}
-
-/// Parses enc-key file information and extracts content into a map.
-///
-/// This function processes the provided file information, which is expected to be
-/// in Turtle (Terse RDF Triple Language) format. It uses a graph-based approach
-/// to parse the Turtle data and extract key attributes and their values.
-
-Map<dynamic, dynamic> getEncKeyContent(String fileInfo) {
-  final g = Graph();
-  g.parseTurtle(fileInfo);
-  final fileContentMap = {};
-  final fileContentList = [];
-  for (final t in g.triples) {
-    final predicate = t.pre.value as String;
-    if (predicate.contains('#')) {
-      final subject = t.sub.value;
-      final attributeName = predicate.split('#')[1];
-      final attrVal = t.obj.value.toString();
-      if (attributeName != 'type') {
-        fileContentList.add([subject, attributeName, attrVal]);
-      }
-      fileContentMap[attributeName] = [subject, attrVal];
-    }
-  }
-
-  return fileContentMap;
 }
