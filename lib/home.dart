@@ -80,7 +80,6 @@ class KeyPodHomeState extends State<KeyPodHome> {
 
       final dataDirPath = await getDataDirPath();
       final filePath = path.join(dataDirPath, fileName);
-      final webId = await getWebId();
 
       // The build context and the app widget are passed through to the
       // readPod() on the chance that it is required when the user CANCEL's the
@@ -95,6 +94,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
         // Need to ensure the context is mounted to avoid async gaps.
 
         final fileContent = await readPod(filePath, context, const KeyPodApp());
+        final webId = await getWebId();
 
         final pairs =
             fileContent == null ? null : await parseTTLStr(fileContent);
