@@ -1,11 +1,7 @@
 name: keypod
 description: "Secure storage of key-value pairs in your Solid Pod."
 publish_to: "none"
-<<<<<<< HEAD
 version: 0.6.0+2
-=======
-version: 0.5.11+2
->>>>>>> 82b7e9e (Bump sequence 2)
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
