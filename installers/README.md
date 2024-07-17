@@ -1,10 +1,8 @@
 # KeyPod Installers
 
-Flutter supports multiple platform targets and the app will run native
-on Android, iOS, Linux, MacOS, and Windows, as well as directly in a
-browser from the web. Flutter functionality is essentially identical
-across all platforms so the experience across different platforms will
-be very similar.
+Flutter supports multiple platforms so that Flutter based apps will run native
+and similarly on Android, iOS, Linux, MacOS, and Windows, as well as directly in a
+browser from the web.
 
 ## Prerequisite
 
@@ -22,43 +20,83 @@ for keypod.
 
 ### Tar Install
 
-Download [keypod.tar.gz](https://solidcommunity.au/installers/keypod.tar.gz)
+Download
+[keypod.tar.gz](https://solidcommunity.au/installers/keypod.tar.gz):
+
+```bash
+wget https://solidcommunity.au/installers/keypod.tar.gz
+```
+
+**Quick Start**
 
 To try it out:
 
 ```bash
 wget https://solidcommunity.au/installers/keypod.tar.gz
 tar zxvf keypod.tar.gz
+```
+
+Then simply run the executable:
+
+```bash
 keypod/keypod
 ```
 
-To install for the local user and to make it known to GNOME and KDE,
-with a desktop icon for their desktop:
+**Local User Install**
+
+To install for the local user the package can be placed into `~/.local/share`:
 
 ```bash
 wget https://solidcommunity.au/installers/keypod.tar.gz -O keypod.tar.gz
 tar zxvf keypod.tar.gz -C ${HOME}/.local/share/
+```
+
+These two steps can also be repeated to **update** your installation.
+
+Set up a link to the binary to be able to run the `rattle` command
+from a terminal:
+
+```bash
 ln -s ${HOME}/.local/share/keypod/keypod ${HOME}/.local/bin/keypod
+```
+
+Then set up your local installation (only required once) to make it
+known to GNOME and KDE, with a desktop icon for your desktop:
+
+```bash
 wget https://raw.githubusercontent.com/anusii/keypod/dev/installers/keypod.desktop -O ${HOME}/.local/share/applications/keypod.desktop
 sed -i "s/USER/$(whoami)/g" ${HOME}/.local/share/applications/keypod.desktop
 mkdir -p ${HOME}/.local/share/icons/hicolor/256x256/apps/
 wget https://github.com/anusii/keypod/raw/dev/installers/keypod.png -O ${HOME}/.local/share/icons/hicolor/256x256/apps/keypod.png
 ```
 
-To install for any user on the computer:
+**System Install**
+
+To install for any user on the computer begin by downloading the
+**.tar.gz** and installing that into `/opt/` or wherever your system
+suggests optional installations live:
 
 ```bash
 wget https://solidcommunity.au/installers/keypod.tar.gz
 sudo tar zxvf keypod.tar.gz -C /opt/
+```
+
+Those two steps can also be repeated to **update** your installation.
+
+Then set up your local installation (only required once):
+
+```bash
 sudo ln -s /opt/keypod/keypod /usr/local/bin/keypod
+sudo mkdir -p /usr/local/share/applications/
+sudo wget https://raw.githubusercontent.com/gjwgit/rattleng/dev/installers/keypod.desktop -O /usr/local/share/applications/keypod.desktop
+sudo wget https://github.com/gjwgit/rattleng/raw/dev/installers/keypod.png -O /opt/rattleng/keypod.png
 ``` 
 
-The `keypod.desktop` and app icon can be installed into
-`/usr/local/share/applications/` and `/usr/local/share/icons/`
-respectively.
+If installing somewhere other than`/opt/` you will need to modify the
+steps and edit the `rattle.desktop`.
 
-Once installed you can run the app from the GNOME desktop through
-Alt-F2 and type `keypod` then Enter.
+Once installed users can run the app from the GNOME desktop through
+the Window key then type `rattle`.
 
 ### Snap Install - UNDER DEVELOPMENT
 
@@ -73,10 +111,10 @@ for this development version we are side-loading the package.
 ### Zip Install
 
 ```bash
-wget https://access.togaware.com/rattleng-macos.zip
+wget https://access.togaware.com/keypod-macos.zip
 ```
 
-Unzip and run rattle.
+Unzip and run keypod.
 
 ### Dmg Install - UNDER DEVELOPMENT
 
@@ -115,7 +153,7 @@ Windows.
 ### Msix Install - UNDER DEVELOPMENT
 
 + Download https://access.togaware.com/keypod.msix
-+ Add the rattle certificate to your store:
++ Add the keypod certificate to your store:
   + Right click the downloaded file in Explorer
   + Choose *Properties*
   + Choose the *Digital Signatures* tab. 
