@@ -29,6 +29,8 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'package:solidpod/solidpod.dart';
+
 import 'package:keypod/home.dart';
 
 /// A widget for the root of the KeyPod app encompassing the KeyPod home widget.
@@ -48,26 +50,37 @@ class KeyPodApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('KeyPod Template App for SolidPod')),
-      body: Stack(
-        children: [
-          const SizedBox(height: 20),
-          Text(webId != null
-              ? '   Report here if authenticated $webId'
-              : '   Await login to get webId.',),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const KeyPodHome(),
+      body: FutureBuilder(
+        future: getWebId(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final webId = snapshot.data;
+            return Stack(
+              children: [
+                const SizedBox(height: 20),
+                Text(
+                  webId != null
+                      ? '   Report here if authenticated $webId'
+                      : '   Await login to get webId.',
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const KeyPodHome(),
+                        ),
+                      );
+                    },
+                    child: const Text('Load Data from your Solid Pod'),
                   ),
-                );
-              },
-              child: const Text('Load Data from your Solid Pod'),
-            ),
-          ),
-        ],
-        //KeyPodHome(),
+                ),
+              ],
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
       ),
     );
   }
