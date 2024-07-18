@@ -53,7 +53,7 @@ class KeyPodApp extends StatelessWidget {
           const SizedBox(height: 20),
           Text(webId != null
               ? '   Report here if authenticated $webId'
-              : '   Await login to get webId'),
+              : '   Await login to get webId.',),
           Center(
             child: ElevatedButton(
               onPressed: () {
