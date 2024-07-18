@@ -37,21 +37,23 @@ import 'package:keypod/home.dart';
 /// does not need to manage any state itself.
 
 class KeyPodApp extends StatelessWidget {
-  const KeyPodApp({super.key});
+  const KeyPodApp({super.key, this.webId});
+
+  final String? webId;
 
   /// Build the root widget as a [MaterialApp] widget, setting up the app theme,
   /// and populating the widget with the KeyPod home page widget.
 
   @override
   Widget build(BuildContext context) {
-    // TODO 20240710 gjw how to get the WebID here?
-    const webId = 'WEBID';
     return Scaffold(
       appBar: AppBar(title: const Text('KeyPod Template App for SolidPod')),
       body: Stack(
         children: [
           const SizedBox(height: 20),
-          const Text('   TODO Report here if authenticated $webId'),
+          Text(webId != null
+              ? '   Report here if authenticated $webId'
+              : '   Await login to get webId'),
           Center(
             child: ElevatedButton(
               onPressed: () {

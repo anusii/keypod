@@ -93,11 +93,18 @@ class KeyPodHomeState extends State<KeyPodHome> {
       if (context.mounted) {
         // Need to ensure the context is mounted to avoid async gaps.
 
-        final fileContent = await readPod(filePath, context, const KeyPodApp());
         final webId = await getWebId();
 
-        final pairs =
-            fileContent == null ? null : await parseTTLStr(fileContent);
+        final fileContent = await readPod(
+            filePath,
+            context,
+            KeyPodApp(
+              webId: webId,
+            ),);
+
+        final pairs = fileContent == null
+            ? null
+            : await parseTTLStr(fileContent.toString());
 
         // Convert each tuple to a map.
 
