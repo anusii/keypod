@@ -95,8 +95,9 @@ class KeyPodHomeState extends State<KeyPodHome> {
 
         final fileContent = await readPod(filePath, context, const KeyPodApp());
 
-        final pairs =
-            fileContent == null ? null : await parseTTLStr(fileContent);
+        final pairs = fileContent == null
+            ? null
+            : await parseTTLStr(fileContent.toString());
 
         // Convert each tuple to a map.
 
