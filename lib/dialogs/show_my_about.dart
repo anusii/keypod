@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:solidpod/solidpod.dart';
 
-Future<void> showMyAbout(BuildContext context) async {
+Future<void> showMyAbout(BuildContext context, {String? webId}) async {
   final appInfo = await getAppNameVersion();
 
   if (context.mounted) {
@@ -45,18 +45,16 @@ Future<void> showMyAbout(BuildContext context) async {
       applicationName: appInfo.name,
       applicationVersion: appInfo.version,
       children: [
-        const SizedBox(
+        SizedBox(
           // Limit the width of the about dialog box.
 
           width: 300,
 
-          child: MarkdownBody(
-            // Ensure we can slect any of the text, especially since we are
-            // inside a [SelectableArea] as per hom.dart.
-
-            selectable: true,
-
-            data: '''
+          child: Column(
+            children: [
+              const MarkdownBody(
+                selectable: true,
+                data: '''
 **A key-value pair manager.**
 
 Key Pod is an app for managing your secure and private
@@ -72,8 +70,29 @@ large language models.
 
 *Authors: Anuska Vidanage, Graham Williams, Jess Moore, Zheyuan Xu,
 Kevin Wang, Ninad Bhat, Dawei Chen.*
-
 ''',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: SelectableText.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Web ID: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: webId ??
+                            'Web ID is not available and need to login first.',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
