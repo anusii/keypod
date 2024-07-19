@@ -53,7 +53,7 @@ class KeyPodApp extends StatelessWidget {
       body: FutureBuilder(
         future: getWebId(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done) {
             final webId = snapshot.data;
             return Stack(
               children: [
@@ -61,7 +61,7 @@ class KeyPodApp extends StatelessWidget {
                 Text(
                   webId != null
                       ? '   Report here if authenticated $webId'
-                      : '   Await login to get webId.',
+                      : '   Not Logged in.',
                 ),
                 Center(
                   child: ElevatedButton(
