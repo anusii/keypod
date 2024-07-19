@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:keypod/app.dart';
+import 'package:keypod/home.dart';
 import 'package:keypod/utils/is_desktop.dart';
 
 void main() async {
@@ -126,7 +126,7 @@ class KeyPod extends StatelessWidget {
           loginButtonStyle: LoginButtonStyle(
             background: Colors.lightGreenAccent,
           ),
-          child: KeyPodApp(),
+          child: KeyPodHome(),
         ),
       ),
     );
