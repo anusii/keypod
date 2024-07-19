@@ -29,6 +29,8 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'package:solidpod/solidpod.dart';
+
 import 'package:keypod/home.dart';
 
 /// A widget for the root of the KeyPod app encompassing the KeyPod home widget.
@@ -37,35 +39,48 @@ import 'package:keypod/home.dart';
 /// does not need to manage any state itself.
 
 class KeyPodApp extends StatelessWidget {
-  const KeyPodApp({super.key});
+  const KeyPodApp({super.key, this.webId});
+
+  final String? webId;
 
   /// Build the root widget as a [MaterialApp] widget, setting up the app theme,
   /// and populating the widget with the KeyPod home page widget.
 
   @override
   Widget build(BuildContext context) {
-    // TODO 20240710 gjw how to get the WebID here?
-    const webId = 'WEBID';
     return Scaffold(
       appBar: AppBar(title: const Text('KeyPod Template App for SolidPod')),
-      body: Stack(
-        children: [
-          const SizedBox(height: 20),
-          const Text('   TODO Report here if authenticated $webId'),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const KeyPodHome(),
+      body: FutureBuilder(
+        future: getWebId(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            final webId = snapshot.data;
+            return Stack(
+              children: [
+                const SizedBox(height: 20),
+                Text(
+                  webId != null
+                      ? '   Report here if authenticated $webId'
+                      : '   Not Logged in.',
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const KeyPodHome(),
+                        ),
+                      );
+                    },
+                    child: const Text('Load Data from your Solid Pod'),
                   ),
-                );
-              },
-              child: const Text('Load Data from your Solid Pod'),
-            ),
-          ),
-        ],
-        //KeyPodHome(),
+                ),
+              ],
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
       ),
     );
   }

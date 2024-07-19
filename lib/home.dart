@@ -93,7 +93,15 @@ class KeyPodHomeState extends State<KeyPodHome> {
       if (context.mounted) {
         // Need to ensure the context is mounted to avoid async gaps.
 
-        final fileContent = await readPod(filePath, context, const KeyPodApp());
+        final webId = await getWebId();
+
+
+        final fileContent = await readPod(
+            filePath,
+            context,
+            KeyPodApp(
+              webId: webId,
+            ),);
 
         final pairs = fileContent == null
             ? null
@@ -113,6 +121,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
                 title: 'Key Value Pair Editor',
                 fileName: fileName,
                 keyValuePairs: keyValuePairs,
+                webId: webId,
                 child: const KeyPodHome(),
               ),
             ),
