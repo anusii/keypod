@@ -34,7 +34,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
-import 'package:keypod/app.dart';
+import 'package:keypod/main.dart';
 import 'package:keypod/features/key_value_editor.dart';
 import 'package:keypod/constants/colours.dart';
 import 'package:keypod/utils/rdf.dart';
@@ -95,13 +95,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
 
         final webId = await getWebId();
 
-
-        final fileContent = await readPod(
-            filePath,
-            context,
-            KeyPodApp(
-              webId: webId,
-            ),);
+        final fileContent = await readPod(filePath, context, const KeyPod());
 
         final pairs = fileContent == null
             ? null
