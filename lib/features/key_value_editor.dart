@@ -70,6 +70,7 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
   // Map to hold the TextEditingController for each key and value.
   Map<int, TextEditingController> keyControllers = {};
   Map<int, TextEditingController> valueControllers = {};
+  Map<int, Map<String, dynamic>>? initialDataMap;
   @override
   void initState() {
     super.initState();
@@ -84,6 +85,8 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
         valueControllers[i] = valueController;
         dataMap[i++] = {keyStr: pair[keyStr], valStr: pair[valStr]};
       }
+      // Store the initial dataMap value.
+      initialDataMap = Map<int, Map<String, dynamic>>.from(dataMap);
     }
   }
 
@@ -133,8 +136,26 @@ class _KeyValueEditorState extends State<KeyValueEditor> {
       valueControllers[index]?.dispose();
       keyControllers.remove(index);
       valueControllers.remove(index);
-      _isDataModified = true;
+      
+      // Check if the initial dataMap is null or if the initial dataMap and 
+      // the current dataMap are not equal.
+      _isDataModified =
+          initialDataMap == null || !_areMapsEqual(initialDataMap!, dataMap);
     });
+  }
+
+  /// Compares two maps of type `Map<String, String>` for equality.
+
+  bool _areMapsEqual(Map<dynamic, dynamic> a, Map<dynamic, dynamic> b) {
+    if (a.length != b.length) return false;
+
+    for (var key in a.keys) {
+      if (!b.containsKey(key) || a[key] != b[key]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   Widget buildDataTable() {
