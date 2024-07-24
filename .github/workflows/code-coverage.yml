@@ -24,11 +24,6 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Modify pubspec.yaml
-        run: |
-          sed -i '/^    path: solidpod/d' pubspec.yaml
-          sed -i 's/^    ## /    /' pubspec.yaml
-
       - name: Install Dependencies
         run: flutter pub get
 

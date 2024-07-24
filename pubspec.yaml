@@ -25,11 +25,11 @@ dependencies:
 
   solidpod:
     # Use a local path whilst solidpod is under development.
-    path: solidpod
+    # path: solidpod
     # Use git until the latest is released to pub.dev.
-    ## git:
-    ##   url: https://github.com/anusii/solidpod
-    ##   ref: dev
+    git:
+      url: https://github.com/anusii/solidpod
+      ref: dev
 
   universal_io: ^2.2.2
   window_manager: ^0.3.9
@@ -39,7 +39,7 @@ dev_dependencies:
   dart_code_metrics:
     git:
       url: https://github.com/anusii/dart-code-metrics.git
-      ref: main
+      ref: dev
 
   flutter_test:
     sdk: flutter
