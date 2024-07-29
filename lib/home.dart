@@ -34,7 +34,7 @@ import 'package:flutter/material.dart';
 import 'package:solidpod/solidpod.dart';
 import 'package:path/path.dart' as path;
 
-import 'package:keypod/app.dart';
+import 'package:keypod/main.dart';
 import 'package:keypod/features/key_value_editor.dart';
 import 'package:keypod/constants/colours.dart';
 import 'package:keypod/utils/rdf.dart';
@@ -93,7 +93,9 @@ class KeyPodHomeState extends State<KeyPodHome> {
       if (context.mounted) {
         // Need to ensure the context is mounted to avoid async gaps.
 
-        final fileContent = await readPod(filePath, context, const KeyPodApp());
+        final webId = await getWebId();
+
+        final fileContent = await readPod(filePath, context, const KeyPod());
 
         final pairs = fileContent == null
             ? null
@@ -113,6 +115,7 @@ class KeyPodHomeState extends State<KeyPodHome> {
                 title: 'Key Value Pair Editor',
                 fileName: fileName,
                 keyValuePairs: keyValuePairs,
+                webId: webId,
                 child: const KeyPodHome(),
               ),
             ),

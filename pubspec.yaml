@@ -1,10 +1,10 @@
 name: keypod
-description: "Secure storage of key-value pairs in your Solid Pod."
-publish_to: "none"
+description: 'Secure storage of key-value pairs in your Solid Pod.'
+publish_to: 'none'
 version: 0.6.0+3
 
 environment:
-  sdk: ">=3.2.3 <4.0.0"
+  sdk: '>=3.2.3 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order
 # to work.  To automatically upgrade your package dependencies to the
@@ -21,25 +21,24 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_markdown: ^0.7.3
   path: ^1.9.0
-  rdflib: ^0.2.9
+  rdflib: ^0.2.10
 
   solidpod:
     # Use a local path whilst solidpod is under development.
-    path: solidpod
+    # path: solidpod
     # Use git until the latest is released to pub.dev.
-    ## git:
-    ##   url: https://github.com/anusii/solidpod
-    ##   ref: dev
+    git:
+      url: https://github.com/anusii/solidpod
+      ref: dev
 
   universal_io: ^2.2.2
   window_manager: ^0.3.9
 
 dev_dependencies:
-
   dart_code_metrics:
     git:
       url: https://github.com/anusii/dart-code-metrics.git
-      ref: main
+      ref: dev
 
   flutter_test:
     sdk: flutter
@@ -55,15 +54,17 @@ dependency_overrides:
   #
   # If Zheyuan can fix his dart-code-metrics fork this can probably be
   # removed.
-  
+
   file: ^7.0.0 # Use only if necessary
 
   # TODO 20240710 gjw solid-auth DEPENDS ON intl-0.19.0
   #
   # This may require Anushka's update. We will want to remove this
   # override asap.
+
+  intl: ^0.19.0
   
-  intl: ^0.19.0 
+  package_info_plus: ^8.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,7 +72,6 @@ dependency_overrides:
 # The following section is specific to Flutter packages.
 
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -88,18 +88,18 @@ flutter:
 # the apps can be automatically updated.
 
 flutter_launcher_icons:
-  image_path: "assets/images/keypod_logo.png"
+  image_path: 'assets/images/keypod_logo.png'
   android: true
   min_sdk_android: 21
   ios: true
   remove_alpha_ios: true
-  background_color_ios: "#ffffff"
+  background_color_ios: '#ffffff'
   macos:
     generate: true
   web:
     generate: true
-    background_color: "#ffffff"
-    theme_color: "#ffffff"
+    background_color: '#ffffff'
+    theme_color: '#ffffff'
   windows:
     generate: true
     icon_size: 48 # min:48, max:256, default: 48
