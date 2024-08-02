@@ -114,8 +114,6 @@ class KeyPod extends StatelessWidget {
           // user did not log in during startup we can call [SolidLoginPopup] to
           // establish the connection at that time.
 
-          required: false,
-
           title: 'KEY/VALUE SOLID POD',
           image: AssetImage('assets/images/keypod_image.jpg'),
           logo: AssetImage('assets/images/keypod_logo.png'),
