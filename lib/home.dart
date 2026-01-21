@@ -95,11 +95,14 @@ class KeyPodHomeState extends State<KeyPodHome> {
 
         final webId = await getWebId();
 
-        final fileContent = await readPod(filePath, context, const KeyPod());
+        List<({String key, dynamic value})>? pairs;
+        try {
+          final fileContent = await readPod(filePath, context, const KeyPod());
 
-        final pairs = fileContent == null
-            ? null
-            : await parseTTLStr(fileContent.toString());
+          pairs = await parseTTLStr(fileContent.toString());
+        } on Object catch (e) {
+          debugPrint('Unable to load $filePath, $e');
+        }
 
         // Convert each tuple to a map.
 
