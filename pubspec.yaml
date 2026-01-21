@@ -23,22 +23,16 @@ dependencies:
   path: ^1.9.0
   rdflib: ^0.2.10
 
-  solidpod:
-    # Use a local path whilst solidpod is under development.
-    # path: solidpod
-    # Use git until the latest is released to pub.dev.
-    git:
-      url: https://github.com/anusii/solidpod
-      ref: dev
+  solidpod: 0.7.13
 
   universal_io: ^2.2.2
   window_manager: ^0.3.9
 
 dev_dependencies:
-  dart_code_metrics:
-    git:
-      url: https://github.com/anusii/dart-code-metrics.git
-      ref: dev
+  # dart_code_metrics:
+  #   git:
+  #     url: https://github.com/anusii/dart-code-metrics.git
+  #     ref: dev
 
   flutter_test:
     sdk: flutter
